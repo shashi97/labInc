@@ -1,0 +1,55 @@
+<p-growl [(value)]="errorMessage" [immutable]="false" life="7000"></p-growl>
+
+<div class="flex-block site-content edit-mode">
+  <insurance-company-left-navbar></insurance-company-left-navbar>
+  <div class="main-content">
+    <div class="content" scroll-bar>
+      <error></error>
+      <p-dataTable [value]="insuranceStates" scrollable="true" scrollHeight="350px" [paginator]="false" [rows]="pageSize" [responsive]="true"
+        *ngIf="isStateShow">
+        <p-column [style]="{'width':'6%'}" header="G Code Applicable">
+          <ng-template let-gcode="rowData" pTemplate="body">
+            <p-checkbox name="groupname" [(ngModel)]="gcode.IsAcceptGCode" binary="true" (click)="onGCodeAccept(gcode)"></p-checkbox>
+          </ng-template>
+        </p-column>
+        <p-column field="StateCode" header="State Code" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"
+          [style]="{'width':'180px'}"></p-column>
+        <p-column field="StateName" [style]="{'width':'180px'}" header="States" [sortable]="true" [filter]="true" filterMatchMode="contains"
+          filterPlaceholder="Search"></p-column>
+
+        <p-column [style]="{'width':'13%'}" header="Coverage Determination Profile">
+          <ng-template let-gcode="rowData" pTemplate="body">
+
+            <p-dropdown placeholder='Please Select' appendTo="body" name="TestProfile" [(ngModel)]="gcode.TestProfileId" [options]="testProfilesList"
+              *ngIf="!gcode.IsAcceptGCode" [filter]="true"></p-dropdown>
+          </ng-template>
+        </p-column>
+
+        <p-column [style]="{'width':'13%'}" header="Utilization Profile">
+          <ng-template let-gcode="rowData" pTemplate="body">
+
+            <p-dropdown placeholder='Please Select' appendTo="body" name="utlizationProfile" [(ngModel)]="gcode.UtilizationProfileId" [options]="utilizationProfileList"
+             [filter]="true"></p-dropdown>
+          </ng-template>
+        </p-column>
+
+      </p-dataTable>
+
+
+    </div>
+  </div>
+</div>
+<footer class="footer site-container">
+  <div class="flex-block space-between">
+    <div class="flex-block">
+    </div>
+    <div class="flex-block block">
+      <div class="block" style="margin-top:1%">
+        <h1 style="color:white">Total Insurance States: {{totalRecords}}</h1>
+      </div>
+      <div class="delim m-l-30"></div>
+      <button class="btn btn-light h-50 m-l-20" (click)="save()">Save</button>
+      <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+    </div>
+  </div>
+</footer>

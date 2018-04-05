@@ -1,0 +1,9 @@
+
+>>> .star-icon {
+    color: #ddd;
+    font-size: 6em;
+}
+>>> .star-icon:before {
+    color: #87ceeb;
+}
+

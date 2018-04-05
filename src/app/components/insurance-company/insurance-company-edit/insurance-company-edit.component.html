@@ -1,0 +1,296 @@
+<p-growl [(value)]="errorMessage" [immutable]="false" life="7000"></p-growl>
+<form #f="ngForm" novalidate (ngSubmit)="save(f.valid)">
+  <div class="flex-block site-content edit-mode">
+    <insurance-company-left-navbar></insurance-company-left-navbar>
+    <div class="main-content">
+      <div class="content" scroll-bar>
+        <error></error>
+        <div class="titled-block">
+          <div class="title">Company Information</div>
+          <div class="content-block flex-block flex-wrap grow-1">
+
+            <div class="labeled-block block grow-25 offset-right edit-mode">
+              <div class="label required">Company Code</div>
+              <div class="value">
+                <input name="CompanyCode" [(ngModel)]="insurance.CompanyCode" #codeValidate="ngModel" required max-length="50" class="field"
+                />
+              </div>
+              <div [hidden]="codeValidate.pristine && !f.submitted &&  codeValidate.untouched">
+                <div *ngIf="codeValidate.errors && codeValidate.errors.required  " class="text-danger">
+                  Company Code is required
+                </div>
+              </div>
+              <!-- <div [hidden]="codeValidate.valid || codeValidate.untouched">
+              <div *ngIf="codeValidate.errors && codeValidate.errors.required" class="text-danger">
+                Company Code is required
+              </div>
+            </div> -->
+            </div>
+
+            <div class="labeled-block block grow-25 offset-right">
+              <div class="label required">Company Name</div>
+              <div class="value">
+                <input name="CompanyName" [(ngModel)]="insurance.CompanyName" #nameValidate="ngModel" required OnlyEntityName="true" [attr.maxlength]="200"
+                  class="field" />
+              </div>
+              <div [hidden]="nameValidate.pristine && !f.submitted &&  nameValidate.untouched">
+                <div *ngIf="nameValidate.errors && nameValidate.errors.required  " class="text-danger">
+                  Company Name is required
+                </div>
+              </div>
+              <!-- <div [hidden]="nameValidate.valid || nameValidate.untouched">
+                <div *ngIf="nameValidate.errors && nameValidate.errors.required" class="text-danger">
+                  Company Name is required
+                </div>
+              </div> -->
+            </div>
+
+            <div class="labeled-block block grow-25 offset-right">
+              <div class="label required">Insurance Company Type</div>
+              <div class="value">
+                <p-dropdown name="insuranceCompanyTypes" placeholder='Please Select' [options]="insuranceCompanyTypeDDOs" [(ngModel)]="insurance.InsuranceCompanyTypeId"
+                  [filter]="true"></p-dropdown>
+                <div [hidden]="!f.submitted ">
+                  <div *ngIf="insurance.InsuranceCompanyTypeId == 0 " class="text-danger">
+                    Insurance Company Type is required
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="labeled-block block grow-25 offset-right">
+                <div class="label">Trading Partner</div>
+                <div class="value">
+                  <p-dropdown name="tradingPartner" placeholder='Please Select' [options]="tradingPartnerDDOs" [(ngModel)]="insurance.TradingPartnerId"
+                    [filter]="true"></p-dropdown>                
+                </div>
+              </div>
+
+
+
+            <div class="labeled-block block grow-25 offset-right">
+              <div class="label">NelcPayNum</div>
+              <div class="value">
+                <input name="NelcPayNum" [(ngModel)]="insurance.NelcPayNum" OnlyAlphaNumeric="true" [attr.maxlength]="50" class="field" />
+              </div>
+            </div>
+
+            <div class="labeled-block block grow-25 offset-right">
+              <div class="label">Payer Id</div>
+              <div class="value">
+                <input name="PayerId" [(ngModel)]="insurance.PayerId" OnlyAlphaNumeric="true" [attr.maxlength]="5" class="field" />
+              </div>
+            </div>
+            <div class="labeled-block block grow-25 offset-right">
+              <div class="label">Adjuster</div>
+              <div class="value">
+                <input name="Adjuster" [(ngModel)]="insurance.Adjuster" OnlyAlphaNumeric="true" [attr.maxlength]="100" class="field" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex-block">
+          <div class="titled-block block grow-50 m-r-20 edit-mode">
+            <div class="title">Insurance Company Licensed States</div>
+            <state-information *ngIf="insurance.Id == 0 || InsuranceStateLevel == 0 || InsuranceStateLevel == 1|| InsuranceStateLevel == 2|| InsuranceStateLevel == 3"
+              [InsuranceStateLevel]="InsuranceStateLevel" [InsuranceCompanyStates]="InsuranceCompanyStates" (onStateChange)="onStateChange($event)"></state-information>
+          </div>
+          <div class="titled-block block grow-50 edit-mode">
+            <div class="title">Status Information</div>
+            <div class="content-block flex-block flex-wrap">
+              <div class="labeled-block block grow-100 offset-right">
+                <div class="label">Status</div>
+                <div class="value">
+                  <input name="Status" [(ngModel)]="insurance.Status" OnlyAlphaNumeric="true" [attr.maxlength]="100" class="field" />
+                </div>
+              </div>
+              <div class="labeled-block  block grow-100 offset-right">
+                <div class="label">Website</div>
+                <div class="value">
+                  <input name="Website" [(ngModel)]="insurance.Website" [attr.maxlength]="500" class="field" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="flex-block">
+
+          <div class="titled-block block grow-50 m-r-20 edit-mode">
+            <div class="title">Contact Information</div>
+            <div class="content-block flex-block flex-wrap">
+
+              <div class="labeled-block block grow-50 offset-right">
+                <div class="label">Main Phone</div>
+                <div class="value">
+                  <input name="Phone1" [(ngModel)]="insurance.Phone1" OnlyAlphaNumeric="true" [attr.maxlength]="15" class="field" />
+                </div>
+                <!-- <div [hidden]="phoneValidate.pristine && !f.submitted &&  phoneValidate.untouched">
+                  <div *ngIf="phoneValidate.errors && phoneValidate.errors.required  " class="text-danger">
+                    Main Phone is required
+                  </div>
+                </div> -->
+                <!-- <div [hidden]="phoneValidate.valid || phoneValidate.untouched">
+                  <div *ngIf="phoneValidate.errors && phoneValidate.errors.required" class="text-danger">
+                    Main Phone is required
+                  </div>
+                </div> -->
+              </div>
+
+              <div class="labeled-block  block grow-50 offset-right">
+                <div class="label">Alternate Phone</div>
+                <div class="value">
+                  <input name="Phone2" [(ngModel)]="insurance.Phone2" OnlyAlphaNumeric="true" [attr.maxlength]="15" class="field" />
+                </div>
+              </div>
+
+              <div class="labeled-block  block grow-50 offset-right edit-mode">
+                <div class="label">Email Address</div>
+                <div class="value">
+                  <input name="Email" #contactemail="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="insurance.Email"
+                    [attr.maxlength]="200" class="field" />
+                </div>
+                <div [hidden]="contactemail.valid || contactemail.untouched">
+                  <!-- <div *ngIf="contactemail.errors && contactemail.errors.required" class="text-danger">
+                    Email is required
+                  </div> -->
+                  <div *ngIf="contactemail.errors && contactemail.errors.pattern" class="text-danger">
+                    Email is invalid
+                  </div>
+                </div>
+              </div>
+
+              <div class="labeled-block  block grow-50 offset-right">
+                <div class="label">Fax</div>
+                <div class="value">
+                  <input name="Fax" [(ngModel)]="insurance.Fax" [attr.maxlength]="15" OnlyNumber="true" class="field" />
+                </div>
+              </div>
+
+              <div class="labeled-block  block grow-50 offset-right">
+                <div class="label">City</div>
+                <div class="value">
+                  <input name="City" [(ngModel)]="insurance.City" OnlyAlphaNumeric="true" [attr.maxlength]="20" class="field" />
+                </div>
+                <!-- <div [hidden]="cityValidate.pristine && !f.submitted &&  cityValidate.untouched">
+                  <div *ngIf="cityValidate.errors && cityValidate.errors.required  " class="text-danger">
+                    City is required
+                  </div>
+                </div> -->
+                <!-- <div [hidden]="cityValidate.valid || cityValidate.untouched">
+                  <div *ngIf="cityValidate.errors && cityValidate.errors.required" class="text-danger">
+                    City is required
+                  </div>
+                </div> -->
+              </div>
+
+              <div class="labeled-block  block grow-50 offset-right">
+                <div class="label">State</div>
+                <div class="value">
+                  <p-dropdown name="State" [filter]="true" placeholder='Please Select' [options]="states" [(ngModel)]="insurance.StateId" [filter]="true"></p-dropdown>
+                </div>
+                <!-- <div [hidden]="!f.submitted">
+                  <div *ngIf="insurance.StateId ==0 " class="text-danger">
+                    State is required
+                  </div>
+                </div> -->
+              </div>
+
+              <div class="labeled-block  block grow-50 offset-right">
+                <div class="label">Zip Code</div>
+                <div class="value">
+                  <input name="Zip" [(ngModel)]="insurance.Zip" [attr.maxlength]="5" OnlyNumber="true" class="field" />
+                </div>
+                <!-- <div [hidden]="zipValidate.pristine && !f.submitted && zipValidate.untouched">
+                  <div *ngIf="zipValidate.errors && zipValidate.errors.required" class="text-danger">
+                    Zip Code is required
+                  </div>
+                </div> -->
+              </div>
+
+            </div>
+          </div>
+
+          <div class="titled-block block grow-50 edit-mode">
+            <div class="title">Address</div>
+            <div class="content-block flex-block flex-wrap">
+              <div class="labeled-block block grow-50 offset-right">
+                <div class="label">Address 1</div>
+                <div class="value">
+                  <textarea name="Address1" class="field extra-field-box" [attr.maxlength]="500" [(ngModel)]="insurance.Address1" OnlyAddress="true"></textarea>
+                </div>
+                <!-- <div [hidden]="addressValidate.pristine && !f.submitted && addressValidate.untouched">
+                  <div *ngIf="addressValidate.errors && addressValidate.errors.required" class="text-danger">
+                    Address is required
+                  </div>
+                </div> -->
+              </div>
+
+              <div class="labeled-block block grow-50 offset-right edit-mode">
+                <div class="label">Address 2</div>
+                <div class="value">
+                  <textarea name="Address2" class="field extra-field-box" [attr.maxlength]="500" [(ngModel)]="insurance.Address2" OnlyAddress="true"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="titled-block block grow-50">
+          <div class="title">Other Contact</div>
+          <div class="content-block flex-block flex-wrap edit-mode">
+
+            <div class="labeled-block block grow-100 offset-right">
+              <div class="label required">City</div>
+              <div class="value">
+                <input [(ngModel)]="insurance.City" #cityValidate="ngModel" required OnlyAlphaNumeric="true" [attr.maxlength]="50" class="field"
+                />
+              </div>
+              <div [hidden]="cityValidate.valid || cityValidate.untouched">
+                <div *ngIf="cityValidate.errors && cityValidate.errors.required" class="text-danger">
+                  City is required
+                </div>
+              </div>
+            </div>
+
+            <div class="labeled-block block grow-100 offset-right edit-mode">
+              <div class="label required">State</div>
+              <div class="value">
+                <p-dropdown [filter]="true" placeholder='Please Select' [options]="states" [(ngModel)]="insurance.StateId" [filter]="true"></p-dropdown>
+              </div>
+            </div>
+
+            <div class="labeled-block block grow-100 offset-right">
+              <div class="label required">Zip Code</div>
+              <div class="value">
+                <input [(ngModel)]="insurance.Zip" #zipValidate="ngModel" required [attr.maxlength]="10" OnlyNumber="true" class="field"
+                />
+              </div>
+              <div [hidden]="zipValidate.valid || zipValidate.untouched">
+                <div *ngIf="zipValidate.errors && zipValidate.errors.required" class="text-danger">
+                  Zip Code is required
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <footer class="footer site-container">
+    <div class="flex-block space-between">
+      <div class="flex-block">
+      </div>
+      <div class="flex-block block">
+        <button type="submit" class="btn btn-light h-50 m-l-20">Save</button>
+        <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+      </div>
+    </div>
+  </footer>
+</form>

@@ -1,0 +1,71 @@
+<p-growl [(value)]="errorMessage" [immutable]="false" life="7000"></p-growl>
+<div class="flex-block site-content">
+  <div class="main-content">
+    <div class="content" scroll-bar>
+      <div class="flex-block">
+        <div class="titled-block block grow-100 m-r-20">
+          <div class="title">Dashboard</div>
+          <div class="content-block flex-block flex-wrap" style="text-align:left">
+            <div class="block grow-100 top-navbar" id="mainMenu" style="margin-bottom: 1%">
+              <div *ngFor="let rangeType of range; let index = index" style="float: left;margin-right: 10px">
+                <a class="btn" [ngClass]="{'btn-selected': rangeType.isActive===true, 'btn-unSelected': rangeType.isActive===false}" (click)="changeTopMenu(rangeType,index)">
+                  {{rangeType.name}}
+                </a>
+              </div>
+            </div>
+            <div class="block grow-100">
+              <div class="labeled-block  block grow-20 offset-left" style="float: left;margin-left: 400px;" *ngIf="rangeDetail && rangeDetail.id==4">
+                <div class="value">
+                  <p-calendar [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:{{currentYear}}" dateFormat="mm/dd/yy" [style]="{'width':'80%'}" [(ngModel)]="fromDate"></p-calendar>
+                </div>
+              </div>
+              <div class="labeled-block  block grow-20 offset-right" style="float: left;padding-right: 0;" *ngIf="rangeDetail && rangeDetail.id==4">
+                <div class="value">
+                  <p-calendar [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:{{currentYear}}" dateFormat="mm/dd/yy" [style]="{'width':'80%'}" [(ngModel)]="toDate"></p-calendar>
+                </div>
+              </div>
+              <div class="labeled-block  block grow-20 offset-right" style="float: left;" *ngIf="rangeDetail && rangeDetail.id==4">
+                <div class="value">
+                  <a class="btn btn-light h-50 m-l-20 btn-selected" (click)="getCustomDate(0)">Go</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="ui-g" style="width:47%">
+              <div class="ui-g-4 cursorView" id="all" style="margin: 5%">
+                <p class="paddding-top30">All</p>
+                <p class="paddding-top0 numberStyle">{{dashboard.AllOrder}}</p>
+              </div>
+              <div class="ui-g-4 cursorView" id="prefered" style="margin: 5%" (click)="routePage(2)">
+                <p class="paddding-top30">Preffered</p>
+                <p class="paddding-top0 numberStyle">{{dashboard.PreferredLabOrder}}</p>
+              </div>
+              <div class="ui-g-4 cursorView" id="billing" style="margin: 5%" (click)="routePage(3)">
+                <p class="paddding-top30">Billing</p>
+                <p class="paddding-top0 numberStyle">{{dashboard.BillingLabOrder}}</p>
+              </div>
+              <div class="ui-g-4 cursorView" id="processing" style="margin: 5%" (click)="routePage(4)">
+                <p class="paddding-top30">Processing</p>
+                <p class="paddding-top0 numberStyle">{{dashboard.ProcessingLabOrder}}</p>
+              </div>
+              <div class="ui-g-4 cursorView" id="sendout" style="margin: 5%" (click)="routePage(3)">
+                <p class="paddding-top30">Sent Out</p>
+                <p class="paddding-top0 numberStyle">{{dashboard.SentOrder}}</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="footer site-container">
+  <div class="flex-block space-between">
+    <div class="flex-block"></div>
+    <div class="flex-block block">
+      <!--<a class="btn btn-light h-50 m-l-20" (click)="editPatient()">Edit Patient</a>-->
+      <!--<a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>-->
+    </div>
+  </div>
+</footer>

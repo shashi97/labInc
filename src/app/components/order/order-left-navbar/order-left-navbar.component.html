@@ -1,0 +1,10 @@
+<div class="block l-w-180 left-menu">
+  <div class="content" scroll-bar >
+    <a *ngFor="let item of leftMenuItems"  (click)="openComponent(item);">
+      <span *ngIf="item.orderNo != '0'" [ngClass]="{'btn-active': item.isActive && item.orderNo != '0'}" class="btn btn-square t-w-160 m-b-8">
+      <svg-icon src="./assets/images/icons/{{folderName}}/{{item.icon}}"></svg-icon>
+      <b>{{item.title}}</b>
+      </span>
+    </a>
+  </div>
+</div>

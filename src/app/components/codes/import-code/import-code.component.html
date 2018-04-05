@@ -1,0 +1,40 @@
+<p-dialog header="{{dialogTitle}}" [closeOnEscape]="false" [closable]="false" [(visible)]="showDialog" modal="modal" [width]="600">
+  <div class="main-content">
+    <p-messages [(value)]="errorMessages"></p-messages>
+    <div class="flex-block">
+      <div class="labeled-block block grow-1 offset-right">
+        <div class="value">
+          <input #fileInput id="file-upload" type="file" (change)="fileChangeEvent($event)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-block">
+      <div class="labeled-block offset-right">
+        <div class="value ">
+          <span>Please select an excel file having this format.</span>
+          <div class="table-wrapper">
+            <table class="table-wrapper table-content">
+              <thead>
+                <th class="table-header" style="font-size:16px;text-align: center" *ngFor="let heading of tableHeadingFileFormate">{{heading}}</th>
+                <!--<th class="table-header" style="font-size:16px;text-align: center">{{codeName}} Description</th>-->
+              </thead>
+              <tr>
+                <td class="table-cell" style="font-size:16px" *ngFor="let body of tableBodyFileFormate">{{body}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <div style="float:right">
+        <a class="btn btn-light h-50 m-l-20" (click)="uploadFile()">Upload</a>
+        <a class="btn btn-light h-50 m-l-20" (click)="close()">Cancel</a>
+      </div>
+    </div>
+  </p-footer>
+</p-dialog>

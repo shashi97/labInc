@@ -1,0 +1,211 @@
+<p-growl [(value)]="errorMsg" [immutable]="false" life="7000"></p-growl>
+<form #f="ngForm" novalidate (ngSubmit)="save(f.valid)">
+  <div class="flex-block site-content">
+    <sales-office-left-navbar></sales-office-left-navbar>
+    <div class="main-content">
+      <div class="content" scroll-bar>
+        <error></error>
+        <div class="flex-block ">
+          <div class="block grow-50 m-r-10">
+            <div class="titled-block block grow-1 m-r-10 edit-mode">
+              <div class="title">Sales Office Information</div>
+              <div class="content-block flex-block flex-wrap">
+                <div class="labeled-block block grow-100 offset-right" *ngIf="userType=='lab' && saleOfficeId == 0">
+                  <div class="label required">Name</div>
+                  <div class="value required">
+                    <!--<input name="Name" [(ngModel)]="salesOffice.SalesOfficeName" OnlyEntityName="true" #nameValidate="ngModel" required [attr.maxlength]="200"
+                      class="field" />-->
+                    <!--<p-autoComplete 
+                    [style]="{'width':'100%'}"
+                    name="Multi" 
+                    OnlyEntityName="true" 
+                    #nameValidate="ngModel" 
+                    required 
+                    [attr.maxlength]="200" 
+                    [(ngModel)]="SalesOfficeName" 
+                    [suggestions]="filteredNameMultiple" 
+                    (completeMethod)="filterNameMultiple($event)"
+                    styleClass="wid300"  
+                    placeholder="Sales Office Name" 
+                    field="SalesOfficeName" 
+                    (onSelect)="onSaleOfficeSelect($event)">
+                  </p-autoComplete>-->
+
+                    <p-autoComplete name="SalesOfficeName" [(ngModel)]="salesOffice.SalesOfficeName" [style]="{'width':'100%'}" [suggestions]="salesOfficeSuggestions"
+                      (completeMethod)="getSalesOfficeSearch()" #nameValidate="ngModel" (onSelect)="onSaleOfficeSelect($event)"></p-autoComplete>
+                  </div>
+                  <div [hidden]="nameValidate.pristine && !f.submitted">
+                  <div *ngIf="!salesOffice.SalesOfficeName" class="text-danger">
+                    Name is required
+                  </div>
+                </div>
+                </div>
+
+                <div class="labeled-block block grow-100 offset-right" *ngIf="userType=='lab' && saleOfficeId > 0">
+                  <div class="label required">Name</div>
+                  <div class="value required">
+                    <!--<input name="Name" [(ngModel)]="salesOffice.SalesOfficeName" OnlyEntityName="true" #nameValidate="ngModel" required [attr.maxlength]="200"
+                      class="field" />-->
+                    <input name="Name" [(ngModel)]="salesOffice.SalesOfficeName" OnlyEntityName="true" #nameValidate="ngModel" required [attr.maxlength]="200"
+                      class="field" />
+                  </div>
+                  <div [hidden]="nameValidate.pristine && !f.submitted && nameValidate.untouched">
+                    <div *ngIf="nameValidate.errors && nameValidate.errors.required" class="text-danger">
+                      Name is required
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="labeled-block block grow-100 offset-right" *ngIf="userType=='inNetwork'">
+                  <div class="label required">Name</div>
+                  <div class="value required">
+                    <input name="Name" [(ngModel)]="salesOffice.SalesOfficeName" OnlyEntityName="true" #nameValidate="ngModel" required [attr.maxlength]="200"
+                      class="field" />
+
+                  </div>
+                  <div [hidden]="nameValidate.pristine && !f.submitted && nameValidate.untouched">
+                    <div *ngIf="nameValidate.errors && nameValidate.errors.required" class="text-danger">
+                      Name is required
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="titled-block block grow-1 m-r-10 edit-mode">
+              <div class="title" *ngIf="salesOffice.Id == 0">Create Sales Office Owner Security</div>
+              <div class="title" *ngIf="salesOffice.Id != 0">Update Sales Office Owner Security</div>
+              <div class="content-block flex-block flex-wrap">
+                <div class="labeled-block block grow-100 offset-right">
+                  <div class="label required">Email</div>
+                  <div class="value">
+                    <input [disabled]="salesOffice.Id != 0" [disabled]="isSalesOfficeFind" name="Email" [(ngModel)]="salesOffice.Email" #contactemail="ngModel"
+                      required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [attr.maxlength]="200" class="field"
+                    />
+                  </div>
+                  <div [hidden]="contactemail.pristine && !f.submitted && contactemail.untouched">
+                    <div *ngIf="contactemail.errors && contactemail.errors.required" class="text-danger">
+                      Email is required
+                    </div>
+                    <div *ngIf="contactemail.errors && contactemail.errors.pattern" class="text-danger">
+                      Email is invalid
+                    </div>
+                  </div>
+                </div>
+                <div class="labeled-block block grow-50 offset-right">
+                  <div class="label">Password</div>
+                  <div class="value">
+                    <input type="password" name="Password" [disabled]="isSalesOfficeFind" [(ngModel)]="salesOffice.Password" class="field" #password="ngModel"
+                      minlength="4" required />
+                    <div [hidden]="password.valid || password.untouched" class="text-danger">
+                      <div *ngIf="password.errors && (password.errors.required || password.errors.minlength)" class="text-danger">
+                        Password is required and should be minimum 4 characters.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="labeled-block block grow-50 offset-right">
+                  <div class="label">Confirm Password</div>
+                  <div class="value">
+                    <input type="password" name="ConfirmPassword" [disabled]="isSalesOfficeFind" [(ngModel)]="salesOffice.ConfirmPassword" class="field"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="titled-block block grow-50 m-r-10 edit-mode">
+            <div class="title">Address Information</div>
+            <div class="content-block flex-block flex-wrap">
+              <div class="labeled-block block grow-100 offset-right">
+                <div class="label required">Address</div>
+                <div class="value">
+                  <textarea class="field small-field-box" autosize [disabled]="isSalesOfficeFind" OnlyAddress="true" name="Address" style="height: 92px; width: 100%;"
+                    #addressValidate="ngModel" required [(ngModel)]="salesOffice.Address" [attr.maxlength]="500"></textarea>
+                </div>
+                <div [hidden]="addressValidate.pristine && !f.submitted && addressValidate.untouched">
+                  <div *ngIf="addressValidate.errors && addressValidate.errors.required" class="text-danger">
+                    Address is required
+                  </div>
+                </div>
+              </div>
+              <div class="labeled-block block grow-50 offset-right">
+                <div class="label required">City</div>
+                <div class="value">
+                  <input [(ngModel)]="salesOffice.City" [disabled]="isSalesOfficeFind" name="City" OnlyAlphaNumeric="true" #cityValidate="ngModel"
+                    required [attr.maxlength]="20" class="field" />
+                </div>
+                <div [hidden]="cityValidate.pristine && !f.submitted && cityValidate.untouched">
+                  <div *ngIf="cityValidate.errors && cityValidate.errors.required" class="text-danger">
+                    City is required
+                  </div>
+                </div>
+              </div>
+              <div class="labeled-block block grow-50 offset-right">
+                <div class="label">State</div>
+                <div class="value">
+                  <p-dropdown [filter]="true" name="State" [disabled]="isSalesOfficeFind" placeholder='Please Select' [options]="states" [(ngModel)]="salesOffice.StateId"
+                    [filter]="true"></p-dropdown>
+                </div>
+                <!-- <div [hidden]="stateValidate.pristine && !f.submitted">
+                  <div *ngIf="salesOffice.StateId == 0" class="text-danger">
+                    State is required
+                  </div>
+                </div> -->
+              </div>
+              <div class="labeled-block block grow-50 offset-right">
+                <div class="label required">Zip</div>
+                <div class="value">
+                  <input [(ngModel)]="salesOffice.Zip" name="Zip" [disabled]="isSalesOfficeFind" OnlyNumber="true" #zipValidate="ngModel" required
+                    [attr.maxlength]="05" class="field" />
+                </div>
+                <div [hidden]="zipValidate.pristine && !f.submitted && zipValidate.untouched">
+                  <div *ngIf="zipValidate.errors && zipValidate.errors.required" class="text-danger">
+                    Zip is required
+                  </div>
+                </div>
+              </div>
+              <div class="labeled-block block grow-50 offset-right">
+                <div class="label">Fax</div>
+                <div class="value">
+                  <input name="Fax" [(ngModel)]="salesOffice.Fax" [disabled]="isSalesOfficeFind" OnlyNumber="true"
+                    class="field" [attr.maxlength]="15" />
+                </div>
+
+                <!-- <div [hidden]="faxValidate.pristine && !f.submitted && faxValidate.untouched">
+                  <div *ngIf="faxValidate.errors && faxValidate.errors.required" class="text-danger">
+                    Fax is required
+                  </div>
+                </div> -->
+              </div>
+              <div class="labeled-block block grow-50 offset-right">
+                <div class="label required">Phone</div>
+                <div class="value">
+                  <input type="text" name="Phone" [disabled]="isSalesOfficeFind" [(ngModel)]="salesOffice.PhoneNo" #phoneValidate="ngModel"
+                    required OnlyAlphaNumeric="true" class="field" [attr.maxlength]="15" />
+                </div>
+                <div [hidden]="phoneValidate.pristine && !f.submitted && phoneValidate.untouched">
+                  <div *ngIf="phoneValidate.errors && phoneValidate.errors.required" class="text-danger">
+                    Phone is required
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="footer site-container">
+    <div class="flex-block space-between">
+      <div class="flex-block">
+      </div>
+      <div class="flex-block block">
+        <button type="submit" class="btn btn-light h-50 m-l-20">Save</button>
+        <!-- <a class="btn btn-light h-50 m-l-20" (click)="save()">Save</a> -->
+        <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+      </div>
+    </div>
+  </footer>
+</form>

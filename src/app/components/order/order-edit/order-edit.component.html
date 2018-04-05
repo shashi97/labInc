@@ -1,0 +1,445 @@
+<p-growl [(value)]="errorMessage" appendTo="body" [immutable]="false" life="7000"></p-growl>
+<div class="flex-block site-content edit-mode">
+  <div class="main-content">
+    <div class="content">
+
+      <error *ngIf="isPatientErr"></error>
+      <div class="flex-block">
+
+        <div class="titled-block block grow-100 m-r-20" *ngIf="pageIndex==1">
+
+          <div class="title">Order Info</div>
+          <div class="content-block flex-block flex-wrap">
+            <div class="labeled-block  block grow-33 offset-right">
+              <div class="label">Date Collected</div>
+              <div class="value">
+                <p-calendar [monthNavigator]="true" [showTime]="true" [yearNavigator]="true" yearRange="2000:{{currentYear}}" [(ngModel)]="orderDetail.DateCollected"
+                  [showIcon]="true" dateFormat="mm/dd/yy"></p-calendar>
+              </div>
+            </div>
+
+
+
+            <div class="labeled-block  block grow-33 offset-right">
+              <div class="label required">Case Type</div>
+              <div class="value">
+                <p-dropdown [filter]="true" placeholder='Please Select' [options]="caseTypes" [(ngModel)]="orderDetail.CaseTypeId" [filter]="true"></p-dropdown>
+              </div>
+              <div *ngIf="isCaseTypeEmpty && !orderDetail.CaseTypeId" class="text-danger" style="float:left">
+                Please Select Case Type
+              </div>
+            </div>
+
+            <div class="labeled-block  block grow-33 offset-right">
+              <div class="label">Volume</div>
+              <div class="value">
+                <input [(ngModel)]="orderDetail.Volumn" [maxlength]="100" class="field" />
+              </div>
+
+            </div>
+            <div class="labeled-block  block grow-33 offset-right">
+              <div class="label required">ICD Code</div>
+              <div class="value">
+                <p-multiSelect [options]="ICDCodes" [(ngModel)]="orderDetail.ICDCodes" (onChange)="onSelectIcdCode()"></p-multiSelect>
+              </div>
+              <div *ngIf="orderDetail.ICDCodes.length ==0 && isPrimaryPhysicianEmpty" class="text-danger" style="float:left">
+                Please Select ICD Code
+              </div>
+            </div>
+
+            <div class="labeled-block  block grow-33 offset-right">
+              <div class="label">Prescribed Drugs</div>
+              <div class="value">
+                <p-multiSelect [options]="prescribeMedicine" [(ngModel)]="orderDetail.PrescribedMedicines"></p-multiSelect>
+              </div>
+            </div>
+            <div class="labeled-block  block grow-33 offset-right ">
+              <div class="label">Primary Physician</div>
+              <div class="value ">
+                <p-dropdown [filter]="true" placeholder='Please Select' [options]="physician" [(ngModel)]="orderDetail.PrimaryPhysicianId"
+                  [filter]="true"></p-dropdown>
+              </div>
+
+            </div>
+
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label">Secondary Physician</div>
+              <div class="value">
+                <p-dropdown [filter]="true" placeholder='Please Select' [options]="physician" [(ngModel)]="orderDetail.SecondaryPhysicianId"
+                  [filter]="true"></p-dropdown>
+              </div>
+            </div>
+
+
+            <div class="labeled-block  block grow-33 offset-right ">
+              <div class="label required">Group Test</div>
+              <div class="value ">
+                <p-dropdown [filter]="true" placeholder='Please Select' [options]="groupTests" [(ngModel)]="orderDetail.GroupTestId" [filter]="true"
+                  (onChange)="onSelectGroupTest()"></p-dropdown>
+              </div>
+              <div *ngIf="!orderDetail.GroupTestId && orderDetail.GroupTestId!=0 && isEmptyGroupTest" class="text-danger" style="float:left">
+                Please Select Group Test
+              </div>
+            </div>
+
+            <div class="labeled-block  block grow-33 offset-right">
+              <div class="label">Date Received</div>
+              <div class="value">
+                <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:{{currentYear}}" [(ngModel)]="orderDetail.DateReceived"
+                  appendTo="body" [showIcon]="true" dateFormat="mm/dd/yy"></p-calendar>
+              </div>
+            </div>
+
+            <div class="labeled-block  block grow-33 offset-right">
+              <div class="label">Medical Record #</div>
+              <div class="value">
+                <input [(ngModel)]="orderDetail.MedicalRecordNo" [attr.maxlength]="100" class="field" />
+              </div>
+              <div *ngIf="!orderDetail.MedicalRecordNo && isEmptyMedicalRecordNo" class="text-danger" style="float:left">
+                Please Select Medical Record
+              </div>
+            </div>
+
+
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label ">Patient Condition</div>
+              <div class="value">
+                <p-dropdown name="PatientCondition"  appendTo="body" placeholder='Please Select' [options]="PatientConditionDDOs" [filter]="true" [(ngModel)]="orderDetail.PatientConditionId"></p-dropdown>
+
+              </div>
+            </div>
+
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label ">Patient Risk Group</div>
+              <div class="value">
+                <p-dropdown name="insuranceCompanyTypes"  appendTo="body" placeholder='Please Select' [options]="RiskGroupDDOs" [filter]="true" [(ngModel)]="orderDetail.PatientRiskId"></p-dropdown>
+
+              </div>
+
+            </div>
+
+
+            <div class="labeled-block  block grow-100 offset-right ">
+              <div class="label ">Medical Necessities</div>
+              <div class="value ">
+                <textarea class="field extra-field-box " autosize [attr.maxlength]="500" [(ngModel)]="orderDetail.Comments"></textarea>
+              </div>
+            </div>
+
+
+            <div class="labeled-block  block grow-100 offset-right " *ngIf="isSelectedCompoundProfile && orderDetail.GroupTestId || orderDetail.GroupTestId ===0">
+              <div class="flex-block">
+                <div class="titled-block block grow-50 m-r-20">
+                  <div class="title" style="margin-bottom: 2%">
+                    <div style="float: left">Test Screen</div>
+                    <div style="text-align: right">
+                      <button pButton type="button" (click)="addCompoundProfile()" icon="fa-plus"></button>
+                    </div>
+                  </div>
+                  <div *ngFor="let test of tests ; let i = index">
+                    <div class="content-block flex-block flex-wrap" style="padding-top:0px;padding-bottom: 0px">
+                      <div class="labeled-block block grow-60 offset-right" style="padding-bottom: 0px">
+                        <div class="value" *ngIf="test.status==2" style="pointer-events:none">
+                          <p-dropdown placeholder='Please Select' [options]="groupTestsList" [disabled]="true" [(ngModel)]="test.value" [filter]="true"></p-dropdown>
+                        </div>
+                        <div class="value" *ngIf="test.status==1">
+                          <p-dropdown placeholder='Please Select' [options]="newGroupTestList" [(ngModel)]="test.value" [filter]="true" (click)="onSelectTestOrder(test,i)"></p-dropdown>
+                        </div>
+
+                      </div>
+                      <div class="labeled-block block offset-right" style="margin-top: 12px;" *ngIf="test.value">
+                        <div class="label">{{test.CPTCode}}</div>
+                      </div>
+                      <div class="labeled-block block grow-20 offset-right" *ngIf="test.status==1">
+                        <button pButton type="button" (click)="removeTest(i,test.value,'Test')" icon="fa-minus"></button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+
+
+                <div class="titled-block block grow-50 ">
+                  <div class="title" style="margin-bottom: 2%">
+                    <div style="float: left">Validity Testing</div>
+                    <div style="text-align: right">
+                      <button pButton type="button" (click)="addValidityTest()" icon="fa-plus"></button>
+                    </div>
+                  </div>
+                  <div *ngFor="let validity of validities ; let i = index">
+                    <div class="content-block flex-block flex-wrap" style="padding-top:0px;padding-bottom: 0px">
+                      <div class="labeled-block block grow-80 offset-right" style="padding-bottom:0px">
+                        <div class="value" *ngIf="validity.status==2" style="pointer-events:none">
+                          <p-dropdown placeholder='Please Select' [disabled]="true" [options]="groupValidityList" [(ngModel)]="validity.value" [filter]="true"></p-dropdown>
+                        </div>
+                        <div class="value" *ngIf="validity.status==1">
+                          <p-dropdown placeholder='Please Select' [options]="newGroupValidityList" [(ngModel)]="validity.value" [filter]="true" (click)="onSelectValidityOrder(validity,i)"></p-dropdown>
+                        </div>
+                      </div>
+
+                      <div class="labeled-block block offset-right" style="margin-top: 12px;" *ngIf="validity.value">
+                        <div class="label">{{validity.CPTCode}}</div>
+                      </div>
+                      <div class="labeled-block block grow-20 offset-right" *ngIf="validity.status==1">
+                        <button pButton type="button" (click)="removeTest(i,validity.value,'Validity')" icon="fa-minus"></button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div *ngIf="isTestScreenEmpty" class="text-danger" style="float:left">
+                Please Select Atleast One Test Screen or Validity Testing
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="flex-block">
+        <div class="titled-block block grow-100" *ngIf="pageIndex==2">
+          <div class="title">Check Eligibility And Submit Order</div>
+          <div class="content-block flex-block flex-wrap">
+            <div class="labeled-block  block grow-100 offset-right " style="text-align: center" *ngIf="!isSubmit && !isUpdate">
+              <div class="label" style="font-size: large;">Please Submit Your Order</div>
+            </div>
+            <div class="labeled-block  block grow-100 offset-right " style="text-align: center" *ngIf="isSubmit && !isUpdate">
+              <div class="label" style="font-size: large;">Your Order has been Saved Successfully.<br/>Order No is {{orderDetail.OrderNo}}</div>
+            </div>
+            <div class="labeled-block  block grow-100 offset-right " style="text-align: center" *ngIf="isSubmit && isUpdate">
+              <div class="label" style="font-size: large;">Order Detail has been Updated Successfully</div>
+            </div>
+
+            <div class="flex-block" style="width: 100%;">
+              <div class="titled-block block grow-50 m-r-10">
+                <div class="title">Eligibility Check</div>
+                <div class="content-block flex-block flex-wrap grow-1">
+                  <div class=" ui-grid-col-12" style="padding: 1%;" *ngFor="let eligibility of checkEligibilities">
+                    <div class=" ui-grid-col-8" style="padding-top:10px">
+                      <div class="labels">{{eligibility.EligibilityCheckName}} </div>
+                    </div>
+                    <a class=" ui-grid-col-3 pass" *ngIf="eligibility.IsFailed == false && isEligibleTest" (click)="showFailingReason(eligibility,'pass')">Pass</a>
+                    <a class=" ui-grid-col-3 fail" *ngIf="eligibility.IsFailed && isEligibleTest" (click)="showFailingReason(eligibility,'fail')">Fail</a>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- <div class="titled-block block grow-50 m-r-10">
+                <div class="title">Status of {{eligibility.EligibilityCheckName}}</div>
+                  <div class="content-block flex-block flex-wrap grow-1">
+                  <div class=" ui-grid-col-12" style="padding: 1%;">
+                    <div class=" ui-grid-col-8" style="padding-top:10px">
+                      <div class="labels" *ngIf="eligibility.FailingReason == '' || eligibility.FailingReason == null">Success</div>
+                      <div class="labels" *ngIf="eligibility.FailingReason != ''">{{eligibility.FailingReason}} </div>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="flex-block" *ngIf="pageIndex==0">
+        <div class="titled-block block grow-100 m-r-20">
+          <div class="title">Create A New Lab Order</div>
+          <div class="ui-g">
+            <div class="ui-g-6">
+              <div class="content-block flex-block flex-wrap">
+                <div class="labeled-block  block grow-40 offset-right" style="padding-right: 1%; width:480px !important">
+                  <div class="label required">Patient</div>
+                  <div class="value">
+                    <p-dropdown [filter]="true" placeholder='Please Select' [options]="patients" [(ngModel)]="orderDetail.PatientId" [filter]="true"
+                      (onChange)="onSelectPatient()"></p-dropdown>
+
+                  </div>
+                  <div *ngIf="isPatientValidate  && !orderDetail.PatientId" class="text-danger" style="float:left">
+                    Please Select Patient
+                  </div>
+
+                </div>
+
+                <div class="labeled-block  block offset-right " style="margin-top: 2%">
+                  <div class="label">
+                    <i class="fa fa-plus-circle fa-3x" style="cursor: pointer" pTooltip="Add Patient" (click)="openPatientPopup()">
+                    </i>
+                  </div>
+
+                </div>
+
+
+              </div>
+              <div class="content-block flex-block flex-wrap" style="padding-top: 0px">
+                <div class="labeled-block  block grow-100 offset-right ">
+                  <div class="label" style="float: left;padding: 16px;">Insurance Type</div>
+                  <div class="labeled-block block grow-20" style="float:left" *ngFor="let type of insuranceType">
+                    <p-radioButton name="group1" value={{type.Id}} label={{type.Name}} [(ngModel)]="orderDetail.InsuranceTypeId" (click)="onSelectPatient()"></p-radioButton>
+                  </div>
+
+                </div>
+
+              </div>
+              <div *ngIf="isInsuranceType && patientInsurance.length === 0  && this.orderDetail.InsuranceTypeId !='5' && !isPatientValidate"
+                class="text-danger  content-block" style="float:left">
+                Please Select Self Pay option as a Insurance Type
+              </div>
+
+
+              <div class="content-block flex-block flex-wrap" style="padding-top: 0px">
+                <div class="labeled-block  block grow-35 offset-right" style="margin-top:9px" *ngIf="patientInsurance.length==1">
+                  <div class="label">Insurance Information:
+                    <span style="font-size: large"> {{patientInsurance[0].label}}</span>
+                  </div>
+                </div>
+
+                <div class="labeled-block  block grow-40 offset-right" *ngIf="patientInsurance.length > 1" style="padding-bottom: 0px">
+                  <div class="label">Insurance Information</div>
+                  <div class="value">
+                    <p-dropdown [filter]="true" placeholder='Please Select' [options]="patientInsurance" [(ngModel)]="orderDetail.PatientInsuranceId"
+                      [filter]="true" (onChange)="getInsuranceInfo(orderDetail.PatientInsuranceId)"></p-dropdown>
+                  </div>
+                </div>
+                <div class="labeled-block  block grow-35 offset-right " *ngIf="orderDetail.PatientId">
+                  <div class="label">
+                    <i class="fa fa-plus-circle fa-3x" pTooltip="Add Insurance" style="cursor: pointer" (click)="openInsurancePopup()" [ngStyle]="setMargin()">
+</i>
+                  </div>
+
+                </div>
+              </div>
+              <div *ngIf="isInsuranceSelected && patientInsurance.length > 1  && !orderDetail.PatientInsuranceId && !isPatientValidate"
+                class="text-danger  content-block" style="float:left;padding-top:0px">
+                Please Select Insurance Type
+              </div>
+            </div>
+            <div class="ui-g-6">
+              <div class="titled-block block grow-100 m-r-20" *ngIf="isInsuranceShow">
+                <div class="title">Insurance Information</div>
+                <div class="content-block flex-block flex-wrap">
+                  <div class="labeled-block block grow-100 offset-right">
+                    <div class="label">Policy Id</div>
+                    <div class="value">
+                      {{insuranceDetail.PolicyId}}
+                    </div>
+                  </div>
+                  <div class="labeled-block  block grow-100  offset-right">
+                    <div class="label">Validity Of Policy</div>
+                    <div class="value">
+                      {{insuranceDetail.ValidityOfPolicy | date:'MM/dd/yyyy'}}
+                    </div>
+                  </div>
+                  <div class="labeled-block  block grow-100  offset-right">
+                    <div class="label">Name Of Insured</div>
+                    <div class="value">
+                      {{insuranceDetail.NameOfInsured}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="m-r-20" *ngIf="pageIndex==0 && orderDetail.PatientId ">
+
+        <app-patient-view-main [patient]="patient" [errorShow]="true"></app-patient-view-main>
+      </div>
+    </div>
+
+    <footer class="footer site-container">
+      <div class="flex-block space-between">
+        <div class="flex-block">
+        </div>
+        <div class="flex-block block">
+
+          <button class="btn btn-light h-50 m-l-20" (click)="saveDraft(true,false)" *ngIf="pageIndex==1">Save As Draft</button>
+          <span *ngIf="pageIndex!=0 && !isSubmit && !isSubmitOrder"> <button class="btn btn-light h-50 m-l-20" (click)="previousPage()" [ngStyle]="disablePrevious()">Previous</button></span>
+          <span *ngIf="pageIndex==2 && !isSubmit && checkFailCriteras.length > 0 && isEligibleTest"> <button  [disabled]="isReview" class="btn btn-light h-50 m-l-20" (click)="saveOrder(true)" >Send to Reviewer</button></span>
+          <button *ngIf="pageIndex==0 " class="btn btn-light h-50 m-l-20" [ngStyle]="disableNext()" (click)="nextPage()">Next</button>
+          <button *ngIf="pageIndex==1" class="btn btn-light h-50 m-l-20" [ngStyle]="disableNext()" (click)="nextPage()">Next</button>
+          <button *ngIf="pageIndex==2 && !isSubmit && !isReviewer && !isSubmitOrder" class="btn btn-light h-50 m-l-20" (click)="checkElegibility(false,false)">Check Eligibility</button>
+          <button *ngIf="pageIndex==2 && !isSubmit && isSubmitOrder" class="btn btn-light h-50 m-l-20" (click)="saveOrder(false)">Submit Order</button>
+          <button *ngIf="isSubmit" class="btn btn-light h-50 m-l-20" (click)="backToOrder()">Search Orders</button>
+          <button *ngIf="isSubmit" class="btn btn-light h-50 m-l-20" (click)="addNewOrder()">Add New Order</button>
+
+        </div>
+      </div>
+    </footer>
+
+
+
+
+
+    <p-dialog header="Add Insurance" [(visible)]="isClickNewInsurance" modal="modal" [width]="1000">
+      <app-patient-insurance-edit-main [insurance]="insurance" [insuranceNameObj]="insuranceNameObj" [labelWidth]="true" [isInsuranceErr]="false"></app-patient-insurance-edit-main>
+      <p-footer>
+        <a class="btn btn-light h-50 m-l-20" style="float:right;margin-bottom: 1%;" (click)="savePatientInsurance()">Submit</a>
+      </p-footer>
+    </p-dialog>
+
+
+
+    <p-dialog header="Patient" [(visible)]="isClickAddPatient" modal="modal" [width]="1000">
+      <app-patient-edit-main [patient]="patient" [labelWidth]="true" [isPatientErr]="isPatientErr"></app-patient-edit-main>
+      <app-patient-insurance-edit-main [insurance]="insurance" [labelWidth]="true" [isInsuranceErr]="true"></app-patient-insurance-edit-main>
+      <p-footer>
+        <a class="btn btn-light h-50 m-l-20" style="float:right" (click)="savePatient()">Submit</a>
+      </p-footer>
+    </p-dialog>
+
+    <p-dialog header="Message" [(visible)]="showFailingReasonDisplay" modal="modal" [width]="800">
+
+      <div class="boxstatus" *ngIf="reasonStatus == 'pass'">Coverages</div>
+      <div class="box ui-g-12" *ngIf="reasonStatus == 'pass'">
+        <div class="scroll">
+          <div *ngFor="let comment of failingReasonComment ; let index = index">
+            <div class="ui-helper-clearfix">
+              <div style="color: #23527C;max-width: 8.3333%;     
+                                      float: left;
+                                      box-sizing: border-box;
+                                      padding: 0.5em 0em 0.5em 0.5em;
+                                      color: #23527C;
+                                      max-width: 8.3333%;">{{index + 1 }}.</div>
+
+              <div class="ui-g-11" style="font-size:14px;color: #23527C;text-align: left">{{comment}}</div>
+            </div>
+          </div>
+          <div *ngIf="failingReasonComment.length==0">
+            <div>
+              <div class="nodata">
+                No Data Found
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-content" *ngIf="reasonStatus == 'fail'">
+        <table>
+          <!-- <tr>
+                      <th>Reason Comment</th>            
+                    </tr> -->
+          <tr>
+            <td>{{failingReasonComment}}</td>
+
+          </tr>
+        </table>
+
+      </div>
+
+      <p-footer>
+        <a class="btn btn-light h-50 m-l-20" style="float:right" (click)="Close()">Close</a>
+      </p-footer>
+    </p-dialog>
+
+    <p-confirmDialog header="Confirmation1" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+
+    <!--<div class="flex-block" *ngIf="pageIndex==2">
+              
+      
+      </div> -->

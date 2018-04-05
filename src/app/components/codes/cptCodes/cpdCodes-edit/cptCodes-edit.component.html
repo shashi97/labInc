@@ -1,0 +1,93 @@
+<p-growl [(value)]="errorMessage" [immutable]="false" life="7000"></p-growl>
+<form #f="ngForm" novalidate (ngSubmit)="save(f.valid)">
+  <div class="flex-block site-content mrgn-left">
+
+    <div class="main-content">
+      <div class="content" scroll-bar>
+        <error></error>
+        <div class="titled-block edit-mode">
+          <div class="title">CPT Code Information</div>
+          <div class="content-block flex-block flex-wrap grow-1">
+            <div class="labeled-block offset-right">
+              <div class="label required">CPT Code</div>
+              <div class="value">
+                <div *ngIf="isEdit == true">
+                  <input name="Code" type="text" maxlength="5" #codeValidate="ngModel" required [(ngModel)]="cptcodesModel.Code" class="field w-400">
+                  <div [hidden]="codeValidate.pristine && !f.submitted && codeValidate.untouched">
+                    <div *ngIf="codeValidate.errors && codeValidate.errors.required " class="text-danger">
+                      CPT Code is required
+                    </div>
+                  </div>
+                </div>
+                <span *ngIf="isEdit == false">{{cptcodesModel.Code}}</span>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="value">
+            <div>
+              <div class="content-block flex-block flex-wrap grow-1">
+                <div class="labeled-block block grow-20 offset-right">
+                  <div class="label">Type Of Test</div>
+                  <div class="value">
+                    <p-radioButton [disabled]="!isEdit" label="Qualitative Test" name="1" value="1" [(ngModel)]="cptcodesModel.TypeOfTestId"></p-radioButton>
+                  </div>
+                </div>
+                <div class="labeled-block block grow-50 offset-right "style="margin-top: 12px;">
+                  <div class="value">
+                    <p-radioButton [disabled]="!isEdit" label="Quantitative Test" name="2" value="2" [(ngModel)]="cptcodesModel.TypeOfTestId"></p-radioButton>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <div class="labeled-block">
+              <div class="label required">CPT Description</div>
+              <div class="value">
+                <div *ngIf="isEdit == true">
+                  <textarea name="Description" maxlength="500" autosize class="field extra-field-box " #descriptionValidate="ngModel" required
+                    [(ngModel)]="cptcodesModel.Description "></textarea>
+                  <div [hidden]="descriptionValidate.pristine && !f.submitted && descriptionValidate.untouched">
+                    <div *ngIf="descriptionValidate.errors && descriptionValidate.errors.required" class="text-danger">
+                      CPT Description is required
+                    </div>
+                  </div>
+                  <!-- <div [hidden]="descriptionValidate.valid || descriptionValidate.untouched">
+                <div *ngIf="descriptionValidate.errors && descriptionValidate.errors.required" class="text-danger">
+                  CPT Description is required
+                </div>
+              </div> -->
+                </div>
+                <span *ngIf="isEdit == false">{{cptcodesModel.Description}}</span>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <footer class="footer site-container">
+    <div class="flex-block space-between">
+      <div class="flex-block">
+      </div>
+      <div class="flex-block block" *ngIf="isEdit == true">
+        <button type="submit" class="btn btn-light h-50 m-l-20">Save</button>
+        <!-- <a class="btn btn-light h-50 m-l-20" (click)="saveCPTCode()">Save</a> -->
+        <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+      </div>
+      <div class="flex-block block" *ngIf="isEdit == false">
+        <a class="btn btn-light h-50 m-l-20" (click)="editCPTCode()">Edit CPT Code</a>
+        <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+      </div>
+    </div>
+  </footer>
+  <form>

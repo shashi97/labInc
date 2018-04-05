@@ -1,0 +1,160 @@
+.ui-fileupload-content{
+
+  padding: 0px !important;
+}
+
+
+.font-description {
+
+  padding-left:17px !important;
+}
+
+.padding-lft{
+padding-left: 50px;
+}
+
+.text-size{
+  color: #3d556c;
+  font-weight: 500;
+  font-size: 1vw;
+  margin-left: 2px;
+}
+
+/* Styles go here */
+
+.container {
+  width: 400px;
+  background: #333;
+}
+
+.constant-item {
+  height: 50px;
+  width:50px;
+  background: red;
+  display:inline-block;
+}
+
+.fade-item {
+  width:100px;
+  height:50px;
+  background: blue;
+  display:inline-block;
+}
+.mrgn-7 {
+  margin-left: 7px !important;
+}
+
+.qualify{
+ float: right;
+    padding: 8px;
+    border-radius: 2px;
+    font-family: "Arial";
+    border: 1px solid black;
+    /* margin: 0 0px; */
+    background: green;
+    font-size: 19px;
+    cursor: pointer;
+    line-height: 15px;
+    color: white;
+    width: auto !important;
+    box-sizing: content-box;
+    text-align: center;
+
+}
+
+.nonqualify{
+ float: right;
+    padding: 8px;
+    border-radius: 2px;
+    font-family: "Arial";
+    border: 1px solid black;
+    /* margin: 0 0px; */
+    background: red;
+    font-size: 19px;
+    cursor: pointer;
+    line-height: 15px;
+    color: white;
+    width: auto !important;
+    box-sizing: content-box;
+    text-align: center;
+}
+
+.min-width-800{
+  min-width: 800px
+}
+
+.color-yellow{
+  color: yellow;
+}
+.label{
+  display: flex !important;
+  padding-bottom: 4px !important;
+  white-space: normal !important;
+  text-align: inherit !important;
+}
+
+
+input[type='file'] {
+    /* width:400px; */
+    width: 0% !important;
+    height:25px;
+    opacity:0;
+    background: none;
+    background-image:none;
+    border:none;
+    outline: none;
+}
+#val {
+    width: 400px;
+    height:25px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size:13px;
+    line-height: 25px;
+    text-indent: 10px;
+    pointer-events: none;
+}
+#button {
+    cursor: pointer;
+    display: block;
+    width: 154px;
+    background-color: blue;
+    height:25px;
+    color: white;
+    position: sticky;
+    right:0;
+    top: 0;
+    font-size: 11px;
+    line-height:25px;
+    text-align: center;
+    -webkit-transition: 500ms all;
+    -moz-transition: 500ms all;
+    transition: 500ms all;
+}
+
+#button:hover {
+    background-color: violet;
+}
+.customform-control{
+ display: block;
+ width:395px;
+ padding-top:2px;
+ padding-left:2px;
+ height:22px;
+ font-size: 14px;
+ line-height: 1.42857143;
+ color: #71706f;
+ background-color: #fff;
+ background-image: none;
+ border: 1px solid #ccc;
+ border-radius: 4px;
+ -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+ box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+ -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+ -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+ transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+ border-radius: 0px !important;
+        }
+
+      .mrgn-10{margin-left: 10px;}

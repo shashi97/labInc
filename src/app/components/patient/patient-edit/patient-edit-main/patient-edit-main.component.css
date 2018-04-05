@@ -1,0 +1,14 @@
+.label{
+ float: left !important;
+ padding-bottom: 1% !important;
+}
+.ui-calendar-w-btn {
+    width: 121% !important;
+}
+.scroll{
+  overflow: unset !important;
+}
+.floatleft{
+      float: left;
+}
+    

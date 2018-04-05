@@ -1,0 +1,410 @@
+<error *ngIf="!isPatientErr">
+</error>
+<form #f="ngForm" novalidate (ngSubmit)="save(f.valid)">
+  <div class="titled-block edit-mode">
+    <div class="title">Demographics</div>
+    <div class="content-block flex-block flex-wrap grow-1">
+      <div class="labeled-block block grow-33 offset-right">
+        <div class="label required" [ngClass]="labelWidth==true ? 'label': '' ">First Name</div>
+        <div class="value">
+          <input name="FirstName" [(ngModel)]="patient.FirstName" #nameValidate="ngModel" required OnlyEntityName="true" [attr.maxlength]="100"
+            class="field" />
+        </div>
+        <div *ngIf="patient.FirstName == '' && patient.isValid==true && nameValidate.untouched" class="text-danger">
+          First Name is required
+        </div>
+
+        <div [hidden]="nameValidate.valid || nameValidate.untouched">
+          <div *ngIf="nameValidate.errors && nameValidate.errors.required" class="text-danger">
+            First Name is required
+          </div>
+        </div>
+      </div>
+
+      <div class="labeled-block block grow-33 offset-right">
+        <div class="label ">Middle Name</div>
+        <div class="value">
+          <input name="MiddleName" [(ngModel)]="patient.MiddleName" OnlyEntityName="true" class="field" [attr.maxlength]="100" />
+        </div>
+      </div>
+
+      <div class="labeled-block block grow-33 offset-right">
+        <div class="label required ">Last Name</div>
+        <div class="value">
+          <input name="LastName" #LastNameValidate="ngModel" required [(ngModel)]="patient.LastName" OnlyEntityName="true" class="field"
+            [attr.maxlength]="100" />
+        </div>
+        <div *ngIf="patient.LastName == '' && patient.isValid==true && LastNameValidate.untouched" class="text-danger">
+          Last Name is required
+        </div>
+        <div [hidden]="LastNameValidate.valid || LastNameValidate.untouched" class="text-danger">
+          <div *ngIf="LastNameValidate.errors && LastNameValidate.errors.required " class="text-danger">
+            Last Name is required
+          </div>
+        </div>
+      </div>
+
+      <div class="labeled-block block grow-33 offset-right">
+        <div class="label required ">SSN </div>
+        <div class="value">
+          <input name="SSN" #ssnValidate="ngModel" required [(ngModel)]="patient.SSN" OnlyNumber="true" class="field" minlength="9"
+            [attr.maxlength]="9" />
+        </div>
+        <div *ngIf="patient.SSN == '' && patient.isValid==true && ssnValidate.untouched" class="text-danger">
+          SSN is required
+        </div>
+        <div [hidden]="ssnValidate.valid || ssnValidate.untouched" class="text-danger">
+          <div *ngIf="ssnValidate.errors && (ssnValidate.errors.required || ssnValidate.errors.minlength)" class="text-danger">
+            SSN is required and should be Nine digit number
+          </div>
+        </div>
+      </div>
+      <div class="labeled-block block grow-33 offset-right">
+        <div class="label required">Medical Record No.</div>
+        <div class="value">
+          <input name="MedicalRecordNo" [(ngModel)]="patient.MedicalRecordNo" #MedicalRecordNo="ngModel" required [attr.maxlength]="225"
+            class="field" />
+        </div>
+        <div *ngIf="patient.MedicalRecordNo == '' && patient.isValid==true && MedicalRecordNo.untouched" class="text-danger">
+          Medical Record No. is required
+        </div>
+        <div [hidden]="MedicalRecordNo.valid || MedicalRecordNo.untouched">
+          <div *ngIf="MedicalRecordNo.errors && MedicalRecordNo.errors.required" class="text-danger">
+            Medical Record No. is required
+          </div>
+        </div>
+      </div>
+      <div class="labeled-block block grow-33 offset-right">
+        <div class="label ">Employment</div>
+        <div class="value">
+          <input name="Employment" [(ngModel)]="patient.Employment" [attr.maxlength]="225" class="field" />
+        </div>
+      </div>
+      <div class="labeled-block block grow-33 offset-right">
+        <div class="label ">Marital Status</div>
+        <div class="value">
+          <p-dropdown name="MaritalStatus" appendTo="body" [filter]="true" placeholder='Please Select' [options]="martialStatus" [(ngModel)]="patient.MaritalStatus"
+            [filter]="true"></p-dropdown>
+        </div>
+      </div>
+      <div class="labeled-block block grow-33 offset-right">
+        <div class="label required">Gender</div>
+        <div class="value">
+
+          <p-dropdown name="Gender" appendTo="body" [filter]="true" placeholder='Please Select' [options]="gender" [(ngModel)]="patient.Gender"
+            [filter]="true"></p-dropdown>
+          <div *ngIf="patient.Gender == '' && patient.isValid==true " class="text-danger">
+            Gender is required
+          </div>
+        </div>
+      </div>
+      <div class="labeled-block block grow-25 offset-right">
+        <div class="label">Date Of Birth</div>
+        <div class="value">
+          <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="1947:{{currentYear}}" name="DateOfBirth" appendTo="body" [(ngModel)]="patient.DateOfBirth" [showIcon]="true" dateFormat="mm/dd/yy"
+            [style]="labelWidth==true ? {'width':'120%'}:{'width':'123%'}"></p-calendar>
+        </div>
+           <!-- <div *ngIf="patient.DateOfBirth == '' && patient.isValid==true " class="text-danger">
+           Date Of Birth is required
+          </div> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="flex-block">
+    <div class="titled-block block grow-50 m-r-20 edit-mode">
+      <div class="title">Contact Information</div>
+      <div class="content-block flex-block flex-wrap">
+        <div class="labeled-block block grow-100 offset-right">
+          <div class="label">Main Phone</div>
+          <div class="value">
+            <input name="Phone1" [(ngModel)]="patient.Phone1" OnlyAlphaNumeric="true" [attr.maxlength]="15"
+              class="field" />
+          </div>
+              <!-- <div *ngIf="patient.Phone1 == '' && patient.isValid==true && phone.untouched" class="text-danger">
+          Main Phone is required
+          </div>
+          <div [hidden]="phone.valid || phone.untouched">
+            <div *ngIf="phone.errors && phone.errors.required" class="text-danger">
+              Main Phone is required
+            </div>
+          </div> -->
+        </div>
+        <div class="labeled-block  block grow-100  offset-right">
+          <div class="label">Alternate Phone</div>
+          <div class="value">
+            <input name="Phone2" [(ngModel)]="patient.Phone2" OnlyAlphaNumeric="true" [attr.maxlength]="15" class="field" />
+          </div>
+        </div>
+        <div class="labeled-block  block grow-100  offset-right">
+          <div class="label">Email </div>
+          <div class="value">
+            <input name="Email" [(ngModel)]="patient.Email" [attr.maxlength]="100" class="field" #contactemail="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+            />
+          </div>
+            <!-- <div *ngIf="patient.Email == '' && patient.isValid==true && contactemail.untouched" class="text-danger">
+           Email is required
+          </div> -->
+          <div [hidden]="contactemail.valid || contactemail.untouched" [ngClass]="labelWidth==true ? 'floatleft': '' ">
+            <!-- <div *ngIf="contactemail.errors && contactemail.errors.required" class="text-danger">
+              Email is required
+            </div> -->
+            <div *ngIf="contactemail.errors && contactemail.errors.pattern" class="text-danger">
+              Email is invalid
+            </div>
+          </div>
+          <!-- <div *ngIf="contactemail.errors && contactemail.errors.pattern" [ngClass]="labelWidth==true ? 'floatleft': '' " class="text-danger">
+          Email is invalid
+        </div> -->
+        </div>
+      </div>
+    </div>
+    <div class="titled-block block grow-50">
+      <div class="title">Emergency Contact Information</div>
+      <div class="content-block flex-block flex-wrap">
+        <div class="labeled-block block grow-100  offset-right">
+          <div class="label">Contact Name</div>
+          <div class="value">
+            <input name="EmergencyContactName" [(ngModel)]="patient.EmergencyContactName" OnlyAlphaNumeric="true" [attr.maxlength]="100"
+              class="field" />
+          </div>
+        </div>
+        <div class="labeled-block block grow-100  offset-right">
+          <div class="label">Phone Number </div>
+          <div class="value">
+            <input name="EmergencyContactPhoneNo" [(ngModel)]="patient.EmergencyContactPhoneNo" OnlyAlphaNumeric="true" [attr.maxlength]="15"
+              class="field" />
+          </div>
+        </div>
+        <div class="labeled-block  block grow-100  offset-right ">
+          <div class="label ">Relationship</div>
+          <div class="value ">
+            <input name="EmergencyContactRelation" [(ngModel)]="patient.EmergencyContactRelation" OnlyAlphaNumeric="true" [attr.maxlength]="50"
+              class="field" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex-block">
+    <div class="titled-block block grow-50 m-r-20 edit-mode">
+      <div class="title ">Address</div>
+      <div class="content-block flex-block flex-wrap">
+
+        <div class="labeled-block block grow-50 offset-right edit-mode ">
+          <div class="label required ">Address 1</div>
+          <div class="value ">
+            <textarea name="Address1" class="field extra-field-box" OnlyAddress="true" #Address1="ngModel" required [(ngModel)]="patient.Address1" [attr.maxlength]="500"></textarea>
+          </div>
+           <div *ngIf="patient.Address1 == '' && patient.isValid==true && Address1.untouched" class="text-danger">
+           Address1 is required
+          </div>
+          <div [hidden]="Address1.valid || Address1.untouched">
+            <div *ngIf="Address1.errors && Address1.errors.required" class="text-danger">
+              Address1 is required
+            </div>
+          </div>
+        </div>
+
+        <div class="labeled-block block grow-50 offset-right ">
+          <div class="label ">Address 2</div>
+          <div class="value ">
+            <textarea name="Address2" class="field extra-field-box " OnlyAddress="true" [(ngModel)]="patient.Address2" [attr.maxlength]="500"></textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="titled-block block grow-50 edit-mode">
+      <div class="title">Other Address</div>
+      <div class="content-block flex-block flex-wrap">
+        <div class="labeled-block block grow-100  offset-right ">
+          <div class="label">City</div>
+          <div class="value">
+            <input name="City" [(ngModel)]="patient.City " OnlyAlphaNumeric="true" [attr.maxlength]="100" class="field"
+            />
+          </div>
+           <!-- <div *ngIf="patient.City == '' && patient.isValid==true && city.untouched" class="text-danger">
+          City is required
+          </div>
+          <div [hidden]="city.valid || city.untouched">
+            <div *ngIf="city.errors && city.errors.required" class="text-danger">
+              City is required
+            </div>
+          </div> -->
+        </div>
+
+        <div class="labeled-block block grow-100  offset-right">
+          <div class="label">State</div>
+          <div class="value">
+            <p-dropdown name="StateId" [filter]="true" placeholder='Please Select' [options]="states" [(ngModel)]="patient.StateId" [filter]="true"></p-dropdown>
+          </div>
+        </div>
+
+        <div class="labeled-block block grow-100  offset-right">
+          <div class="label">Zip Code</div>
+          <div class="value">
+            <input name="Zip" [(ngModel)]="patient.Zip" OnlyNumber="true" [attr.maxlength]="10" class="field"
+            />
+          </div>
+            <!-- <div *ngIf="patient.Zip == '' && patient.isValid==true && zip.untouched" class="text-danger">
+           Zip Code is required
+          </div>
+          <div [hidden]="zip.valid || zip.untouched">
+            <div *ngIf="zip.errors && zip.errors.required" class="text-danger">
+              Zip Code is required
+            </div>
+          </div> -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="flex-block">
+    <div class="titled-block block grow-50 m-r-10">
+      <div class="title">Guarantor Personal Information</div>
+      <div class="content-block flex-block flex-wrap">
+
+        <div class="labeled-block block grow-100 offset-right ">
+          <div class="label ">First Name</div>
+          <div class="value ">
+            <input name="FirstName" [(ngModel)]="patient.PatientGuarantorInfoData.FirstName" OnlyEntityName="true" [attr.maxlength]="50"
+              class="field" />
+          </div>
+        </div>
+
+        <div class="labeled-block block grow-100  offset-right ">
+          <div class="label ">Middle Name</div>
+          <div class="value ">
+            <input name="GMiddleName" [(ngModel)]="patient.PatientGuarantorInfoData.MiddleName" OnlyEntityName="true" [attr.maxlength]="50"
+              class="field" />
+          </div>
+        </div>
+
+        <div class="labeled-block block grow-100  offset-right ">
+          <div class="label ">Last Name</div>
+          <div class="value ">
+            <input name="GLastName" [(ngModel)]="patient.PatientGuarantorInfoData.LastName" OnlyEntityName="true" [attr.maxlength]="50"
+              class="field" />
+          </div>
+        </div>
+
+        <div class="labeled-block block grow-100 offset-right">
+          <div class="label required">Gender</div>
+          <div class="value">
+            <p-dropdown name="Ggender" [filter]="true" placeholder='Please Select' [options]="gender" [(ngModel)]="patient.PatientGuarantorInfoData.Gender"
+              [filter]="true"></p-dropdown>
+          </div>
+        </div>
+
+        <div class="labeled-block block grow-100 offset-right">
+          <div class="label ">Date Of Birth</div>
+          <div class="value">
+            <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="1947:{{currentYear}}" name="GDateOfBirth" appendTo="body" [(ngModel)]="patient.PatientGuarantorInfoData.DateOfBirth" [showIcon]="true"
+              dateFormat="mm/dd/yy" [style]="labelWidth==true ? {'width':'90%'}:{'width':'93%'}"></p-calendar>
+          </div>
+        </div>
+
+        <div class="labeled-block block grow-100 offset-right">
+          <div class="label">SSN</div>
+          <div class="value">
+            <input name="gSSN" #patientssnValidate="ngModel" required [(ngModel)]="patient.PatientGuarantorInfoData.SSN" class="field"
+              minlength="9" [attr.maxlength]="9" />
+          </div>
+          <div [hidden]="patientssnValidate.valid || patientssnValidate.untouched" class="text-danger">
+            <div *ngIf="patientssnValidate.errors && (patientssnValidate.errors.minlength)" class="text-danger">
+              SSN should be Nine digit number
+            </div>
+          </div>
+        </div>
+
+        <div class="labeled-block block grow-100 offset-right">
+          <div class="label">Marital Status</div>
+          <div class="value">
+            <p-dropdown name="gmartialStatus" [filter]="true" placeholder='Please Select' [options]="martialStatus" [(ngModel)]="patient.PatientGuarantorInfoData.MaritalStatusId"
+              [filter]="true"></p-dropdown>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <div class="titled-block block grow-50  m-l-17">
+      <div class="title">Guarantor Other Information</div>
+      <div class="content-block flex-block flex-wrap grow-1">
+        <div class="labeled-block block grow-100 offset-right ">
+          <div class="label ">State</div>
+          <div class="value">
+            <p-dropdown [filter]="true" name="gStateId" placeholder='Please Select' [options]="states" [(ngModel)]="patient.PatientGuarantorInfoData.StateId"
+              [filter]="true"></p-dropdown>
+          </div>
+        </div>
+        <div class="labeled-block block grow-100 offset-right ">
+          <div class="label ">City</div>
+          <div class="value ">
+            <input name="gCity" [(ngModel)]="patient.PatientGuarantorInfoData.City" OnlyAlphaNumeric="true" [attr.maxlength]="50" class="field "
+            />
+          </div>
+        </div>
+        <div class="labeled-block block grow-100 offset-right ">
+          <div class="label ">Zip Code</div>
+          <div class="value ">
+            <input name="gZip" [(ngModel)]="patient.PatientGuarantorInfoData.Zip" OnlyNumber="true" [attr.maxlength]="15" class="field"
+            />
+          </div>
+        </div>
+        <div class="labeled-block block grow-100 offset-right ">
+          <div class="label ">Contact No</div>
+          <div class="value ">
+            <input name="gContactNo" [(ngModel)]="patient.PatientGuarantorInfoData.ContactNo" OnlyAlphaNumeric="true" [attr.maxlength]="15"
+              class="field " />
+          </div>
+        </div>
+        <div class="labeled-block  block grow-100 offset-right">
+          <div class="label"> Email Address </div>
+          <div class="value">
+            <input name="gEmail" [(ngModel)]="patient.PatientGuarantorInfoData.Email" max-length="50" class="field " #contactemail1="ngModel"
+              required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" />
+          </div>
+          <div *ngIf="contactemail1.errors && contactemail1.errors.pattern" class="text-danger" [ngClass]="labelWidth==true ? 'floatleft': '' "
+            class="text-danger">
+            Email is invalid
+          </div>
+        </div>
+        <div class="labeled-block block grow-100 offset-right">
+          <div class="label">Relation</div>
+          <div class="value">
+            <p-dropdown name="gRelation" [filter]="true" placeholder='Please Select' [options]="relationshipList" [(ngModel)]="patient.PatientGuarantorInfoData.RelationId"
+              [filter]="true"></p-dropdown>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="titled-block block grow-100">
+    <div class="title">Guarantor Address Information</div>
+    <div class="content-block flex-block flex-wrap">
+
+      <div class="labeled-block block grow-50 offset-right ">
+        <div class="label ">Address 1</div>
+        <div class="value ">
+          <textarea name="gAddress1" class="field extra-field-box " OnlyAddress="true" [(ngModel)]="patient.PatientGuarantorInfoData.Address1" [attr.maxlength]="500"></textarea>
+        </div>
+      </div>
+      <div class="labeled-block block grow-50 offset-right ">
+        <div class="label ">Address 2</div>
+        <div class="value ">
+          <textarea name="gAddress2" class="field extra-field-box " OnlyAddress="true" [(ngModel)]="patient.PatientGuarantorInfoData.Address2" [attr.maxlength]="500"></textarea>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</form>

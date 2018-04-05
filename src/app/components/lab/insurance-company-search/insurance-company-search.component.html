@@ -1,0 +1,11 @@
+<p-dataTable [value]="insuranceCompanies" scrollable="true" [style]="{'margin-top':'30px'}">
+  <p-column [style]="{'width':'15%'}">
+    <ng-template let-comapny="rowData" pTemplate="body">
+      <p-checkbox name="groupname" binary="true" value="comapny.CompanyCode " [(ngModel)]="comapny.IsSelected" (click)="onCompanySelect()">
+      </p-checkbox>
+
+    </ng-template>
+  </p-column>
+  <p-column field="CompanyName" header="Company Name" [sortable]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+  <p-column field="Phone1" header="Phone No" [sortable]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+</p-dataTable>

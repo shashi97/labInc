@@ -1,0 +1,125 @@
+<p-growl [(value)]="message" [immutable]="false" life="7000"></p-growl>
+<div class="flex-block site-content">
+  <lab-insurance-left-navbar></lab-insurance-left-navbar>
+
+
+
+  <div class="ui-md-3" scroll-bar>
+
+
+    <div class="ui-md-12">
+      <!--<a class="btn btn-light h-50" style="margin-bottom: 3%" (click)="save()">Add State</a>-->
+      <div class="flex-block ">
+
+        <div class="titled-block block grow-100  edit-mode">
+          <div class="title">States
+          <a class="btn btn-light h-50 m-l-90" (click)="addState()"><span>Add State</span></a></div>
+          <div class="content-block flex-block flex-wrap set-height">
+            <div class="labeled-block block grow-100 offset-right searchacc state" *ngFor="let state of labInsuranceStates; let index = index"
+               [ngClass]="{'my-class': highlightedDiv === index }" (click)="onSelectState(index,state)">
+              <div class="label " style="cursor: pointer" [ngClass]="{'state-name': highlightedDiv === index }"  >{{state.State}}</div>
+             
+                <span  class="cursor-pointer fa-img" *ngIf=" highlightedDiv == index"> 
+               <i class="fa fa-trash fa-md m3 m6 edit fa-color fa-lg" aria-hidden="true" (click)="deleteStateById(state,$event)"></i> 
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="ui-md-9" scroll-bar>
+
+
+    <div class="ui-md-12">
+      <p-dataTable [value]="feeSchedules" scrollable="true">
+        <p-column field="CPTCode" header="CPT Code"></p-column>
+        <p-column field="Description" header="Description"></p-column>
+        <p-column header="Contract Fee">
+          <ng-template let-feeSchedule="rowData" pTemplate="body">
+            <!-- <span style="float:left;margin-top: 5%; margin-left: -1%;">$</span> -->
+            <div class="search-account" style="width:94%;margin-left: 7%;">
+              <input type="text" style="text-align: right" pInputText currencyMask [attr.maxlength]="15" [(ngModel)]="feeSchedule.ContractFee"
+              /> </div>
+          </ng-template>
+
+        </p-column>
+        <p-column header="Effective Date">
+          <ng-template let-feeSchedule="rowData" pTemplate="body">
+            <!-- <span style="float:left;margin-top: 2%; margin-left: 39%;">$</span> -->
+
+            <p-calendar [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:{{currentYear}}" appendTo="body" dateFormat="mm/dd/yy" [style]="{'width':'88%', 'padding-right': '9%'}" [(ngModel)]="feeSchedule.EffectiveDate"></p-calendar>
+
+          </ng-template>
+        </p-column>
+        <p-column header="Expiration Date">
+          <ng-template let-feeSchedule="rowData" pTemplate="body">
+            <!-- <span style="float:left;margin-top: 2%; margin-left: 39%;">$</span> -->
+
+            <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:{{currentYear}}" [showIcon]="true" appendTo="body" dateFormat="mm/dd/yy" [style]="{'width':'88%', 'padding-right': '9%'}" [(ngModel)]="feeSchedule.ExpirationDate"></p-calendar>
+
+          </ng-template>
+        </p-column>
+
+      </p-dataTable>
+    </div>
+  </div>
+</div>
+
+<footer class="footer site-container">
+  <div class="flex-block space-between">
+    <div class="flex-block">
+    </div>
+    <div class="flex-block block">
+      <!--<a class="btn btn-light h-50 m-l-20" (click)="addState()">Add State</a>-->
+      <a class="btn btn-light h-50 m-l-20" (click)="save()">Save</a>
+      <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+    </div>
+  </div>
+</footer>
+
+
+
+
+
+
+
+<p-dialog header="List of States" [(visible)]="showStatePopup" modal="modal" width="500" [responsive]="true" [closable]="false">
+ <div class="ui-grid-col-12">
+  
+      <div  id="label" style="padding:0px">
+        <div 
+         *ngIf="states.length==0" class="labelCenter">No Records</div>
+        <p-panel header="States" [toggleable]="true" *ngIf="states.length!=0">
+          <div class="ui-panel-content ui-widget-content content-align">
+
+            <div *ngFor="let state of states">
+                          <div style="text-align: left">
+                            <p-checkbox name="groupname" [(ngModel)]="state.isChecked" binary="true" ></p-checkbox>
+
+                            <label>{{state.State}}</label>
+                          </div>
+                        </div>
+
+                      </div>
+                     
+        </p-panel>
+        </div>
+
+
+
+    </div>
+
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <div style="float:right">
+       <a class="btn btn-light h-50 m-l-20" (click)="saveState()" *ngIf="states.length!=0">Save</a>
+      <a class="btn btn-light h-50 m-l-20" (click)="showStatePopup = false">Cancel</a>
+      </div>
+    </div>
+  </p-footer>
+</p-dialog>
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>

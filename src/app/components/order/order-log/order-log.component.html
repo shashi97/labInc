@@ -1,0 +1,36 @@
+<div class="flex-block site-content" *ngIf="orderLog">
+  <order-left-navbar></order-left-navbar>
+  <div class="main-content">
+    <div class="content" scroll-bar>
+      <error></error>
+      <div class="titled-block  m-r-10">
+        <div class="title">Order Log</div>
+        <div class="content-block flex-block flex-wrap grow-1" style="text-align: center">
+
+          <div class="labeled-block block grow-1 offset-right">
+            <div class="label required" style="font-size: x-large;color: #164f86;font-weight: 500;"></div>
+          </div>
+
+          <!-- <div class="labeled-block block grow-1 offset-right">
+            <div class="label required" style="font-size: x-large;color: #164f86;font-weight: 500;">Log Text</div>
+          </div> -->
+        </div>
+        <div class="content-block flex-block flex-wrap grow-1">
+          <div class="labeled-block block grow-100 offset-right" *ngFor="let log of orderLog.OrderLogs">
+            <p [innerHTML]="log.Text" class="label required"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer site-container">
+    <div class="flex-block space-between">
+      <div class="flex-block">
+      </div>
+      <div class="flex-block block">
+        <!--<a class="btn btn-light h-50 m-l-20" (click)="saveLocation()">Save</a>-->
+        <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+      </div>
+    </div>
+  </footer>

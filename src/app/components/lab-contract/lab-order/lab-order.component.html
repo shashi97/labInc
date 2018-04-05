@@ -1,0 +1,193 @@
+<p-growl [(value)]="errorMessages" [immutable]="false" life="7000"></p-growl>
+<div class="flex-block site-content" style="margin-top:10px;">
+  <lab-contract-left-navbar></lab-contract-left-navbar>
+  <div class="main-content">
+    <div class="content-block flex-block flex-wrap">
+      <div class="content" scroll-bar style="width: 100%;">
+        <div class="flex-block">
+          <div class="titled-block block grow-100 m-r-10">
+            <div class="title">Search Criteria</div>
+            <div class="content-block flex-block flex-wrap grow-1">
+              <div class="labeled-block block grow-15 offset-right">
+                <div class="value">
+                  <p-radioButton label="Received Orders" value="-1" [(ngModel)]="orderFilter.NetworkType"></p-radioButton>
+                </div>
+              </div>
+              <div class="labeled-block block grow-85 offset-right" style="width: 80%;">
+                <div class="value">
+                  <p-radioButton label="Sent Orders" value="-2" [(ngModel)]="orderFilter.NetworkType"></p-radioButton>
+                </div>
+              </div>
+              <br>
+
+              <div class="labeled-block block grow-15 offset-right">
+                <div class="value">
+                  <p-radioButton label="Today" value="1" [(ngModel)]="orderFilter.DateTypeSelect" (click)="selectSearchDate()"></p-radioButton>
+                </div>
+              </div>
+              <div class="labeled-block block grow-15 offset-right">
+                <div class="value">
+                  <p-radioButton label="Yesterday" value="2" [(ngModel)]="orderFilter.DateTypeSelect" (click)="selectSearchDate()"></p-radioButton>
+                </div>
+              </div>
+              <div class="labeled-block block grow-15 offset-right">
+                <div class="value">
+                  <p-radioButton label="This Week" value="3" [(ngModel)]="orderFilter.DateTypeSelect" (click)="selectSearchDate()"></p-radioButton>
+                </div>
+              </div>
+              <div class="labeled-block block grow-15 offset-right">
+                <div class="value">
+                  <p-radioButton label="Custom Date" value="4" [(ngModel)]="orderFilter.DateTypeSelect" (click)="selectSearchDate()"></p-radioButton>
+                </div>
+              </div>
+              <div class="labeled-block offset-right block grow-15" *ngIf="orderFilter.DateTypeSelect == '4'">
+                <div class="label">From Date</div>
+                <div class="value">
+                  <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:{{currentYear}}" [(ngModel)]="orderFilter.FromDate" appendTo="body" [showIcon]="true"></p-calendar>
+                </div>
+              </div>
+              <div class="labeled-block offset-right block grow-15" *ngIf="orderFilter.DateTypeSelect == '4'">
+                <div class="label">To Date</div>
+                <div class="value">
+                  <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:{{currentYear}}" [(ngModel)]="orderFilter.ToDate" appendTo="body" [showIcon]="true"></p-calendar>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p-dataTable [value]="Orders" scrollable="true" expandableRows="true" [paginator]="false" [rows]="pageSize" [responsive]="true">
+          <p-column expander="true" styleClass="col-icon"></p-column>
+          <p-column field="OrderDate" header="Date" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search">
+            <ng-template let-order="rowData" pTemplate="body">
+              <p>{{order.OrderDate | date:'MM/dd/yyyy' }}</p>
+            </ng-template>
+          </p-column>
+          <p-column field="OrderNo" header="Order No." [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+          <p-column field="PatientName" header="Patient Name" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+          <p-column field="PatientInsuranceName" *ngIf="orderFilter.NetworkType != 4" header="Insurance" [sortable]="true" [filter]="true"
+            filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+          <p-column field="StatusName" *ngIf="orderFilter.NetworkType != 1 || orderFilter.NetworkType == 4 || orderFilter.NetworkType == 5 ||  orderFilter.NetworkType == 2"
+            header="Status" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+          <p-column field="PracticeName" *ngIf="orderFilter.NetworkType == 1 || orderFilter.NetworkType == 4 || orderFilter.NetworkType != 5 || orderFilter.NetworkType == 2 || orderFilter.NetworkType == 3"
+            header="Practice" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+          <p-column field="BillingLabName" *ngIf="orderFilter.NetworkType == 1 || orderFilter.NetworkType == 4 || orderFilter.NetworkType == 2"
+            header="Billing Lab" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+          <p-column field="PreferredLabName" *ngIf="orderFilter.NetworkType == 1 ||  orderFilter.NetworkType == 3" header="Preferred Lab"
+            [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+          <p-column filterMatchMode="contains" filterPlaceholder="Search"> -->
+            <ng-template let-order="rowData" pTemplate="body">
+              <div>
+                <span (click)="viewOrder(order.Id)" class="cursor-pointer"> 
+                <i class="fa fa-eye fa-md m3 m6 edit" aria-hidden="true" ></i> 
+              </span>
+                <span>|</span>
+                <span (click)="pdfView(order.Id)" class="cursor-pointer"> 
+                <i class="fa fa-file-pdf-o fa-md m3 m6 edit" aria-hidden="true" ></i> 
+              </span>
+              </div>
+            </ng-template>
+
+
+            <!-- <ng-template let-order pTemplate="rowexpansion">
+              <div class="ui-grid-row ui-grid-col-12">
+                <div class="ui-grid-row ui-grid-col-12" style="border-bottom:1px solid #000">
+                  <div class="ui-grid-col-4" style="color:#164f86">
+                    Tests
+                  </div>
+                  <div class="ui-grid-col-8" style="color:#164f86">
+                    Process Lab
+                  </div>
+                </div>
+                <div class="ui-grid-col-4">
+                  <div *ngFor="let test of order.OrderTests" class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
+                    <div class="ui-grid-col-12">
+                      <div class="ui-grid ui-grid-responsive ui-grid-pad">
+                        <div class="ui-grid-row ui-grid-col-12">
+                          <div class="ui-grid-col-12" style="color:#164f86">{{test.TestName}}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="ui-grid-col-8">
+                  <div *ngFor="let test of order.ProcessingLabs" class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
+                    <div class="ui-grid-col-12">
+                      <div class="ui-grid ui-grid-responsive ui-grid-pad">
+                        <div class="ui-grid-row ui-grid-col-12">
+                          <div class="ui-grid-col-12" style="color:#164f86">{{test.ProcessingLabName}}</div>
+                        </div>
+                        <div class="ui-grid-row ui-grid-col-12" style="margin-left:10%" *ngFor="let testlab of test.OrderTests">
+                          <div class="ui-grid-col-12" style="color:#164f86">{{testlab.TestName}} - {{testlab.CPTCode}}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template> -->
+
+          </p-column>
+
+          <ng-template let-order pTemplate="rowexpansion">
+            <div class="ui-grid-row ui-grid-col-12">
+              <div class="ui-grid-row ui-grid-col-12" style="border-bottom:1px solid #000">
+                <div class="ui-grid-col-4" style="color:#164f86">
+                  Tests
+                </div>
+                <div class="ui-grid-col-8" style="color:#164f86">
+                  Process Lab
+                </div>
+              </div>
+              <div class="ui-grid-row ui-grid-col-12">
+                <div class="ui-grid-col-8" style="margin-left: 13%;">
+                  <div *ngFor="let test of order.OrderTests" class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
+                    <div class="ui-grid-col-12">
+                      <div class="ui-grid ui-grid-responsive ui-grid-pad">
+                        <div class="ui-grid-row ui-grid-col-12">
+                          <div class="ui-grid-col-12" style="color:#164f86;text-align:left">{{test.TestName}}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="ui-grid-col-4" style="margin-left: -19%;">
+                  <div *ngFor="let test of order.ProcessingLabs" class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
+                    <div class="ui-grid-col-12">
+                      <div class="ui-grid ui-grid-responsive ui-grid-pad">
+                        <div class="ui-grid-row ui-grid-col-12">
+                          <div class="ui-grid-col-12" style="color:#164f86;text-align:left">{{test.ProcessingLabName}}</div>
+                        </div>
+                        <div class="ui-grid-row ui-grid-col-12" *ngFor="let testlab of test.OrderTests" style="margin-left: 8%;">
+                          <div class="ui-grid-col-12" style="color:#164f86;text-align:left" *ngIf="testlab.TestName != ''">{{testlab.TestName}} - {{testlab.CPTCode}}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+
+        </p-dataTable>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer site-container">
+  <div class="flex-block space-between">
+    <div class="flex-block">
+      <!--pagination here-->
+    </div>
+    <div class="flex-block block">
+      <div class="block" style="margin-top:1%">
+        <h1 style="color:white">Total Orders: {{totalRecords}}</h1>
+      </div>
+      <div class="delim m-l-30"></div>
+      <a class="btn btn-light h-50 m-l-20" (click)="searchOrderByFilterObject()">Search Order</a>
+    </div>
+  </div>
+</footer>
+
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>

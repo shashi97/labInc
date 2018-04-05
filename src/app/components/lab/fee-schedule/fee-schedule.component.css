@@ -1,0 +1,44 @@
+/*.searchacc:hover {
+    box-shadow: 1px 1px 9px #164f86;
+
+}*/
+
+.my-class {
+  /*box-shadow: 1px 1px 9px #164f86;*/
+  background-color: #164f86;
+  border-radius: 6px;
+}
+
+.state-name {
+  color: white;
+}
+
+.state {
+  padding: 3%;
+  cursor: pointer;
+  height: 27px;
+}
+
+.labelCenter {
+  font-size: medium !important;
+  font-weight: 100 !important;
+  color: #000066 !important;
+  text-align: center;
+}
+
+.fa-img {
+  float: right;
+}
+
+.fa-color {
+  color: white;
+}
+
+.m-l-90 {
+  margin-left: 90px;
+}
+
+.set-height {
+  overflow-y: auto;
+  max-height: 230px;
+}

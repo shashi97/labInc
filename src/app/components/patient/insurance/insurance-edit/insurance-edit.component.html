@@ -1,0 +1,16 @@
+<div class="flex-block site-content">
+  <patient-left-navbar></patient-left-navbar>
+  <app-patient-insurance-edit-main [insurance]="insurance" [isInsuranceErr]="false"></app-patient-insurance-edit-main>
+</div>
+
+<footer class="footer site-container">
+  <div class="flex-block space-between">
+    <div class="flex-block">
+      <!--pagination here-->
+    </div>
+    <div class="flex-block block">
+      <a class="btn btn-light h-50 m-l-20" (click)="save()">Save</a>
+      <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+    </div>
+  </div>
+</footer>

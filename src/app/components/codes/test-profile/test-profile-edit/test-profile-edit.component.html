@@ -1,0 +1,83 @@
+<p-growl [(value)]="errorMessages" [immutable]="false" life="7000"></p-growl>
+<div class="flex-block site-content  mrgn-left">
+
+  <div class="main-content">
+    <div class="content" scroll-bar>
+      <error></error>
+      <div class="edit-mode">
+        <div class="titled-block edit-mode">
+            <div class="title">Coverage Determination Profile</div>
+          <div class="content-block flex-block grow-1">
+            <div class="labeled-block offset-right block grow-30">
+              <div class="label required">Coverage Determination Profile</div>
+              <div class="value">
+                <input type="text" placeholder="Test Profile Name" [attr.maxlength]="100" [(ngModel)]="testProfileModel.Name" class="field" />
+              </div>
+            </div>
+          </div>
+
+          <div class="content-block flex-block grow-1">
+            <div class="labeled-block offset-right block grow-80">
+              <div class="label required ">CPT Codes (minimum 2 characters to search)</div>
+              <div class="value">
+                <p-autoComplete [multiple]="true" placeholder="Search " [(ngModel)]="selectedCPTCodes" [style]="{'width':'100%'}" [suggestions]="CPTCodeSuggestion"
+                  (completeMethod)="getCPTCodesOnSearch($event)"  [minLength]="1" (onSelect)="afterSelectCPT($event)" field="Code" ></p-autoComplete>
+              </div>
+            </div>
+            <div class="labeled-block offset-right block grow-80">
+              <div class="label required">ICD Codes (minimum 2 characters to search)</div>
+              <div class="value">
+                <p-autoComplete name="Multi" [(ngModel)]="selectedICDCodes" [suggestions]="ICDCodeSuggestion" [style]="{'width':'100%'}" (completeMethod)="getICDCodeOnSerach($event)"
+                  styleClass="wid300" [minLength]="1" placeholder="Search" (onSelect)="afterSelectICD($event)"  field="Code" [multiple]="true">
+                </p-autoComplete>
+                <!-- <p-autoComplete name="Multi" [(ngModel)]="multiStates" [suggestions]="filteredStatesMultiple" (completeMethod)="filterStateMultiple($event)"
+                  styleClass="wid300" [minLength]="1" placeholder="States" (onSelect)="afterSelectState()"  (onUnselect)="afterSelectState($event)" field="Name" [multiple]="true">
+                </p-autoComplete> -->
+              </div>
+            </div>
+
+            <div class="labeled-block grow-40" style="margin-top: 13px; float:left">
+             <div class="label">
+                <!-- <a class="btn btn-light h-50 m-l-20" (click)="onAdd(isEdit)">Add</a>  -->
+              <button class="btn btn-light h-50 m-l-20" (click)="onAdd(isEdit)">Add</button></div>
+            </div>
+          </div>
+
+          <div class="content-block flex-block grow-1">
+            <p-dataTable [value]="gridData" scrollable="true">
+              <p-column field="CPTCode" header="CPT Codes" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+              <p-column field="ICDCOde" header="ICD Codes" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+              <p-column styleClass="col-button" [style]="{'width':'130px'}" header="Actions">
+                <ng-template let-profile="rowData" let-index="rowIndex" pTemplate="body">
+
+                  <span (click)="editTestProfile(index)" class="cursor-pointer"> 
+                        <i class="fa fa-pencil fa-md m3 m6 edit" aria-hidden="true" ></i> 
+                      </span>
+                  <span>|</span>
+                  <span (click)="onDeleteTestProfile(index)" class="cursor-pointer">  
+                        <i class="fa fa-trash fa-md m3 m6 edit" aria-hidden="true" ></i> 
+                      </span>
+                </ng-template>
+              </p-column>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer site-container">
+    <div class="flex-block space-between">
+      <div class="flex-block">
+        <!--pagination here-->
+      </div>
+      <div class="flex-block block">
+        <a class="btn btn-light h-50 m-l-20" (click)="save()">Save</a>
+        <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+      </div>
+    </div>
+  </footer>
+
+  <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+  

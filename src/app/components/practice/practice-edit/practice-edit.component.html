@@ -1,0 +1,314 @@
+<p-growl [(value)]="errorMsg" [immutable]="false" life="7000"></p-growl>
+<form #f="ngForm" novalidate (ngSubmit)="save(f.valid)">
+
+  <div class="flex-block site-content">
+    <practice-left-navbar></practice-left-navbar>
+    <div class="main-content">
+      <div class="content" scroll-bar>
+        <error></error>
+        <div class="flex-block ">
+
+          <!--needs to add condition based on sales office-->
+          <div class="titled-block block grow-100 m-r-20 edit-mode" *ngIf="user.UserTypeId===4 ||user.UserTypeId===2">
+            <div class="title ">Sales Representative</div>
+            <div class="content-block flex-block flex-wrap">
+
+
+              <div class="labeled-block block grow-50 offset-right" *ngIf="user.UserTypeId == 4">
+                <div class="label required">Lab</div>
+                <div class="value">
+                  <p-dropdown name="labId"  placeholder='Please Select' [options]="labs" #labValidate="ngModel" [(ngModel)]="practice.LabId"
+                    [filter]="true"></p-dropdown>
+                </div>
+                <div [hidden]="labValidate.pristine && !f.submitted">
+                  <div *ngIf="!practice.LabId" class="text-danger">
+                    Lab is required
+                  </div>
+                </div>
+              </div>
+              <div class="labeled-block block grow-50 offset-right" *ngIf="user.UserTypeId == 2">
+                <div class="label">Sales Office</div>
+                <div class="value">
+                  <p-dropdown name="SalesOfficeName" placeholder='Please Select' [options]="salesOffices"  [(ngModel)]="practice.SalesOfficeId"
+                    [filter]="true" (onChange)="onSalesOfficeSelect()"></p-dropdown>
+                </div>
+              </div>
+
+              <div class="labeled-block block grow-50 offset-right" *ngIf="user.UserTypeId ==4">
+                <div class="label required">Sales Representative</div>
+                <div class="value">
+                  <p-dropdown name="saleRepresentativeId" [filter]="true" placeholder='Please Select' [options]="saleRepresentative" #srValidate="ngModel"
+                    [(ngModel)]="practice.SalesRepresentativeId" [filter]="true"></p-dropdown>
+                </div>
+                <div [hidden]="srValidate.pristine && !f.submitted">
+                  <div *ngIf="!practice.SalesRepresentativeId" class="text-danger">
+                    Sales Representative is required
+                  </div>
+                </div>
+              </div>
+
+              <div class="labeled-block block grow-50 offset-right" *ngIf="user.UserTypeId ==2">
+                <div class="label">Sales Representative</div>
+                <div class="value">
+                  <p-dropdown name="saleRepresentativeId" [filter]="true" placeholder='Please Select' [options]="saleRepresentative" 
+                    [(ngModel)]="practice.SalesRepresentativeId" [filter]="true"></p-dropdown>
+                </div>
+              </div>
+
+
+
+            </div>
+          </div>
+
+        </div>
+        <div class="flex-block ">
+
+
+          <div class="ui-g-6" style="padding:0px;    margin-right: 20px;">
+            <div class="ui-g-12" style="padding:0px">
+              <div class="titled-block block grow-100 m-r-20">
+
+                <div class="title">Demographics</div>
+                <div class="content-block flex-block flex-wrap edit-mode">
+
+
+                  <div class="labeled-block block grow-50 offset-right">
+                    <div class="label required">NPI</div>
+                    <div class="value">
+                      <input name="NPI" #npiValidate="ngModel" required [(ngModel)]="practice.NPI" [attr.maxlength]="10" minlength="10" OnlyNumber="true"
+                        class="field" (blur)="onBlurNPI()" />
+                    </div>
+                    <div [hidden]="npiValidate.pristine && !f.submitted && npiValidate.untouched">
+                      <div *ngIf="npiValidate.errors && (npiValidate.errors.required || npiValidate.errors.minlength)" class="text-danger">
+                        NPI is required and should be 10 numbers.
+                      </div>
+                    </div>
+                    <div  class="text-danger" *ngIf="npiExits.Flag==0 || npiExits.Flag==2">
+                      {{npiExits.Message}}
+                    </div>
+                  </div>
+
+                  <div class="labeled-block block grow-50 offset-right">
+                    <div class="label required">Name</div>
+                    <div class="value">
+                      <input name="Name" #nameValidate="ngModel" required [(ngModel)]="practice.Name" OnlyEntityName="true" [attr.maxlength]="200"
+                        class="field" />
+                    </div>
+                    <div [hidden]="nameValidate.pristine && !f.submitted && nameValidate.untouched">
+                      <div *ngIf="nameValidate.errors && nameValidate.errors.required" class="text-danger">
+                        Name is required
+                      </div>
+                    </div>
+
+                    <!-- <div [hidden]="nameValidate.valid || nameValidate.untouched">
+                      <div *ngIf="nameValidate.errors && nameValidate.errors.required" class="text-danger">
+                        Name is required
+                      </div>
+                    </div> -->
+                  </div>
+
+                  <div class="labeled-block block grow-50 offset-right">
+                    <div class="label required">Latitude</div>
+                    <div class="value">
+                      <input type="text" name="Latitude"  #latitudeValidate="ngModel" required [(ngModel)]="practice.Latitude" OnlyDecimalNumber="true" [attr.maxlength]="15" class="field"
+                      />
+                    </div>
+                    <div [hidden]="latitudeValidate.pristine && !f.submitted && latitudeValidate.untouched">
+                        <div *ngIf="latitudeValidate.errors && latitudeValidate.errors.required" class="text-danger">
+                            Latitude is required
+                        </div>
+                      </div>
+                  </div>
+                  <div class="labeled-block block grow-50 offset-right">
+                    <div class="label required">Longitude</div>
+                    <div class="value">
+                      <input type="text"  name="Longitude" #longitudeValidate="ngModel" required  name="Longitude" [(ngModel)]="practice.Longitude" OnlyDecimalNumber="true" [attr.maxlength]="15" class="field"
+                      />
+                    </div>
+                    <div [hidden]="longitudeValidate.pristine && !f.submitted && longitudeValidate.untouched">
+                        <div *ngIf="longitudeValidate.errors && longitudeValidate.errors.required" class="text-danger">
+                            Longitude is required
+                        </div>
+                      </div>
+                  </div>
+                  <div class="labeled-block block grow-50 offset-right">
+                    <div class="label">Tax Id</div>
+                    <div class="value">
+                      <input name="TaxId" [(ngModel)]="practice.TaxId" [attr.maxlength]="15" OnlyNumber="true" class="field" />
+                    </div>
+                  </div>
+
+                  <div class="labeled-block block grow-50 offset-right">
+                    <div class="label required">Practice Type</div>
+                    <div class="value">
+                      <p-dropdown name="practiceTypes" #typeValidate="ngModel" placeholder='Please Select' [options]="practiceTypes" [(ngModel)]="practice.PracticeTypeId"
+                        [filter]="true"></p-dropdown>
+                    </div>
+
+                    <div [hidden]="typeValidate.pristine && !f.submitted">
+                      <div *ngIf="practice.PracticeTypeId == 0" class="text-danger">
+                        Practice Type is required
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+            <div class="ui-g-12" style="padding:0px">
+              <div class="titled-block block grow-100 m-r-20 edit-mode ">
+                <div class="title" *ngIf="practice.Id == 0">Create Practice Owner Security</div>
+                <div class="title" *ngIf="practice.Id != 0">Update Practice Owner Security</div>
+                <div class="content-block flex-block flex-wrap">
+
+                  <div class="labeled-block block grow-100 offset-right edit-mode">
+                    <div class="label required">Email</div>
+                    <div class="value">
+                      <input name="Email" [disabled]="practice.Id != 0" #contactemail="ngModel" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                        [(ngModel)]="practice.Email" [attr.maxlength]="200" class="field" />
+                    </div>
+                    <div [hidden]="contactemail.pristine && !f.submitted && contactemail.untouched">
+                      <div *ngIf="contactemail.errors && contactemail.errors.required" class="text-danger">
+                        Email is required
+                      </div>
+                      <div *ngIf="contactemail.errors && contactemail.errors.pattern" class="text-danger">
+                        Email is invalid
+                      </div>
+                    </div>
+                  </div>
+                  <div class="labeled-block block grow-50 offset-right edit-mode">
+                    <div class="label">Password</div>
+                    <div class="value">
+                      <input name="Password" type="password" [(ngModel)]="practice.Password" [attr.maxlength]="20" class="field" />
+                    </div>
+                  </div>
+                  <!--<div class="labeled-block block grow-100 offset-right">
+              <div class="label">Insurance</div>
+              <div class="value">
+                <input type="password" [(ngModel)]="practice.Password" class="field" />
+              </div>
+            </div>-->
+                  <div class="labeled-block block grow-50 offset-right edit-mode">
+                    <div class="label">Confirm Password</div>
+                    <div class="value">
+                      <input name="ConfirmPassword" type="password" [(ngModel)]="practice.ConfirmPassword" [attr.maxlength]="20" class="field"
+                      />
+                    </div>
+                  </div>
+
+
+
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+
+          <div class="titled-block block grow-50 m-r-20 edit-mode">
+            <div class="title">Address Information</div>
+            <div class="content-block flex-block flex-wrap">
+              <div class="labeled-block block grow-100 offset-right">
+                <div class="label ">Practice Contact Person</div>
+                <div class="value">
+                  <input name="ContactPerson" [(ngModel)]="practice.ContactPerson" [attr.maxlength]="200" max-length="50" class="field" />
+                </div>
+              </div>
+              <div class="labeled-block block grow-100 offset-right">
+                <div class="label required">Address</div>
+                <div class="value">
+                  <textarea name="Address" class="field small-field-box" OnlyAddress="true" style="height: 92px; width: 100%;" #AddressValidate="ngModel"
+                    required [(ngModel)]="practice.Address" [attr.maxlength]="500"></textarea>
+                </div>
+                <div [hidden]="AddressValidate.pristine && !f.submitted && AddressValidate.untouched">
+                  <div *ngIf="AddressValidate.errors && AddressValidate.errors.required" class="text-danger">
+                    Address is required
+                  </div>
+                </div>
+                <!-- <div [hidden]="AddressValidate.valid || AddressValidate.untouched">
+                  <div *ngIf="AddressValidate.errors && AddressValidate.errors.required" class="text-danger">
+                    Address is required
+                  </div>
+                </div> -->
+              </div>
+              <div class="labeled-block block grow-50 offset-right">
+                <div class="label required">City</div>
+                <div class="value">
+                  <input name="City" #cityValidate="ngModel" required [(ngModel)]="practice.City" OnlyAlphaNumeric="true" class="field" [attr.maxlength]="20"
+                  />
+                </div>
+                <div [hidden]="cityValidate.pristine && !f.submitted && cityValidate.untouched">
+                  <div *ngIf="cityValidate.errors && cityValidate.errors.required" class="text-danger">
+                    City is required
+                  </div>
+                </div>
+              </div>
+              <div class="labeled-block block grow-50 offset-right">
+                <div class="label">State</div>
+                <div class="value">
+                  <p-dropdown name="StateId" [filter]="true" placeholder='Please Select' [options]="states" [(ngModel)]="practice.StateId"
+                    [filter]="true"></p-dropdown>
+                </div>
+              </div>
+
+              <div class="labeled-block block grow-50 offset-right">
+                <div class="label required">Zip</div>
+                <div class="value">
+                  <input name="Zip" #zipValidate="ngModel" required [(ngModel)]="practice.Zip" class="field" OnlyNumber="true" minlength="5"
+                    [attr.maxlength]="5" />
+                </div>
+                <div [hidden]="zipValidate.pristine && !f.submitted && zipValidate.untouched">
+                  <div *ngIf="zipValidate.errors && zipValidate.errors.required" class="text-danger">
+                    Zip is required
+                  </div>
+                  <div *ngIf="zipValidate.errors && (zipValidate.errors.minlength)" class="text-danger">
+                    Zip code is required and should be five digit number
+                  </div>
+                </div>
+              </div>
+              <div class="labeled-block block grow-50 offset-right">
+                <div class="label ">Fax</div>
+                <div class="value">
+                  <input name="Fax" [(ngModel)]="practice.Fax" OnlyNumber="true" class="field" [attr.maxlength]="15" />
+                </div>
+              </div>
+              <div class="labeled-block block grow-50 offset-right">
+                <div class="label required">Phone</div>
+                <div class="value">
+                  <input name="Phone" #phoneValidate="ngModel" required [(ngModel)]="practice.Phone" OnlyNumber="true" class="field" [attr.maxlength]="15"
+                  />
+                </div>
+
+                <div [hidden]="phoneValidate.pristine && !f.submitted && phoneValidate.untouched">
+                  <div *ngIf="phoneValidate.errors && phoneValidate.errors.required" class="text-danger">
+                    Phone is required
+                  </div>
+                </div>
+                <!-- <div [hidden]="phoneValidate.valid || phoneValidate.untouched" class="text-danger">
+                  <div *ngIf="phoneValidate.errors && phoneValidate.errors.required " class="text-danger">
+                    Phone is required
+                  </div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer site-container">
+    <div class="flex-block space-between">
+      <div class="flex-block">
+      </div>
+      <div class="flex-block block">
+        <button type="submit" class="btn btn-light h-50 m-l-20">Save</button>
+        <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+      </div>
+    </div>
+  </footer>
+</form>

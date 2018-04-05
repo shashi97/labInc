@@ -1,0 +1,106 @@
+<!--<p-growl [(value)]="messages"></p-growl>-->
+<div class="flex-block site-content">
+  <lab-insurance-left-navbar (onShowDialogEvent)="onInsuranceCompanySearch($event)">
+  </lab-insurance-left-navbar>
+  <div class="main-content">
+    <div class="content" scroll-bar>
+      <error></error>
+      <p-dataTable [value]="labInsuranceList" scrollable="true" [paginator]="false" [rows]="pageSize" [responsive]="true" (onSort)="onSorting($event)"
+        (onFilter)="onFiltering($event)">
+        <p-column field="CompanyCode" header="Insurance Company Code" [sortable]="true" [filter]="true" filterMatchMode="contains"
+          filterPlaceholder="Search" [style]="{'width':'250px'}"></p-column>
+        <p-column field="CompanyName" header="Insurance Company Name" [sortable]="true" [filter]="true" filterMatchMode="contains"
+          filterPlaceholder="Search" [style]="{'width':'250px'}"></p-column>
+
+        <p-column field="LabInsuranceCompanyStates" header="Insurance Company States" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+
+        <p-column field="Contact" header="Contact#" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+
+        <p-column styleClass="col-button" [style]="{'width':'100px'}" header="Fee Schedule">
+          <ng-template let-labInsurance="rowData" pTemplate="body">
+            <span class="cursor-pointer" (click)="openFeeSchedule(labInsurance.Id)"> 
+           <i class="fa fa-pencil fa-md m3 m6" aria-hidden="true"></i></span>
+          </ng-template>
+        </p-column>
+
+        <p-column styleClass="col-button" [style]="{'width':'90px'}" header="Actions">
+          <ng-template let-labInsurance="rowData" pTemplate="body">
+            <span class="cursor-pointer" (click)="deletelabInsurance(labInsurance)"> 
+           <i class="fa fa-trash fa-md m3 m6 edit" aria-hidden="true"></i></span>
+          </ng-template>
+        </p-column>
+      </p-dataTable>
+      <p-paginator [hidden]="totalRecords<=pageSize" [rows]="pageSize" [totalRecords]="totalRecords" (onPageChange)="pageChanged($event)"></p-paginator>
+    </div>
+  </div>
+</div>
+
+
+<footer class="footer site-container">
+  <div class="flex-block space-between">
+    <div class="flex-block">
+    </div>
+    <div class="flex-block block">
+      <div class="block" style="margin-top:1%">
+        <h1 style="color:white">Total Insurance Contracts: {{totalRecords}}</h1>
+      </div>
+      <div class="delim m-l-30"></div>
+      <a class="btn btn-light h-50 m-l-20" (click)="onInsuranceCompanySearch()">Add Insurance Contract</a>
+    </div>
+  </div>
+</footer>
+
+
+<p-dialog [(visible)]="showModal" modal="modal" width="800" [responsive]="true" [closable]="false">
+  <p-header>
+    <div *ngIf="totalInsuranceCompaniesRecords > 100">
+      Showing Top 100 Insurance Companies.</div>
+    <div *ngIf="totalInsuranceCompaniesRecords < 100">
+      List of Insurance Companies</div>
+  </p-header>
+  <div class="main-content" style="height:15px">
+    <div class="content-block flex-block flex-wrap">
+      <div class="labeled-block block grow-50 offset-right">
+        <div class="value">
+          <div class="block f-w-620">
+            <div class="search-account">
+              <input placeholder="Search Company Name / Company Code" (keyup.enter)="onInsuranceCompanySearch($event)" type="text" [(ngModel)]="searchText"
+                class="ng-untouched ng-pristine ng-valid">
+              <button class="btn-search" (click)="onInsuranceCompanySearch()"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="labeled-block block grow-40 offset-right">
+        <div class="value">
+          <!-- <button class='btn button-primary AddNew' (click)="onInsuranceCompanySearch()">
+           <i class=""></i>Search</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui-panel-content ui-widget-content content-align">
+    <p-dataTable [value]="insuranceCompanies" scrollable="true" [style]="{'margin-top':'30px'}" [rows]="10" [paginator]="true">
+      <p-column [style]="{'width':'15%'}">
+        <ng-template let-insuranceCompanie="rowData" pTemplate="body">
+          <p-checkbox name="groupname" binary="true" [(ngModel)]="insuranceCompanie.IsSelected"></p-checkbox>
+        </ng-template>
+      </p-column>
+      <p-column field="CompanyName" header="Company Name" [sortable]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+      <p-column field="CompanyCode" header="Company Code" [sortable]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+    </p-dataTable>
+  </div>
+
+  <p-footer>
+    <h1 style="color:#164F86;margin-left: 30%;margin-top: 1%;">Total Insurance Companies: {{totalInsuranceCompaniesRecords}}</h1>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <div style="float:right;margin-top:-5%">
+        <a class="btn btn-light h-50 m-l-20" (click)="saveSearchedTests()">Save</a>
+        <a class="btn btn-light h-50 " (click)="cancel()">Cancel</a>
+      </div>
+    </div>
+  </p-footer>
+</p-dialog>
+
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>

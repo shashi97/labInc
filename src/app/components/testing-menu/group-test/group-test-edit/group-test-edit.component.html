@@ -1,0 +1,88 @@
+<p-growl [(value)]="errorMessages" [immutable]="false" life="7000"></p-growl>
+<div class="flex-block site-content">
+  <testing-menu-left-navbar></testing-menu-left-navbar>
+  <div class="main-content">
+    <div class="content" scroll-bar>
+      <error></error>
+      <div class="edit-mode">
+        <div class="titled-block edit-mode">
+          <div class="content-block flex-block grow-1">
+            <div class="labeled-block offset-right block grow-20">
+              <div class="label required">Group Name</div>
+              <div class="value">
+                <input type="text" [(ngModel)]="groupTest.GroupTestName" [attr.maxlength]="200" class="field" />
+              </div>
+            </div>
+            <div class="labeled-block offset-right block grow-20" style="margin-top: 13px;margin-left: 700px;">
+              <div class="value">
+                <div class="search-account">
+                  <input placeholder="Search individual Test" (keyup.enter)="searchLabQuery()" [(ngModel)]="searchLab" type="text" class="ng-pristine ng-valid ng-touched">
+                  <button class="btn-search" (click)="searchLabQuery()"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="content-block flex-block grow-1">
+            <p-dataTable [value]="groupTest.GroupTestItems" scrollable="true">
+              <p-column field="ClassName" header="Test Class" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+              <p-column field="ItemName" header="Test Name" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+              <p-column styleClass="col-button" [style]="{'width':'130px'}" header="Delete">
+                <ng-template let-GroupTestItem="rowData" pTemplate="body" header="DELETE">
+                  <span (click)="deleteSelectedGroupTest(GroupTestItem)"> 
+                    <i class="fa fa-trash fa-md m3 m6 edit" aria-hidden="true" ></i> 
+                   </span>
+                </ng-template>
+              </p-column>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer site-container">
+    <div class="flex-block space-between">
+      <div class="flex-block">
+        <!--pagination here-->
+      </div>
+      <div class="flex-block block">
+        <a class="btn btn-light h-50 m-l-20" (click)="save()">Save</a>
+        <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+      </div>
+    </div>
+  </footer>
+
+  <search-lab (onSelectedLab)="onSelectedLab($event)" *ngIf="showDialog"></search-lab>
+
+  <p-dialog header="Individual Tests" [(visible)]="showDialog" modal="modal" [width]="1200">
+    <div class="main-content">
+      <error></error>
+      <div class="labeled-block block grow-30 offset-right">
+        <div class="search-account">
+          <input placeholder="Search individual Test" (keyup.enter)="searchLabQuery()" [(ngModel)]="searchLab" type="text" class="ng-pristine ng-valid ng-touched">
+          <button class="btn-search" (click)="searchLabQuery()"></button>
+        </div>
+      </div>
+
+      <div class="content" scroll-bar>
+        <p-dataTable [value]="testItems" scrollable="true" [paginator]="false" [rows]="pageSize" [responsive]="true" (onSort)="onSorting($event)"
+          (onFilter)="onFiltering($event)">
+          <p-column field="ClassName" header="Test Class"></p-column>
+          <p-column field="ItemName" header="Test Name"></p-column>         
+          <p-column styleClass="col-button" [style]="{'width':'130px'}" header="Select">
+            <ng-template let-testItem="rowData" pTemplate="body">
+              <p-checkbox [(ngModel)]="testItem.checked"></p-checkbox>
+            </ng-template>
+          </p-column>
+        </p-dataTable>
+      </div>
+    </div>
+    <p-footer style="margin-left: 950px;">
+      <a class="btn btn-light h-50 m-l-20" (click)="selectedTests()">Save</a>
+      <a class="btn btn-light h-50 m-l-20" (click)="showDialog=false">Cancel</a>
+    </p-footer>
+  </p-dialog>
+
+  <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>

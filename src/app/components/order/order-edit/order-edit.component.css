@@ -1,0 +1,103 @@
+.ui-button-icon-left{
+  text-align: center !important;
+      padding-right: 9% !important;
+} 
+
+.ui-dropdown, .ui-multiselect {
+
+  width:90% !important;
+}
+
+.mrgn-top{
+margin-top: 17px !important;
+}
+
+
+
+.pass{
+ float: right;
+    padding: 8px;
+    border-radius: 2px;
+    font-family: "Arial";
+    border: 1px solid black;
+    /* margin: 0 0px; */
+    background: green;
+    font-size: 19px;
+    cursor: pointer;
+    line-height: 15px;
+    color: white;
+    width: 80 px;
+    box-sizing: content-box;
+    text-align: center;
+
+}
+
+.fail{
+ float: right;
+    padding: 8px;
+    border-radius: 2px;
+    font-family: "Arial";
+    border: 1px solid black;
+    /* margin: 0 0px; */
+    background: red;
+    font-size: 19px;
+    cursor: pointer;
+    line-height: 15px;
+    color: white;
+    width: 80 px;
+    box-sizing: content-box;
+    text-align: center;
+}
+
+.labels {
+    display: inline;
+
+ 
+  
+    line-height: 1;
+    color: #000;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+        color: #3d556c;
+    font-weight: 500;
+    font-size: 1vw;
+    margin-left: 0px;
+    padding: 0px;
+}
+.nodata {
+  margin-top: 41%;
+  text-align: -webkit-center;
+  color: #b5c1cf;
+  font-size: x-large;
+}
+
+.box {
+  box-shadow: 0px 0px 1px #0a7ae6;
+  margin-right: 1%;
+  font-size: 14px;
+  /*width: 619px;*/
+  height: 309px;
+  border: 1px solid grey;
+  background-color: white;
+  display: inline-block;
+  position: relative;
+  margin-right: 10px;
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+  word-wrap: break-word;
+  padding: 1%;
+  
+} 
+
+.scroll {
+overflow-x: auto;
+ height: 258px;
+ margin-top:1%;
+}
+.boxstatus{
+    text-align: left;
+    padding:1%;
+    color: #000066;
+}

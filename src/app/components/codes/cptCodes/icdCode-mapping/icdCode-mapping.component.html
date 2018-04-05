@@ -1,0 +1,109 @@
+<p-growl [(value)]="errorMessage"></p-growl>
+<div class="flex-block site-content">
+  <codes-left-navbar *ngIf="parent=='icd'"></codes-left-navbar>
+  <insurance-company-left-navbar *ngIf="parent=='insurance'"></insurance-company-left-navbar>
+  <div class="main-content">
+    <error *ngIf="!showErrorMessage"></error>
+
+    <!--<div class="labeled-block block ">
+
+      <div class="labeled-block block grow-30 " style="float: right">
+        <div class="value">
+          <div class="search-account">
+            <input placeholder="Search ICD Codes" type="text" name="searchText" (keyup.enter)="onIcdCodeMappingSearch($event)" [(ngModel)]="searchText"
+              class="ng-pristine ng-valid ng-touched">
+            <button class="btn-search" (click)="onIcdCodeMappingSearch()"></button>
+          </div>
+          <p-autoComplete [(ngModel)]="cptCode" [style]="{'width':'100%'}" [suggestions]="CPTCodeSuggestion" (completeMethod)="getCPTCodeBySearch()"
+            field="Code"></p-autoComplete>
+        </div>
+      </div>
+    
+    </div>-->
+
+
+
+    <div class="content " scroll-bar>
+      
+    <div class="ui-g" style="padding-bottom:1%">
+    
+      <div class="ui-g-4" style="padding:0px" >
+          <div class="ui-g-12 labeled-block " style=" padding-left: 0px;"><div class="label"><span class="font-weight">CPT Code: <span  *ngIf="parent=='icd' && cptcodesModel"  class="font-weight">{{cptcodesModel.Code}}</span></span> </div></div>
+        <div *ngIf="parent=='insurance'" class="ui-g-8" style="padding-top:0px;padding-left: 0px">
+        <p-autoComplete [(ngModel)]="cptCode" [style]="{'width':'100%'}" [suggestions]="CPTCodeSuggestion" (completeMethod)="getCPTCodeBySearch()" placeholder="Search CPT Code"
+          field="Code" (onSelect)="onSelectCptCode()" [disabled]="isCptCodeSelected"></p-autoComplete>
+          </div>
+           <div class="ui-g-12">
+                  <div *ngIf="parent=='insurance' && isError" class="text-danger">
+                    CPT CODE is required
+                  </div>
+                </div>
+           <!--<div *ngIf="parent=='icd' && cptcodesModel" class="ui-g-8" style="padding-top:0px;padding-left: 0px">
+             <div class="labeled-block"><div class="label">{{cptcodesModel.Code}}</div></div>
+          </div>-->
+      </div>
+      <div class="ui-g-4"></div>
+      <div class="ui-g-4" style="padding:0px">
+       <div class="labeled-block" style="padding-bottom:1%"> <div  class="label"><span  class="font-weight">ICD Code: 
+</span> </div></div>
+        <div class="search-account">
+          <input placeholder="Search ICD Codes" type="text" name="searchText" (keyup.enter)="onIcdCodeMappingSearch($event)" [(ngModel)]="searchText"
+            class="ng-pristine ng-valid ng-touched">
+          <button class="btn-search" (click)="onIcdCodeMappingSearch()"></button>
+        </div>
+
+
+      </div>
+    </div>
+      <!--<error></error>-->
+
+      <p-dataTable [value]="icdCodes" scrollable="false" [paginator]="false" [rows]="pageSize" [responsive]="true">
+        <p-column field="ICD10Code" header="ICD Code" [sortable]="false" [filter]="false" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+
+        <p-column styleClass="col-button" [style]="{'width':'130px'}" header="Actions">
+          <ng-template let-cptCode="rowData" pTemplate="body">
+            <div>
+              <!--<span (click)="editCPTCode(cptCode.Id)" class="cursor-pointer"> 
+                <i class="fa fa-pencil fa-md m3 m6 edit" aria-hidden="true" ></i> 
+              </span>
+              <span>|
+
+              </span>-->
+              <span (click)="getIcdCodeMapping(cptCode,parent)" class="cursor-pointer">  
+                <i class="fa fa-trash fa-md m3 m6 edit" aria-hidden="true" ></i> 
+              </span>
+            </div>
+          </ng-template>
+        </p-column>
+      </p-dataTable>
+      <!--<p-paginator [hidden]="totalRecords<=pageSize" [rows]="pageSize" [totalRecords]="totalRecords" (onPageChange)="pageChanged($event)"></p-paginator>-->
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer site-container">
+  <div class="flex-block space-between">
+    <div class="flex-block">
+    </div>
+    <div class="flex-block block">
+      <!--<div class="block" style="margin-top:1%">
+        <h1 style="color:white">Total CPT Codes: {{totalRecords}}</h1>
+      </div>-->
+      <!--<div class="delim m-l-30"></div>
+      <a class="btn btn-light h-50 m-l-20" (click)="importCodes(true)">Import CPT Codes</a>-->
+      <div class="block" style="margin-top:1%">
+        <h1 style="color:white">Total ICD Codes: {{totalRecords}} | </h1>
+      </div>
+      <a *ngIf="parent=='insurance'" class="btn btn-light h-50 m-l-20" (click)="save()">Save</a>
+      <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+    </div>
+  </div>
+</footer>
+<app-icdCode-mapping-popup [parent]="parent" [cptCodeId]="cptCodeId" [totalCptCode]="totalCptCode" [totalRecords]="totalRecords" [cptIcdCodeMapping]="cptIcdCodeMapping" [(showIcdCodeMapping)]="showIcdCodeMapping"
+  (getIcdCodeOnCptLabId)="getIcdCodeOnCptLabId($event)" [icd10Codes]="icdCodes"(icd10CodeChange)="onIcd10CodeChange($event)" [(showErrorMessage)]="showErrorMessage" [insuranceCompanyId]="insuranceCompanyId" [(searchText)]="searchText" (onSearchIcdCode)="onIcdCodeMappingSearch($event)"></app-icdCode-mapping-popup>
+<!--<app-import-code [showDialog]="showDialog" [tableHeadingFileFormate]="tableHeadingFileFormate" [tableBodyFileFormate]="tableBodyFileFormate"
+  [codeName]="columnTitle" [dialogTitle]='dialogTitle' (<clos></clos>eDialog)="importCodes($event)"></app-import-code>-->
+
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+<!--<app-icdCode-mapping-popup [(showIcdCodeMapping)]="showIcdCodeMapping"></app-icdCode-mapping-popup>-->

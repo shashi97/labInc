@@ -1,0 +1,198 @@
+<p-growl [(value)]="errorMessage" [immutable]="false" life="7000"></p-growl>
+<form #f="ngForm" novalidate (ngSubmit)="save(f.valid)">
+  <div class="flex-block site-content">
+    <physician-left-navbar *ngIf="practiceId===0"></physician-left-navbar>
+    <practice-left-navbar *ngIf="practiceId>0"></practice-left-navbar>
+    <div class="main-content">
+      <div class="content" scroll-bar>
+        <error></error>
+        <div class="titled-block edit-mode" style="margin-bottom: 0">
+
+          <div class="title">Physician Info</div>
+          <div class="content-block flex-block flex-wrap grow-1">
+
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Name</div>
+              <div class="value">
+                <input name="Name" [(ngModel)]="physicianDetail.Name" #nameValidate="ngModel" required OnlyAlphaNumeric="true" [attr.maxlength]="100"
+                  class="field" />
+              </div>
+              <div [hidden]="nameValidate.pristine && !f.submitted && nameValidate.untouched">
+                <div *ngIf="nameValidate.errors && nameValidate.errors.required" class="text-danger">
+                  Name is required
+                </div>
+              </div>
+              <!-- <div [hidden]="nameValidate.valid || nameValidate.untouched">
+                <div *ngIf="nameValidate.errors && nameValidate.errors.required" class="text-danger">
+                  Name is required
+                </div>
+              </div> -->
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required ">Email</div>
+              <div class="value">
+                <input name="Email" #contactemail="ngModel" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]=" physicianDetail.Email"
+                  [attr.maxlength]="200" class="field" />
+              </div>
+              <div [hidden]="contactemail.pristine && !f.submitted && contactemail.untouched">
+                <div *ngIf="contactemail.errors && contactemail.errors.required" class="text-danger">
+                  Email is required
+                </div>
+                <div *ngIf="contactemail.errors && contactemail.errors.pattern" class="text-danger">
+                  Email is invalid
+                </div>
+              </div>
+            </div>
+
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label ">State</div>
+              <div class="value">
+                <p-dropdown name="StateId" [filter]="true" placeholder='Please Select' [options]="states" [(ngModel)]="physicianDetail.StateId"
+                  [filter]="true"></p-dropdown>
+              </div>
+              <!-- <div [hidden]="!f.submitted">
+                <div *ngIf="physicianDetail.StateId == 0" class="text-danger">
+                  State is required
+                </div>
+              </div> -->
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label">City</div>
+              <div class="value">
+                <input name="City" [(ngModel)]="physicianDetail.City" OnlyAlphaNumeric="true" [attr.maxlength]="20"
+                  class="field" />
+              </div>
+              <!-- <div [hidden]="cityValidate.pristine && !f.submitted && cityValidate.untouched">
+                <div *ngIf="cityValidate.errors && cityValidate.errors.required" class="text-danger">
+                  City is required
+                </div>
+              </div> -->
+              <!-- <div [hidden]="cityValidate.valid || cityValidate.untouched">
+                <div *ngIf="cityValidate.errors && cityValidate.errors.required" class="text-danger">
+                  City is required
+                </div>
+              </div> -->
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label ">Zip</div>
+              <div class="value">
+                <input name="Zip" [(ngModel)]=" physicianDetail.Zip" OnlyNumber="true" [attr.maxlength]="05"
+                  class="field" />
+                <!-- <div [hidden]="zipValidate.pristine && !f.submitted && zipValidate.untouched">
+                  <div *ngIf="zipValidate.errors && zipValidate.errors.required" class="text-danger">
+                    Zip is required
+                  </div>
+                </div> -->
+                <!-- <div [hidden]="zipValidate.valid || zipValidate.untouched">
+                  <div *ngIf="zipValidate.errors && zipValidate.errors.required" class="text-danger">
+                    Zip is required
+                  </div>
+                </div> -->
+                <!--<input format="MM/DD/YYYY" moment-picker=" physicianDetail.PhysicianGroupNumber" [(ngModel)]="$ctrl.patientEdit.dateOfBirth" start-view="day"
+              class="field date-field w-250" />-->
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label  ">Fax</div>
+              <div class="value">
+                <input name="Fax" [(ngModel)]=" physicianDetail.Fax" OnlyNumber="true" [attr.maxlength]="15" OnlyNumber="true" class="field"
+                />
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required ">Phone</div>
+              <div class="value">
+                <input name="Phone" [(ngModel)]=" physicianDetail.Phone" #phoneValidate="ngModel" required [attr.maxlength]="15" OnlyNumber="true"
+                  class="field" />
+
+              </div>
+              <div [hidden]="phoneValidate.pristine && !f.submitted && phoneValidate.untouched">
+                <div *ngIf="phoneValidate.errors && phoneValidate.errors.required" class="text-danger">
+                  Phone is required
+                </div>
+              </div>
+              <!-- <div [hidden]="phoneValidate.valid || phoneValidate.untouched">
+                <div *ngIf="phoneValidate.errors && phoneValidate.errors.required" class="text-danger">
+                  Phone is required
+                </div>
+              </div> -->
+            </div>
+
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required  ">NPI</div>
+              <div class="value">
+                <input name="NPI" [(ngModel)]=" physicianDetail.NPI" #npiValidate="ngModel" required OnlyAlphaNumeric="true" [attr.maxlength]="10"
+                  class="field" />
+
+              </div>
+              <div [hidden]="npiValidate.pristine && !f.submitted && npiValidate.untouched">
+                <div *ngIf="npiValidate.errors && npiValidate.errors.required" class="text-danger">
+                  NPI is required
+                </div>
+              </div>
+              <!-- <div [hidden]="npiValidate.valid || npiValidate.untouched">
+                <div *ngIf="npiValidate.errors && npiValidate.errors.required" class="text-danger">
+                  NPI is required
+                </div>
+              </div> -->
+            </div>
+
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label  ">Location</div>
+              <div class="value">
+                <p-multiSelect name="Location" [options]="locations" [(ngModel)]="physicianDetail.PhysicianLocations"></p-multiSelect>
+
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Physician Speciality</div>
+              <div class="value">
+                <p-dropdown name="Speciality" [filter]="true" placeholder='Please Select' [options]="physicianSpecialities" [(ngModel)]="physicianDetail.PhysicianSpecialityId"
+                  [filter]="true"></p-dropdown>
+
+
+              </div>
+
+              <div [hidden]="!f.submitted">
+                <div *ngIf="physicianDetail.PhysicianSpecialityId == 0" class="text-danger">
+                  Physician Speciality is required
+                </div>
+              </div>
+            </div>
+            <div class="labeled-block block grow-100 offset-right edit-mode">
+              <div class="label required ">Address</div>
+              <div class="value">
+                <textarea name="Address" #AddressValidate="ngModel" required [(ngModel)]="physicianDetail.Address" class="field extra-field-box ng-pristine ng-valid ng-touched"
+                  [attr.maxlength]="500"></textarea>
+              </div>
+              <div [hidden]="AddressValidate.pristine && !f.submitted && AddressValidate.untouched">
+                <div *ngIf="AddressValidate.errors && AddressValidate.errors.required" class="text-danger">
+                  Address is required
+                </div>
+              </div>
+              <!-- <div [hidden]="AddressValidate.valid || AddressValidate.untouched">
+                <div *ngIf="AddressValidate.errors && AddressValidate.errors.required" class="text-danger">
+                  Address is required
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer site-container">
+      <div class="flex-block space-between">
+        <div class="flex-block">
+          <!--pagination here-->
+        </div>
+        <div class="flex-block block">
+          <button type="submit" class="btn btn-light h-50 m-l-20">Save</button>
+
+          <!-- <a class="btn btn-light h-50 m-l-20" (click)="save()">Save</a> -->
+          <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+        </div>
+      </div>
+    </footer>
+
+    <form>

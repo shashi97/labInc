@@ -1,0 +1,113 @@
+<p-growl [(value)]="errorMsg" [immutable]="false" life="7000"></p-growl>
+<content>
+  <div class="flex-block site-content">
+    <insurance-company-left-navbar></insurance-company-left-navbar>
+    <div class="main-content">
+
+      <error></error>
+      <div class="content" scroll-bar>
+
+        <p-dataTable [value]="tradingPartners" scrollable="true" [paginator]="false" [rows]="pageSize" [responsive]="true" (onSort)="onSorting($event)"
+          (onFilter)="onFiltering($event)">
+
+          <p-column field="InsuranceCompanyName" header="Insurance Company Name" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search">
+            <ng-template let-tradingPartner="rowData" pTemplate="body">
+
+              <p-autoComplete placeholder="Search Min 3 Letters For Insurance Company" appendTo="body" [(ngModel)]="insuranceNameObj" field="CompanyName"
+                [style]="{'width':'100%'}" [suggestions]="insuranceSuggestions" style="width:50%" *ngIf="tradingPartner.isedit == true || tradingPartner.TradingPartnerId == 0"
+                (completeMethod)="getInsuranceBySearch()"></p-autoComplete>
+
+              <span *ngIf="tradingPartner.isedit == false && tradingPartner.TradingPartnerId != 0">{{tradingPartner.InsuranceCompanyName}}</span>
+            </ng-template>
+          </p-column>
+
+          <p-column field="Name" header="Trading Partner Id" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search">
+            <ng-template let-tradingPartner="rowData" pTemplate="body">
+
+              <p-autoComplete placeholder="Search Min 2 Letters For Trading Partner" appendTo="body" [(ngModel)]="tradingPartnerObj" field="Name"
+                [style]="{'width':'100%'}" [suggestions]="tradingPartnerSuggestions" style="width:50%" *ngIf="tradingPartner.isedit == true || tradingPartner.TradingPartnerId == 0"
+                (completeMethod)="getTradingPartnerBySearch()"></p-autoComplete>
+
+              <span *ngIf="tradingPartner.isedit == false && tradingPartner.TradingPartnerId != 0">{{tradingPartner.Name}}</span>
+            </ng-template>
+          </p-column>
+
+
+
+
+
+
+
+          <p-column styleClass="col-button" [style]="{'width':'130px'}" header="Actions">
+            <ng-template let-tradingPartner="rowData" pTemplate="body">
+              <div>
+
+                <span *ngIf="tradingPartner.TradingPartnerId == 0 || tradingPartner.isedit == true" pTooltip="Save" class="cursor-pointer"
+                  (click)="saveTradingPartner(tradingPartner)"><i class="fa fa-floppy-o fa-md m3 m6 edit" aria-hidden="true"></i></span>
+
+
+                <!-- <span *ngIf="tradingPartner.TradingPartnerId != 0 && tradingPartner.isedit != true" class="cursor-pointer" (click)="editTradingPartner(tradingPartner)">
+
+                <i class="fa fa-pencil fa-md m3 m6 edit" aria-hidden="true"></i> </span>
+                <span>|</span> -->
+
+                <span *ngIf="tradingPartner.TradingPartnerId == 0 || tradingPartner.isedit == true" pTooltip="Cancel" class="cursor-pointer"
+                  (click)="getTradingPartner()"><i class="fa fa-times fa-md m3 m6 edit" aria-hidden="true"></i></span>
+
+                <span *ngIf="tradingPartner.TradingPartnerId != 0 && tradingPartner.isedit != true" class="cursor-pointer" (click)="deleteTradingPartner(tradingPartner)"> 
+                 <i class="fa fa-chain-broken fa-md m3 m6 edit" aria-hidden="true" pTooltip="Unlink Trading Partner"></i></span>
+              </div>
+            </ng-template>
+          </p-column>
+        </p-dataTable>
+        <p-paginator [hidden]="totalRecords<=pageSize" [rows]="pageSize" [totalRecords]="totalRecords" (onPageChange)="pageChanged($event)"></p-paginator>
+      </div>
+    </div>
+
+  </div>
+
+</content>
+
+<footer class="footer site-container">
+  <div class="flex-block space-between">
+    <div class="flex-block">
+      <!--pagination here-->
+    </div>
+    <div class="flex-block block">
+      <div class="block" style="margin-top:1%">
+        <h1 style="color:white">Total Trading Partners: {{totalRecords}}</h1>
+      </div>
+      <div class="delim m-l-30"></div>
+      <a class="btn btn-light h-50 m-l-20" (click)="getImportTradingPartner()">Import Trading Partner</a>
+      <a class="btn btn-light h-50 m-l-20" (click)="addTradingPartner()">Add Trading Partner</a>
+    </div>
+  </div>
+</footer>
+
+<p-dialog header="Trading Partners" modal="modal" [(visible)]="display" width="800" [responsive]="true" [closable]="false">
+  <div class="main-content">
+    <p-dataTable [value]="importTradingPartners" scrollable="true" [rows]="10" [paginator]="true">
+      <p-column [style]="{'width':'6%'}" header="">
+        <ng-template let-tradingPartner="rowData" pTemplate="body">
+          <p-checkbox name="groupname" [(ngModel)]="tradingPartner.IsSelected" binary="true"></p-checkbox>
+        </ng-template>
+      </p-column>
+      <p-column field="Name" [style]="{'width':'180px'}" header="Insurance Company" [sortable]="true" [filter]="true" filterMatchMode="contains"
+        filterPlaceholder="Search"></p-column>
+
+      <p-column field="Id" header="Trading Partner" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"
+        [style]="{'width':'180px'}"></p-column>
+
+    </p-dataTable>
+  </div>
+  <p-footer>
+    <h1 style="color:#164F86;margin-left: 30%;margin-top: 1%;">Total Trading Partners: {{totalImportedRecords}}</h1>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <div style="float:right;margin-top:-5%">
+        <a class="btn btn-light h-50 m-l-20" (click)="saveImportedTradingPartners()">Save</a>
+        <a class="btn btn-light h-50 " (click)="cancel()">Cancel</a>
+      </div>
+    </div>
+  </p-footer>
+</p-dialog>
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>

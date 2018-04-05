@@ -1,0 +1,116 @@
+<p-growl [(value)]="errorMsg" [immutable]="false" life="7000"></p-growl>
+<div class="flex-block site-content">
+  <!--<document-left-navbar></document-left-navbar>-->
+  <div class="main-content">
+    <div class="content" scroll-bar>
+      <error></error>
+      <div class="edit-mode">
+
+        <div class="content" scroll-bar>
+          <div class="titled-block">
+            <div class="title">Setup</div>
+            <div class="content-block flex-block flex-wrap grow-1">
+              <div class="labeled-block block grow-16 offset-right">
+                <div class="label required">Name</div>
+                <div class="value">
+                  <input [(ngModel)]="setup.Name" max-length="50" class="field" />
+                </div>
+              </div>
+              <div class="labeled-block block grow-16 offset-right">
+                <div class="label">Email</div>
+                <div class="value">
+                  <input [(ngModel)]="setup.Email" class="field" />
+                </div>
+              </div>
+            </div>
+            <div class="content-block flex-block flex-wrap grow-1">
+              <div class="labeled-block block grow-16 offset-right">
+                <!--<div class="label">Lab</div>-->
+                <div class="value">
+                  <!--<p-radioButton  label="Lab" value="setup.Lab" [(ngModel)]="setup.Lab"  (click)="onSelectLab()"></p-radioButton>-->
+                  <p-radioButton label="Lab" value="1" [(ngModel)]="setup.SetupType"></p-radioButton>
+                </div>
+              </div>
+              <div class="labeled-block block grow-16 offset-right">
+                <!--<div class="label">Practice</div>-->
+                <div class="value">
+                  <!--<p-radioButton  label="Practice" value="setup.Practice" [(ngModel)]="setup.Practice" (click)="onSelectPractice()"></p-radioButton>-->
+                  <p-radioButton label="Practice" value="2" [(ngModel)]="setup.SetupType"></p-radioButton>
+                </div>
+              </div>
+            </div>
+
+            <!--<p-radioButton name="groupname" value="val2" [(ngModel)]="selectedValue"></p-radioButton>-->
+
+
+            <div class="content-block flex-block flex-wrap grow-1">
+              <div class="labeled-block block grow-16 offset-right" *ngIf="setup.SetupType == 1">
+                <div class="label required">Address</div>
+                <div class="value">
+                  <input [(ngModel)]="setup.Address" max-length="50" class="field" />
+                </div>
+              </div>
+              <div class="labeled-block block grow-16 offset-right" *ngIf="setup.SetupType == 2">
+                <div class="label required">AddressLine1</div>
+                <div class="value">
+                  <input [(ngModel)]="setup.AddressLine1" max-length="50" class="field" />
+                </div>
+              </div>
+              <div class="labeled-block block grow-16 offset-right" *ngIf="setup.SetupType == 2">
+                <div class="label required">AddressLine2</div>
+                <div class="value">
+                  <input [(ngModel)]="setup.AddressLine2" max-length="50" class="field" />
+                </div>
+              </div>
+              <div class="labeled-block block grow-16 offset-right">
+                <div class="label">State</div>
+                <div class="value">
+                  <p-dropdown [filter]="true" placeholder='Please Select' [options]="states" [(ngModel)]="setup.State" [filter]="true"></p-dropdown>
+                </div>
+              </div>
+              <div class="labeled-block block grow-16 offset-right">
+                <div class="label">City</div>
+                <div class="value">
+                  <input [(ngModel)]="setup.City" class="field" [attr.maxlength]="20"/>
+                </div>
+              </div>
+              <div class="labeled-block block grow-16 offset-right">
+                <div class="label required">Zip</div>
+                <div class="value">
+                  <input [(ngModel)]="setup.Zip" class="field" [attr.maxlength]="05"/>
+                </div>
+              </div>
+              <div class="labeled-block block grow-16 offset-right">
+                <div class="label required">Fax</div>
+                <div class="value">
+                  <input [(ngModel)]="setup.Fax" class="field" [attr.maxlength]="15"/>
+                </div>
+              </div>
+
+              <div class="labeled-block block grow-16 offset-right">
+                <div class="label">Phone</div>
+                <div class="value">
+                  <input [(ngModel)]="setup.Phone" class="field" [attr.maxlength]="15"/>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer site-container">
+    <div class="flex-block space-between">
+      <div class="flex-block">
+        <!--pagination here-->
+      </div>
+      <div class="flex-block block">
+        <a class="btn btn-light h-50 m-l-20" (click)="save()">Save</a>
+        <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+      </div>
+    </div>
+  </footer>
+</div>

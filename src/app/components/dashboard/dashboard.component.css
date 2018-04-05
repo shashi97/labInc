@@ -1,0 +1,61 @@
+
+ #all {
+    width: 127px;
+    height: 127px;
+    background: #6986A8;
+    border-radius: 77px;
+}
+ #prefered {
+    width: 127px;
+    height: 127px;
+    background: #21BB9F;
+    border-radius: 77px;
+}
+ #billing {
+    width: 127px;
+    height: 127px;
+    background: #8167BB;
+    border-radius: 77px;
+}
+ #processing {
+    width: 127px;
+    height: 127px;
+    background: #EA0A2A;
+    border-radius: 77px;
+}
+ #sendout {
+    width: 127px;
+    height: 127px;
+    background: #9B9D9C;
+    border-radius: 77px;
+}
+p{
+  text-align: center;
+  padding-top: 34%;
+  font-size: 15px;
+    color: white;
+}
+
+.btn-selected{
+    background-color: #1598C8;
+}
+
+.btn-unSelected{
+    background-color: #A09C9C;
+}
+
+.paddding-top30{
+    padding-top: 30px;
+}
+
+.paddding-top0{
+    padding-top: 0px;
+}
+
+.numberStyle{
+    font-size: xx-large;
+}
+
+.cursorView{
+    cursor: pointer;
+}

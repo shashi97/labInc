@@ -1,0 +1,190 @@
+<div class="flex-block site-content">
+  <p-growl [(value)]="errorMessage" appendTo="body" [immutable]="false" life="7000"></p-growl>
+  <!--<order-left-navbar></order-left-navbar>-->
+  <div class="main-content">
+    <div class="content" scroll-bar>
+      <error></error>
+      <div class="flex-block">
+
+        <div class="titled-block block grow-100 m-r-20">
+
+          <div class="title">Order Simulation</div>
+          <div class="content-block flex-block flex-wrap">
+
+            <div class="labeled-block  block grow-33 offset-right" *ngIf="!isSimulateSave">
+              <div class="label required">Lab</div>
+              <div class="value">
+                <p-dropdown [filter]="true" placeholder='Please Select Lab' [options]="labList" [filter]="true" [(ngModel)]="orderSimulation.LabId"
+                  (onChange)="getPracticeDDO()"></p-dropdown>
+              </div>
+              <div *ngIf="isLabEmpty && !orderSimulation.LabId" class="text-danger" style="float:left">
+                Please Select Lab
+              </div>
+            </div>
+
+            <div class="labeled-block  block grow-33 offset-right" [attr.disabled]="orderSimulation.LabId" *ngIf="!isSimulateSave">
+              <div class="label required">Practice</div>
+              <div class="value">
+                <p-dropdown [filter]="true" placeholder='Please Select' [options]="practiceList" [(ngModel)]="orderSimulation.PracticeId"
+                  [filter]="true" (onChange)="getPatientList()" [disabled]="!orderSimulation.LabId"></p-dropdown>
+              </div>
+              <div *ngIf="isPracticeEmpty && !orderSimulation.PracticeId" class="text-danger" style="float:left">
+                Please Select Practice
+              </div>
+            </div>
+            <div class="labeled-block  block grow-33 offset-right" *ngIf="!isSimulateSave">
+              <div class="label required">Patient</div>
+              <div class="value">
+                <p-dropdown [filter]="true" placeholder='Please Select' [options]="patients" [(ngModel)]="orderSimulation.PatientId" [filter]="true"
+                  [disabled]="!orderSimulation.PracticeId" (onChange)="onSelectPatient()"></p-dropdown>
+              </div>
+              <div *ngIf="isPatientEmpty && !orderSimulation.PatientId" class="text-danger" style="float:left">
+                Please Select Patient
+              </div>
+            </div>
+
+
+
+
+
+            <div class="labeled-block  block grow-33 offset-right" *ngIf="!isSimulateSave">
+              <div class="label required">Group Test</div>
+              <div class="value">
+                <p-dropdown [filter]="true" placeholder='Please Select Group Test' [options]="groupTests" [(ngModel)]="orderSimulation.GroupTestId"
+                  (onChange)="onSelectGroupTest()" [filter]="true"></p-dropdown>
+              </div>
+              <div *ngIf="!orderSimulation.GroupTestId && orderSimulation.GroupTestId!=0 && isGroupTestEmpty" class="text-danger" style="float:left">
+                Please Select Group Test
+              </div>
+            </div>
+
+
+
+
+            <div class="content-block flex-block flex-wrap" style="padding-top: 0px;width:65%" *ngIf="orderSimulation.PatientId  && !isSimulateSave">
+              <div class="labeled-block  block offset-right ">
+                <div class="label" style="float: left;padding: 16px;">Insurance Type</div>
+                <div class="labeled-block block grow-20" style="float:left" *ngFor="let type of insuranceType">
+                  <p-radioButton name="group1" value={{type.Id}} label={{type.Name}} [(ngModel)]="orderSimulation.InsuranceTypeId" (click)="onSelectPatient()"></p-radioButton>
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="labeled-block  block grow-33 offset-right" *ngIf="patientInsurance.length > 0 && !isSimulateSave" style="padding-top: 0px">
+              <div class="labeled-block  block grow-35 offset-right" *ngIf="patientInsurance.length==1">
+                <div class="label">Insurance Information:
+                  <span style="font-size: large"> {{patientInsurance[0].label}}</span>
+                </div>
+              </div>
+
+              <div class="labeled-block  block  offset-right" *ngIf="patientInsurance.length > 1" style="padding-bottom: 0px">
+                <div class="label">Insurance Information</div>
+                <div class="value">
+                  <p-dropdown [filter]="true" placeholder='Please Select' [options]="patientInsurance" [(ngModel)]="orderSimulation.PatientInsuranceId"
+                    [filter]="true"></p-dropdown>
+                </div>
+              </div>
+
+            </div>
+
+
+
+
+            <div class="labeled-block  block grow-100 offset-right " *ngIf="isSelectGroupTest && (orderSimulation.GroupTestId || orderSimulation.GroupTestId ===0)  && !isSimulateSave">
+              <div class="flex-block">
+                <div class="titled-block block grow-50 m-r-20">
+                  <div class="title" style="margin-bottom: 2%">
+                    <div style="float: left">Test Screen</div>
+                    <div style="text-align: right">
+                      <button pButton type="button" (click)="addCompoundProfile()" icon="fa-plus"></button>
+                    </div>
+                  </div>
+                  <div *ngFor="let test of tests ; let i = index">
+                    <div class="content-block flex-block flex-wrap" style="padding-top:0px;padding-bottom: 0px">
+                      <div class="labeled-block block grow-80 offset-right" style="padding-bottom: 0px">
+                        <div class="value" *ngIf="test.status==2" style="pointer-events:none">
+                          <p-dropdown placeholder='Please Select' [options]="groupTestsList" [disabled]="true" [(ngModel)]="test.value" [filter]="true"></p-dropdown>
+                        </div>
+                        <div class="value" *ngIf="test.status==1">
+                          <p-dropdown placeholder='Please Select' [options]="newGroupTestList" [(ngModel)]="test.value" [filter]="true" (click)="onSelectTestOrder(test.value,i)"></p-dropdown>
+                        </div>
+                      </div>
+                      <div class="labeled-block block grow-20 offset-right" *ngIf="test.status==1">
+                        <button pButton type="button" (click)="removeTest(i,test.value,'Test')" icon="fa-minus"></button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+
+
+                <div class="titled-block block grow-50 ">
+                  <div class="title" style="margin-bottom: 2%">
+                    <div style="float: left">Validity Testing</div>
+                    <div style="text-align: right">
+                      <button pButton type="button" (click)="addValidityTest()" icon="fa-plus"></button>
+                    </div>
+                  </div>
+                  <div *ngFor="let validity of validities ; let i = index">
+                    <div class="content-block flex-block flex-wrap" style="padding-top:0px;padding-bottom: 0px">
+                      <div class="labeled-block block grow-80 offset-right" style="padding-bottom:0px">
+                        <div class="value" *ngIf="validity.status==2" style="pointer-events:none">
+                          <p-dropdown placeholder='Please Select' [disabled]="true" [options]="groupValidityList" [(ngModel)]="validity.value" [filter]="true"></p-dropdown>
+                        </div>
+                        <div class="value" *ngIf="validity.status==1">
+                          <p-dropdown placeholder='Please Select' [options]="newGroupValidityList" [(ngModel)]="validity.value" [filter]="true" (click)="onSelectValidityOrder(validity.value,i)"></p-dropdown>
+                        </div>
+                      </div>
+                      <div class="labeled-block block grow-20 offset-right" *ngIf="validity.status==1">
+                        <button pButton type="button" (click)="removeTest(i,validity.value,'Validity')" icon="fa-minus"></button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div *ngIf="isTestScreenEmpty" class="text-danger" style="float:left">
+                Please Select Atleast One Test Screen or Validity Testing
+              </div>
+            </div>
+            <app-order-simulation-step [isSimulateSave]="isSimulateSave" [simulationStep]="simulationStep" style="width:100%"></app-order-simulation-step>
+              <!--<div class="setSimulate" *ngIf="isSimulateSave">
+                <div class="setWhiteSpace">
+                  <span *ngFor="let item of simulationStep ; let index=index">
+           <div class="status" [ngStyle]="setLabelColor(item)">Step {{index + 1}}: {{item.StepName}}</div>
+        <div class="box" [ngStyle]="setColor(item)">
+         
+          <div *ngFor="let lab of item.Labs">
+          <ul *ngIf="lab!=null"  class="fa-ul">
+            <li><i class="fa-li fa fa-square"></i>{{lab.Name}}</li>
+            </ul>
+        </div>
+      </div>
+    </span>
+                </div>
+
+
+
+              </div>-->
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer site-container">
+      <div class="flex-block space-between">
+        <div class="flex-block">
+        </div>
+        <div class="flex-block block">
+          <a class="btn btn-light h-50 m-l-20" (click)="isSimulateSave=!isSimulateSave" *ngIf="isSimulateSave">Previous</a>
+          <a class="btn btn-light h-50 m-l-20" (click)="saveOrderSimulation()" *ngIf="!isSimulateSave">Run Simulation</a>
+          <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+        </div>
+      </div>
+    </footer>

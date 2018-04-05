@@ -1,0 +1,187 @@
+<div class="flex-block site-content">
+  <p-growl [(value)]="errorMessage" appendTo="body" [immutable]="false" life="7000"></p-growl>
+  <!--<order-left-navbar></order-left-navbar>-->
+  <div class="main-content">
+    <div class="content" scroll-bar>
+      <error></error>
+      <div class="flex-block">
+        <div class="titled-block block grow-100 m-r-20">
+          <div class="title">Simulation</div>
+          <div class="content-block flex-block flex-wrap">
+            <div class="labeled-block  block offset-right edit-mode" style="padding-right: 1%;width: 41%;">
+              <div class="label required">States</div>
+              <div class="value">
+                <p-autoComplete name="Multi" [(ngModel)]="multiStates" [suggestions]="filteredStatesMultiple" [style]="{'width':'100%'}"
+                  (completeMethod)="filterStateMultiple($event)" styleClass="wid300" [minLength]="1" placeholder="States" field="Name"
+                  (onSelect)="getInsuranceDetail()" (onUnselect)="removeState($event)" [multiple]="true">
+                </p-autoComplete>
+              </div>
+            </div>
+            <div class="labeled-block  block grow-40 offset-right edit-mode" style="padding-right: 1%;width: 41%;">
+              <div class="label required">Insurance Companies</div>
+              <div class="value">
+                <p-autoComplete name="Multi" [(ngModel)]="multiInsuranceCompany" [suggestions]="filteredInsuranceMultiple" [style]="{'width':'100%'}"
+                  (completeMethod)="filterInsuranceCompanyMultiple($event)" styleClass="wid300" [minLength]="1" placeholder="Insurance Companies"
+                  field="CompanyName" (onSelect)="getInsuranceDetail()" (onUnselect)="removeInsuranceCompany($event)" [multiple]="true">
+                </p-autoComplete>
+              </div>
+            </div>
+            <div class="labeled-block  block  offset-right edit-mode" style="padding: 1% 0% 1% 1%;width:17%">
+
+              <div class="ui-g">
+                <div class="ui-g-2">
+                  <p-checkbox name="groupname" binary="true" [(ngModel)]="insuranceSimulation.DirectorIncluded" (click)="getInsuranceDetail()"></p-checkbox>
+                </div>
+                <div class="ui-g-10 " style="word-wrap: break-word">
+                  <div class="label " style="white-space: pre-line;">Directors having License for States</div>
+                </div>
+
+              </div>
+
+
+            </div>
+
+
+            <div class="ui-g-12">
+              <div class="ui-g-6">
+
+
+                <div class="status">List of Laboratories</div>
+
+                <!--<p-orderList [value]="insuranceSimulationDTO.Labs" [listStyle]="{'height':'250px','width':'500px'}" [style]="{'box-shadow': '0px 0px 1px #0a7ae6'}" [styleClass]="box" [responsive]="true"  filter="filter" filterBy="Name"
+                  filterPlaceholder="Filter by Laboratory Name" header="" dragdrop="true">
+                  <ng-template let-lab pTemplate="item">
+                    <div class="ui-helper-clearfix">
+                     
+                      <div style="font-size:14px;float:left;margin: 5px 5px 2px 0;;padding-left:2%" (click)="showStateDetailBasedOnLab(lab,'lab')">{{lab.Name}}</div>
+                    </div>
+                  </ng-template>
+                </p-orderList>-->
+
+  <div class="box ui-g-12">
+   <input [(ngModel)]="labFilter" class="field" placeholder="Search" placeholder="Filter by Laboratory Name"/>
+    <div class="scroll"> 
+                  <div *ngFor="let lab of insuranceSimulationDTO.Labs | insuranceSimulationFilter:labFilter ; let index = index">
+                    <div class="ui-helper-clearfix">
+                      <div style="color: #23527C;max-width: 8.3333%;     
+                                      float: left;
+                                      box-sizing: border-box;
+                                      padding: 0.5em 0em 0.5em 0.5em;
+                                      color: #23527C;
+                                      max-width: 8.3333%;">{{index + 1 }}.</div>
+
+                      <div class="ui-g-11" style="font-size:14px;color: #23527C"><a (click)="showStateDetailBasedOnLab(lab,'lab')" class="cursor-pointer">{{lab.Name}}</a></div>
+                    </div>
+                  </div>
+                  <div *ngIf="insuranceSimulationDTO.Labs.length==0">
+                    <div>
+                      <div class="nodata">
+                        No Lab Found
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+     
+
+
+              </div>
+              <div class="ui-g-6">
+
+
+
+                <div class="status">List of Insurance Companies</div>
+                <!--<div class="status" ></div>-->
+                
+                <div class="box ui-g-12">
+   <input [(ngModel)]="insuranceFilter" class="field" placeholder="Search" placeholder="Filter by Insurance Company Name"/>
+    <div class="scroll"> 
+                  <div *ngFor="let insurance of insuranceSimulationDTO.InsuranceCompanies | insuranceSimulationFilter:insuranceFilter ; let index = index">
+                    <div class="ui-helper-clearfix">
+                      <div style="color: #23527C;max-width: 8.3333%;     
+                                      float: left;
+                                      box-sizing: border-box;
+                                      padding: 0.5em 0em 0.5em 0.5em;
+                                      color: #23527C;
+                                      max-width: 8.3333%;">{{index + 1 }}.</div>
+
+                      <div class="ui-g-11" style="font-size:14px;color: #23527C"><a (click)="showStateDetailBasedOnLab(insurance,'insurance')" class="cursor-pointer">{{insurance.Name}}</a></div>
+                    </div>
+                  </div>
+                  <div *ngIf="insuranceSimulationDTO.InsuranceCompanies.length==0">
+                    <div>
+                      <div class="nodata">
+                        No Insurance Found
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+
+
+
+              </div>
+
+            </div>
+
+
+
+            <div class="setSimulate">
+              <div class="setWhiteSpace">
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer site-container">
+      <div class="flex-block space-between">
+        <div class="flex-block">
+        </div>
+        <div class="flex-block block">
+
+          <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+        </div>
+      </div>
+    </footer>
+
+    <p-dialog header="{{statePopupHeading}}{{name}}" [(visible)]="showState" modal="modal" [width]="900">
+      <div class="main-content">
+        <span>
+            
+                          <div class="box" style="width:100%">
+                           <div class="content-block flex-block flex-wrap">
+                <div class="labeled-block block grow-100 offset-right" >
+                  
+                  <div class="labeled-block block " *ngFor="let state of insuranceStates">
+                    <div class="ui-autocomplete-token ui-state-highlight ui-corner-all" style="font-size: medium">{{state.Name}}</div>
+                  </div>
+                </div>
+
+              </div>
+              </div>
+                        
+                        <!--</div>-->
+                         <!--<div  *ngIf="insuranceStates.length==0">
+                           <div>
+                              <div class="nodata">
+                                 No State Found
+                              </div>
+                           </div>
+                       </div>-->
+                     <!--</div>-->
+                  </span>
+
+      </div>
+      <p-footer>
+        <div class="flex-block block" style="float: right">
+          <div class="block" style="margin-top:1%">
+            <h1>Total States: {{stateLength}} | </h1>
+          </div>
+          <a class="btn btn-light h-50 m-l-20" style="float:right" (click)="showState=false">Close</a>
+        </div>
+      </p-footer>
+    </p-dialog>

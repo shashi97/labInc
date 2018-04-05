@@ -1,0 +1,108 @@
+<error *ngIf="!isInsuranceErr">
+</error>
+<div class="titled-block edit-mode" [ngClass]="labelWidth==true ? 'marginLength': '' ">
+  <div class="title">Insurance Info
+  <div style="float:right" >Is Active
+      <p-checkbox name="groupname" [(ngModel)]="insurance.IsActive" binary="true" (click)="onIsActive()"></p-checkbox>
+  </div>
+  </div>
+  <div class="content-block flex-block flex-wrap grow-1">
+    <div class="labeled-block block grow-33 offset-right">
+      <div class="label required" [ngClass]="labelWidth==true ? 'label': '' ">Insurance Type</div>
+      <div class="value ">
+        <p-dropdown [filter]="true" appendTo="body" placeholder='Please Select' [options]="insuranceTypes" [(ngModel)]="insurance.InsuranceTypeId"
+          [filter]="true" (onChange)="onIsActive()"></p-dropdown>
+      </div>
+      <div *ngIf="insurance.InsuranceTypeId == 0 && insurance.isValid==true " class="text-danger">
+        Insurance Type is required
+      </div>
+    </div>
+
+
+    <div class="labeled-block block grow-33 offset-right">
+      <div class="label required">Insurance Company </div>
+      <div class="value">
+        <p-autoComplete appendTo="body" placeholder="Please Enter Min 3 Character For Search" [(ngModel)]="insuranceNameObj" field="CompanyName"
+          [style]="{'width':'100%'}" [suggestions]="insuranceSuggestions" (onSelect)="onInsuranceSelect()" (completeMethod)="getInsuranceBySearch()"></p-autoComplete>
+      </div>
+      <div *ngIf="(!insuranceNameObj || (insuranceNameObj | json) == '{}') && insurance.isValid==true " class="text-danger">
+        Insurance Company is required
+      </div>
+    </div>
+
+     <div class="labeled-block block grow-33 offset-right">
+      <div class="label required">Policy ID</div>
+      <div class="value">
+        <input [(ngModel)]="insurance.PolicyId" max-length="50" class="field" [attr.maxlength]="50" />
+      </div>
+      <div *ngIf="insurance.PolicyId == '' && insurance.isValid==true " class="text-danger">
+        Policy ID is required
+      </div>
+    </div>
+
+    <div class="labeled-block block grow-33 offset-right">
+      <div class="label">Group Name</div>
+      <div class="value">
+        <input [(ngModel)]="insurance.GroupName" OnlyAlphaNumeric="true" max-length="50" class="field" />
+      </div>
+      <!-- <div *ngIf="insurance.GroupName == '' && insurance.isValid==true " class="text-danger">
+        Group Name is required
+      </div> -->
+    </div>
+
+    <div class="labeled-block block grow-33 offset-right">
+      <div class="label">Group Number</div>
+      <div class="value">
+        <input [(ngModel)]="insurance.GroupNumber" class="field" [attr.maxlength]="100" />
+      </div>
+      <!-- <div *ngIf="insurance.GroupNumber == '' && insurance.isValid==true " class="text-danger">
+        Group Number is required
+      </div> -->
+    </div>
+
+   <div class="labeled-block block grow-33 offset-right">
+      <div class="label required">Name Of Insured</div>
+      <div class="value">
+        <input [(ngModel)]="insurance.NameOfInsured" max-length="50" class="field" />
+      </div>
+      <div *ngIf="insurance.NameOfInsured == '' && insurance.isValid==true " class="text-danger">
+        Name Of Insured is required
+      </div>
+    </div>
+
+    <div class="labeled-block block grow-33 offset-right">
+      <div class="label required">Guarantor Relationship</div>
+      <div class="value">
+        <p-dropdown [filter]="true" appendTo="body" placeholder='Please Select' [options]="relations" [(ngModel)]="insurance.RelationId"
+          [filter]="true"></p-dropdown>
+      </div>
+      <div *ngIf="insurance.RelationId == 0 && insurance.isValid==true " class="text-danger">
+        Guarantor Relationship is required
+      </div>
+    </div>
+
+    <div class="labeled-block block grow-25 offset-right">
+      <div class="label ">Start Date</div>
+      <div class="value">
+        <p-calendar [monthNavigator]="true" appendTo="body" [yearNavigator]="true" yearRange="2000:{{currentYear}}" [(ngModel)]="insurance.StartDate"
+          [showIcon]="true" dateFormat="mm/dd/yy" [style]="labelWidth==true ? {'width':'117%'}:{'width':'342px'}"></p-calendar>
+      </div>
+    </div>
+
+    <div class="labeled-block block grow-25 offset-right" [ngStyle]="labelWidth==true ? {'margin-left': '75px'}:{'margin-left': '97px'}">
+      <div class="label required">Valid Till</div>
+      <div class="value">
+        <p-calendar [monthNavigator]="true" appendTo="body" [yearNavigator]="true" yearRange="2000:{{currentYear}}" [(ngModel)]="insurance.ValidityOfPolicy"
+          [showIcon]="true" dateFormat="mm/dd/yy" [style]="labelWidth==true ? {'width':'118%'}:{'width':'123%'}"></p-calendar>
+      </div>
+      <div *ngIf="insurance.ValidityOfPolicy && insurance.isValid==true " class="text-danger">
+        Valid Till is required
+      </div>
+    </div>
+
+  
+  </div>
+</div>
+
+
+  <p-confirmDialog header="Confirmation" icon="fa fa-question-circle"  appendTo="body" width="425" *ngIf="!labelWidth"></p-confirmDialog>

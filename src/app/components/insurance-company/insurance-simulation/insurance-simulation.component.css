@@ -1,0 +1,64 @@
+.setSimulate {
+  overflow-x: auto;
+  padding: 0 0;
+  width: 100%;
+}
+
+.setWhiteSpace {
+  max-width: 116%;
+  height: 0%;
+  display: flex;
+  padding-left: 20%;
+}
+
+.box {
+  box-shadow: 0px 0px 1px #0a7ae6;
+  margin-right: 1%;
+  font-size: 14px;
+  /*width: 619px;*/
+  height: 309px;
+  border: 1px solid grey;
+  background-color: white;
+  display: inline-block;
+  position: relative;
+  margin-right: 10px;
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+  word-wrap: break-word;
+  padding: 1%;
+  
+} 
+
+.scroll {
+overflow-x: auto;
+ height: 258px;
+ margin-top:1%;
+}
+
+.box:hover {
+  box-shadow: 0px 0px 5px #0a7ae6;
+}
+
+.status {
+  width: 20em;
+  word-wrap: break-word;
+  font-size: larger;
+  height: 20px;
+  font-weight: 700;
+  padding-left: 15px;
+}
+
+.nodata {
+  margin-top: 24%;
+  text-align: -webkit-center;
+  color: #b5c1cf;
+  font-size: x-large;
+}
+.status {
+  width: 20em;
+  word-wrap: break-word;
+  font-size: larger;
+  height: 20px;
+  font-weight: 700;
+  padding-left: 15px;
+}

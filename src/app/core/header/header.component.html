@@ -1,0 +1,57 @@
+<div class="site-container">
+  <div class="site-container">
+    <div class="flex-block align-center p-t-10">
+      <div class="block logo">
+        <img *ngIf="logo && user.UserTypeId !==3" [src]="logo" style="width: 200px;margin-left: -17px;">
+        <a href="#" *ngIf="!logo && user.UserTypeId !==3"><img src="./assets/images/logo.png" /></a>
+        <div *ngIf="user.UserTypeId ===3" style="margin-top: 15px;">
+          <span style="font-size: xx-large;font-family: fantasy;color: #164F86;">{{user.EntityName | truncate:[10]}}</span>
+        </div>
+      </div>
+      <div class="block grow-1">
+        <h1 class="page-breadcrumb">{{breadcrumbs}}</h1>
+      </div>
+      <div class="block">
+        <div class="flex-block align-center user-account">
+          <div class="block user-avatar">
+            <!-- <img src="./assets/images/user.jpg" /> -->
+          </div>
+          <div class="block">
+            <div style="cursor: pointer" (click)="openProfile(user)">{{user.Name}} | <a class="pointer" (click)="logout()">Sign Out</a></div>
+            <div class="datetime">{{currentTime | date:'MM/dd/yyyy, EEEE hh:mm a'}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-dialog [(visible)]="showDialog" modal="modal" [width]="600" [height]="400" [contentStyle]="{'overflow':'visible'}">
+  <p-header>
+    <div style="float:right" *ngIf="loggedAsAdmin==true">
+      <b>Current User:</b> {{headerName}}
+    </div>
+    <div style="float:right" *ngIf="loggedAsAdmin==false">
+      <b>Current Lab:</b> {{headerName}}
+    </div>
+  </p-header>
+  <div class="block grow-50 m-r-20">
+    <p-messages [(value)]="errorMsg"></p-messages>
+    <div class="content-block flex-block grow-1">
+      <div class="labeled-block offset-right block grow-80">
+        <div class="value">
+          <p-dropdown placeholder='Please Select Lab' [options]="labDDO" [(ngModel)]="labId" [filter]="true"></p-dropdown>
+        </div>
+      </div>
+      <div style="float:right" style="margin-top:1%">
+        <a class="btn btn-light h-50 m-l-20" (click)="onLabSelect()">Change</a>
+      </div>
+    </div>
+  </div>
+  <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix" style="border-top: 2px solid #5b619b !important ; margin-top:40%">
+    <div style="float:right">
+      <span *ngIf="loggedAsAdmin==true"><b>In Network Already Logged-In</b></span>
+      <a *ngIf="loggedAsAdmin==false" class="btn btn-light h-50 m-l-20" style="margin-top:2%" (click)="adminSignIn()">Sign in as Admin</a>
+    </div>
+  </div>
+</p-dialog>

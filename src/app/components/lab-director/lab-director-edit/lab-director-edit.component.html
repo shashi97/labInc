@@ -1,0 +1,141 @@
+<p-growl [(value)]="errorMsg" [immutable]="false" life="7000"></p-growl>
+<form #f="ngForm" novalidate (ngSubmit)="save(f.valid)">
+  <div class="flex-block site-content">
+    <lab-left-navbar *ngIf="labId !== 0" [isdirector]="true"></lab-left-navbar>
+    <div *ngIf="labId === 0">
+      <lab-director-left-navbar></lab-director-left-navbar>
+    </div>
+    <div class="main-content">
+      <div class="content" scroll-bar>
+        <error></error>
+        <div class="flex-block edit-mode">
+          <div class="block grow-50 m-r-10">
+            <div class="titled-block block grow-1 m-r-10">
+              <div class="title">Lab Director Information</div>
+              <div class="content-block flex-block flex-wrap">
+                <div class="labeled-block block grow-100 offset-right">
+                  <div class="label required">Name</div>
+                  <div class="value required">
+                    <input name="Name" [(ngModel)]="labDirector.Name" OnlyEntityName="true" #nameValidate="ngModel" required [attr.maxlength]="50"
+                      class="field" />
+                  </div>
+                  <div [hidden]="nameValidate.pristine && !f.submitted && nameValidate.untouched">
+                    <div *ngIf="nameValidate.errors && nameValidate.errors.required" class="text-danger">
+                      Name is required
+                    </div>
+                  </div>
+                </div>
+                <div class="labeled-block block grow-100 offset-right">
+                  <div class="label required">Email</div>
+                  <div class="value">
+                    <input [disabled]="labDirector.Id != 0" name="Email" [(ngModel)]="labDirector.Email" #contactemail="ngModel" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                      [attr.maxlength]="50" class="field" />
+                  </div>
+                  <div [hidden]="contactemail.pristine && !f.submitted && contactemail.untouched">
+                    <div *ngIf="contactemail.errors && contactemail.errors.required" class="text-danger">
+                      Email is required
+                    </div>
+                    <div *ngIf="contactemail.errors && contactemail.errors.pattern" class="text-danger">
+                      Email is invalid
+                    </div>
+                  </div>
+                </div>
+                <div class="labeled-block block grow-100 offset-right">
+                  <div class="label">Education</div>
+                  <div class="value">
+                    <input name="Education" [(ngModel)]="labDirector.Education"  [attr.maxlength]="200"
+                      class="field" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="titled-block block grow-1 m-r-10">
+              <div class="title">Lab Director Licensed States</div>
+              <div class="value">
+                <state-information *ngIf="labDirector.Id == 0 || LabDirectorStateLevel == 0 || LabDirectorStateLevel == 1|| LabDirectorStateLevel == 2|| LabDirectorStateLevel == 3"
+                  [InsuranceStateLevel]="LabDirectorStateLevel" [InsuranceCompanyStates]="LabDirectorStates" (onStateChange)="onStateChange($event)"></state-information>
+              </div>
+            </div>
+          </div>
+          <div class="titled-block block grow-50 m-r-10">
+            <div class="title">Contact Information</div>
+            <div class="content-block flex-block flex-wrap">
+              <div class="labeled-block block grow-100 offset-right">
+                <div class="label required">Address</div>
+                <div class="value">
+                  <textarea class="field small-field-box" OnlyAddress="true" name="Address" style="height: 92px; width: 100%;" #addressValidate="ngModel"
+                    required [(ngModel)]="labDirector.Address" [attr.maxlength]="500"></textarea>
+                </div>
+                <div [hidden]="addressValidate.pristine && !f.submitted && addressValidate.untouched">
+                  <div *ngIf="addressValidate.errors && addressValidate.errors.required" class="text-danger">
+                    Address is required
+                  </div>
+                </div>
+              </div>
+              <div class="labeled-block block grow-50 offset-right">
+                <div class="label required">City</div>
+                <div class="value">
+                  <input [(ngModel)]="labDirector.City" name="City" OnlyAlphaNumeric="true" #cityValidate="ngModel" required [attr.maxlength]="20"
+                    class="field" />
+                </div>
+                <div [hidden]="cityValidate.pristine && !f.submitted && cityValidate.untouched">
+                  <div *ngIf="cityValidate.errors && cityValidate.errors.required" class="text-danger">
+                    City is required
+                  </div>
+                </div>
+              </div>
+              <div class="labeled-block block grow-50 offset-right">
+                <div class="label required">State</div>
+                <div class="value">
+                  <p-dropdown [filter]="true" name="State" placeholder='Please Select' [options]="states" [(ngModel)]="labDirector.StateId"
+                    [filter]="true"></p-dropdown>
+                </div>
+              </div>
+              <div class="labeled-block block grow-50 offset-right">
+                <div class="label required">Zip</div>
+                <div class="value">
+                  <input [(ngModel)]="labDirector.Zip" name="Zip" OnlyNumber="true" #zipValidate="ngModel" required [attr.maxlength]="5" class="field"
+                  />
+                </div>
+                <div [hidden]="zipValidate.pristine && !f.submitted && zipValidate.untouched">
+                  <div *ngIf="zipValidate.errors && zipValidate.errors.required" class="text-danger">
+                    Zip is required
+                  </div>
+                </div>
+              </div>
+              <div class="labeled-block block grow-50 offset-right">
+                <div class="label">Fax</div>
+                <div class="value">
+                  <input name="Fax" [(ngModel)]="labDirector.Fax" OnlyNumber="true" class="field" [attr.maxlength]="15" />
+                </div>
+              </div>
+              <div class="labeled-block block grow-50 offset-right">
+                <div class="label required">Phone</div>
+                <div class="value">
+                  <input type="text" name="Phone" [(ngModel)]="labDirector.PhoneNo" #phoneValidate="ngModel" required OnlyAlphaNumeric="true"
+                    class="field" [attr.maxlength]="15" />
+                </div>
+                <div [hidden]="phoneValidate.pristine && !f.submitted && phoneValidate.untouched">
+                  <div *ngIf="phoneValidate.errors && phoneValidate.errors.required" class="text-danger">
+                    Phone is required
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="footer site-container">
+    <div class="flex-block space-between">
+      <div class="flex-block">
+      </div>
+      <div class="flex-block block">
+        <button type="submit" class="btn btn-light h-50 m-l-20">Save</button>
+        <!-- <a class="btn btn-light h-50 m-l-20" (click)="save()">Save</a> -->
+        <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+      </div>
+    </div>
+  </footer>
+</form>

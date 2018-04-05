@@ -1,0 +1,50 @@
+<div class="content-block flex-block flex-wrap edit-mode">
+  <div class="labeled-block block grow-25">
+    <div class="label"></div>
+    <div class="value">
+      <p-radioButton name="selectedLocation0" label="State" value="0" [(ngModel)]="selectedLocation" (click)="onChangeLocation(selectedLocation)"></p-radioButton>
+    </div>
+  </div>
+  <div class="labeled-block block grow-25">
+    <div class="label"></div>
+    <div class="value">
+      <p-radioButton name="selectedLocation1" label="Multi State" value="1" [(ngModel)]="selectedLocation" (click)="onChangeLocation(selectedLocation)"></p-radioButton>
+    </div>
+  </div>
+  <div class="labeled-block block grow-24">
+    <div class="label"></div>
+    <div class="value">
+      <p-radioButton name="selectedLocation2" label="National" value="2" [(ngModel)]="selectedLocation" (click)="onChangeLocation(selectedLocation)"></p-radioButton>
+    </div>
+  </div>
+  <div class="labeled-block  block grow-26">
+    <div class="label"></div>
+    <div class="value">
+      <p-radioButton name="selectedLocation2" label="All States Except" value="3" [(ngModel)]="selectedLocation" (click)="onChangeLocation(selectedLocation)"></p-radioButton>
+    </div>
+  </div>
+</div>
+<div class="content-block flex-block flex-wrap edit-mode">
+    <div class="labeled-block  block grow-100 offset-right edit-mode" *ngIf="selectedLocation == '0'">
+        <div class="label required">Select State</div>
+        <div class="value">
+          <p-dropdown name="selectedLocation3" placeholder='Please Select' [options]="states" (onChange)="onStateSelect()" [(ngModel)]="locationState" [filter]="true"></p-dropdown>
+        </div>
+      </div>
+      <div class="labeled-block  block grow-100 offset-right edit-mode" *ngIf="selectedLocation == '1'">
+        <div class="label required">Select Multi State</div>
+        <div class="value">
+          <p-autoComplete name="Multi" [(ngModel)]="multiStates" [suggestions]="filteredStatesMultiple" (completeMethod)="filterStateMultiple($event)"
+            styleClass="wid300" [minLength]="1" placeholder="States" field="Name" (onSelect)="afterSelectState()"  (onUnselect)="afterSelectState($event)" [multiple]="true">
+          </p-autoComplete>
+        </div>
+      </div>
+      <div class="labeled-block  block grow-100 offset-right" *ngIf="selectedLocation == '3'">
+        <div class="label required">All States Except</div>
+        <div class="value">
+          <p-autoComplete name="Multi" [(ngModel)]="multiStates" [suggestions]="filteredStatesMultiple" (completeMethod)="filterStateMultiple($event)"
+            styleClass="wid300" [minLength]="1" placeholder="States" (onSelect)="afterSelectState()"  (onUnselect)="afterSelectState($event)" field="Name" [multiple]="true">
+          </p-autoComplete>
+        </div>
+      </div>
+</div>

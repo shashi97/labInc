@@ -1,0 +1,39 @@
+<p-growl [(value)]="errorMessage" [immutable]="false" life="7000"></p-growl>
+<div class="flex-block site-content">
+  <div class="main-content">
+    <error></error>
+    <div class="content" scroll-bar>
+      <p-dataTable [value]="setups" scrollable="true" [paginator]="false" [rows]="pageSize" [responsive]="true">
+        <p-column field="Name" header="Name" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+          <p-column styleClass="col-button" [style]="{'width':'130px'}" header="Actions">
+          <ng-template let-compound="rowData" pTemplate="body" >
+            <div>
+              <span (click)="editSetup(compound.Id)" class="cursor-pointer"> 
+                <i class="fa fa-pencil fa-md m3 m6 edit" aria-hidden="true" ></i> 
+              </span>
+              <span>|</span>
+              <span (click)="deleteSetupById(compound)" class="cursor-pointer"> 
+                <i class="fa fa-trash fa-md m3 m6 edit" aria-hidden="true" ></i> 
+              </span>
+            </div>
+          </ng-template>
+        </p-column>
+      </p-dataTable>
+      <p-paginator [hidden]="totalRecords<=pageSize" [rows]="pageSize" [totalRecords]="totalRecords" ></p-paginator>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer site-container">
+  <div class="flex-block space-between">
+    <div class="flex-block">
+      <!--pagination here-->
+    </div>
+    <div class="flex-block block">
+      <a class="btn btn-light h-50 m-l-20" (click)="addSetup()">Add Setup</a>
+    </div>
+  </div>
+</footer>
+
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>

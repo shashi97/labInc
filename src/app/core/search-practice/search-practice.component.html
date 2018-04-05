@@ -1,0 +1,45 @@
+<p-growl [(value)]="errorMsg" [immutable]="false" life="7000"></p-growl>
+<div class="flex-block ">
+  <div class="main-content">
+    <!-- <error></error> -->
+    <div class="content-block flex-block flex-wrap grow-1">
+      <div class="ui-grid-col-12 offset-right">
+        <div class="ui-grid-col-2 ">
+          <div>
+            <input max-length="50" placeholder="Search for practice" [(ngModel)]="searchLab" class="field" />
+            <!--<button class="btn-search" (click)="searchLabQuery()"></button>-->
+          </div>
+        </div>
+        <div class="ui-grid-col-6">
+          <a class="btn btn-light h-50 m-l-10" (click)="searchLabByName()">Search</a>
+        </div>
+      </div>
+    </div>
+    <p-dialog header="Practice" [(visible)]="display" modal="modal" [width]="1200" [height]="500">
+      <div class="main-content">
+        <error></error>
+        <div class="labeled-block block grow-30 offset-right">
+          <div class="value">
+            <div class="search-account">
+              <input placeholder="Search Practice" type="text" (keyup.enter)="getPractices()" [(ngModel)]="searchLab" class="ng-untouched ng-pristine ng-valid">
+              <button class="btn-search" (click)="getPractices()"></button>
+            </div>
+          </div>
+        </div>
+        <div class="content" scroll-bar>
+          <p-dataTable [value]="practice" scrollable="true" [paginator]="false" [responsive]="true" >
+            <p-column field="Code" header="Practice Code"></p-column>
+            <p-column field="Name" header="Practice Name"></p-column>
+            <p-column field="City" header="City"></p-column>
+            <p-column field="Zip" header="Zip"></p-column>
+            <p-column styleClass="col-button" [style]="{'width':'130px'}">
+              <ng-template let-practice="rowData" pTemplate="body">
+                <a (click)="onPracticeSelected(practice)" style="cursor: pointer">select</a>
+              </ng-template>
+            </p-column>
+          </p-dataTable>
+        </div>
+      </div>
+    </p-dialog>
+  </div>
+</div>

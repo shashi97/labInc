@@ -1,0 +1,89 @@
+<p-growl [(value)]="errorMessages" [immutable]="false" life="7000"></p-growl>
+<div class="flex-block ">
+  <div class="main-content">
+    <div class="content-block flex-block flex-wrap grow-1">
+      <div class="ui-grid-col-12 offset-right">
+        <div class="ui-grid-col-12">
+          <a class="btn btn-light h-50 m-l-20" (click)="ImportFile()">Import {{titleName}}</a>
+        </div>
+      </div>
+    </div>
+
+    <p-dialog [closeOnEscape]="false" [closable]="false" [(visible)]="showDialog" [width]="importDailogWidth" [height]="480">
+      <p-header>
+        {{titleName}}
+      </p-header>
+      <div class="main-content">
+        <p-messages [(value)]="errorMessages"></p-messages>
+        <div class="flex-block">
+          <div class="labeled-block block grow-1 offset-right">
+            <div class="value">
+              <input #fileInput id="file-upload" type="file" (change)="fileChangeEvent($event)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="" scroll-bar>
+          <div class="">
+            <div class="value ">
+              <span>Please select an excel file having this format.</span>
+              <div class="table-wrapper">
+                <table class="table-wrapper table-content">
+                  <thead>
+                    <th *ngFor="let Item of importTableHeader" class="table-header" style="font-size:14px;text-align: center">{{Item.header}}</th>
+                  </thead>
+                  <tr *ngFor="let Item of importTableRow">
+                    <td class="table-cell" style="font-size:14px;width: 12%;text-align: center" *ngIf="Item.col1">{{Item.col1}}</td>
+                    <td class="table-cell" style="font-size:14px;width: 12%;text-align: center" *ngIf="Item.col2">{{Item.col2}}</td>
+                    <td class="table-cell" style="font-size:14px;width: 12%;text-align: center" *ngIf="Item.col3">{{Item.col3}}</td>
+                    <td class="table-cell" style="font-size:14px;width: 12%;text-align: center" *ngIf="Item.col4">{{Item.col4}}</td>
+                    <td class="table-cell" style="font-size:14px;width: 12%;text-align: center" *ngIf="Item.col5">{{Item.col5}}</td>
+                    <td class="table-cell" style="font-size:14px;width: 12%;text-align: center" *ngIf="Item.col6">{{Item.col6}}</td>
+                    <td class="table-cell" style="font-size:14px;width: 12%;text-align: center" *ngIf="Item.col7">{{Item.col7}}</td>
+                    <td class="table-cell" style="font-size:14px;width: 12%;text-align: center" *ngIf="Item.col8">{{Item.col8}}</td>
+                    <td class="table-cell" style="font-size:14px;width: 12%;text-align: center" *ngIf="Item.col9">{{Item.col9}}</td>
+                    <td class="table-cell" style="font-size:14px;width: 12%;text-align: center" *ngIf="Item.col10">{{Item.col10}}</td>
+                    <td class="table-cell" style="font-size:14px;width: 12%;text-align: center" *ngIf="Item.col11">{{Item.col11}}</td>
+                    <td class="table-cell" style="font-size:14px;width: 12%;text-align: center" *ngIf="Item.col12">{{Item.col12}}</td>
+                    <td class="table-cell" style="font-size:14px;width: 12%;text-align: center" *ngIf="Item.col13">{{Item.col13}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <p-footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+          <div style="float:right">
+
+            <a class="btn btn-light h-50 m-l-20" *ngIf="showUploadButton" (click)="uploadFile()">Upload</a>
+            <a class="btn btn-light h-50 m-l-20" *ngIf="!showUploadButton" (click)="closeAfterCheck()">Ok, Close</a>
+            <a class="btn btn-light h-50 m-l-20" *ngIf="showUploadButton" (click)="closeAfterCheck()">Cancel</a>
+          </div>
+        </div>
+      </p-footer>
+    </p-dialog>
+
+    <p-dialog [closeOnEscape]="false" [closable]="false" [(visible)]="showDialogAfterError" [width]="1000" [height]="500">
+      <p-header>
+        {{titleName}}
+      </p-header>
+      <div class="main-content" scroll-bar>
+        <p-messages [(value)]="errorMessagesAfter"></p-messages>
+        <div class="flex-block">
+        </div>
+      </div>
+      <p-footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+          <div style="float:right">
+
+            <a class="btn btn-light h-50 m-l-20" *ngIf="!uploadingButton" (click)="uploadFileAfterCheck()">Ok, Continue</a>
+            <a class="btn btn-light h-50 m-l-20" *ngIf="!uploadingButton" (click)="closeAfterCheck()">Cancel</a>
+          </div>
+        </div>
+      </p-footer>
+    </p-dialog>
+  </div>
+</div>

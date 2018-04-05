@@ -1,0 +1,53 @@
+<p-growl [(value)]="errorMessage" [immutable]="false" life="7000"></p-growl>
+<div class="flex-block site-content">
+  <codes-left-navbar></codes-left-navbar>
+  <div class="main-content">
+    <error></error>
+    <div class="content" scroll-bar>
+      <p-dataTable [value]="icdCodes" scrollable="true" [paginator]="false" [rows]="pageSize" [responsive]="true" (onSort)="onSorting($event)"
+        (onFilter)="onFiltering($event)">
+        <p-column field="Code" header="ICD Code" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+        <!--<p-column field="GeneName" header="Gene" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>-->
+
+        <!--<p-column field="Variant" header="Variant" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>-->
+        <p-column field="Description" header="ICD Description" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+
+        <p-column styleClass="col-button" [style]="{'width':'130px'}" header="Actions">
+          <ng-template let-icdCode="rowData" pTemplate="body">
+            <div>
+              <span (click)="editICDCode(icdCode.Id)" class="cursor-pointer"> 
+                <i class="fa fa-pencil fa-md m3 m6 edit" aria-hidden="true" ></i> 
+              </span>
+              <span>|</span>
+              <span (click)="deleteICDCode(icdCode)" class="cursor-pointer"> 
+                <i class="fa fa-trash fa-md m3 m6 edit" aria-hidden="true" ></i> 
+              </span>
+            </div>
+          </ng-template>
+        </p-column>
+      </p-dataTable>
+      <p-paginator [hidden]="totalRecords<=pageSize" [rows]="pageSize" [totalRecords]="totalRecords" (onPageChange)="pageChanged($event)"></p-paginator>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer site-container">
+  <div class="flex-block space-between">
+    <div class="flex-block">
+    </div>
+    <div class="flex-block block">
+        <div class="block" style="margin-top:1%">
+            <h1 style="color:white">Total ICD Codes: {{totalRecords}}</h1>
+          </div>
+          <div class="delim m-l-30"></div>
+          <import-file [titleName]="importTitleName" [importTableHeader]="importTableHeader" [importTableRow]="importTableRow" [importFileType]="importFileType"
+          (getGridData)="getICD10Codes()"></import-file>
+      <a class="btn btn-light h-50 m-l-20" (click)="editICDCode(0)">Add ICD Code</a>
+    </div>
+  </div>
+</footer>
+
+<!-- <app-import-code [showDialog]="showDialog" [tableHeadingFileFormate]="tableHeadingFileFormate" [tableBodyFileFormate]="tableBodyFileFormate" [codeName]="columnTitle" [dialogTitle]='dialogTitle' (closeDialog)="importCodes($event)"></app-import-code> -->
+
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>

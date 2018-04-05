@@ -1,0 +1,106 @@
+<div class="flex-block site-content" style="margin-top: 1%;">
+
+  <div class="main-content">
+    <div class="ui-grid-col-6 pull-left">
+
+      <div class="ui-grid-col-5 ">
+        <div class="search-account">
+          <input type="text" [(ngModel)]="searchStr" placeholder="Search" />
+          <button class="btn-search"></button>
+        </div>
+      </div>
+      <div class="ui-grid-col-6" style="margin-left: 7px;">
+        <button class='btn button-primary AddNew ' (click)="onTestSearch()" style="height: 44px !important;">
+           <i class="" ></i> Search Test</button>
+      </div>
+
+
+    </div>
+    <div class="content" scroll-bar style="padding-top: 1%;">
+      <p-dataTable [value]="labTest" scrollable="true">
+        <p-column field="CptCode" header="Code" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+        <p-column field="GeneName" header="Gene Name" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+        <p-column header="Standard Price">
+          <ng-template let-test="rowData" pTemplate="body">
+            <span>{{test.InNetworkFee}}</span>%
+          </ng-template>
+        </p-column>
+        <p-column header="Standard Price">
+          <ng-template let-test="rowData" pTemplate="body">
+             <input type="text" currencyMask class="field" style="text-align:right; width: 80%;" [(ngModel)]="test.StandardPrice"
+            />
+          </ng-template>
+        </p-column>
+
+        <p-column header="Default Processing Fee">
+          <ng-template let-test="rowData" pTemplate="body">
+            <input type="text" class="field" style="text-align:right; width: 80%;" currencyMask [(ngModel)]="test.DefaultProcessingFee"
+            />
+          </ng-template>
+        </p-column>
+
+        <p-column header="Default Reffered Lab Comm">
+          <ng-template let-test="rowData" pTemplate="body">
+            <input type="text" class="field" style="text-align:right; width: 80%;" [(ngModel)]="test.DefaultReferredLabCommission" />%
+          </ng-template>
+        </p-column>
+
+        <p-column styleClass="col-button" [style]="{'width':'130px'}">
+          <ng-template let-test="rowData" pTemplate="body">
+            <span class="cursor-pointer" (click)="deletelabTest(test)"> 
+            <i class="fa fa-trash fa-md m3 m6 edit" aria-hidden="true"></i></span>
+          </ng-template>
+        </p-column>
+
+      </p-dataTable>
+    </div>
+  </div>
+</div>
+
+
+<footer class="footer site-container">
+  <div class="flex-block space-between">
+    <div class="flex-block">
+    </div>
+    <div class="flex-block block">
+      <a class="btn btn-light h-50 m-l-20" (click)="saveLabTests()">Save</a>
+
+    </div>
+  </div>
+</footer>
+
+
+<p-dialog header={{headerMessage}} [(visible)]="showModal" modal="modal" width="800" [responsive]="true" [closable]="false">
+  <div class="ui-grid-col-6 pull-left">
+
+    <div class="ui-grid-col-6 ">
+      <div class="search-account">
+        <input type="text" (keyup.enter)="onTestSearch()" [(ngModel)]="searchStr" placeholder="Search" />
+        <button class="btn-search" (click)="onTestSearch()"></button>
+      </div>
+    </div>
+    <!-- <div class="ui-grid-col-4" >
+      <button class='btn button-primary AddNew ' (click)="onTestSearch()" style="height: 44px !important;">
+           <i class="" ></i> Search Test</button>
+    </div> -->
+
+
+  </div>
+  <div style=" text-align:left  ; height: 300px">
+
+    <div class="ui-panel-content ui-widget-content content-align" style=" text-align:left">
+      <search-test [tests]="tests" (onTestChange)="onTestChange($event)"></search-test>
+    </div>
+
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <div style="float:right">
+        <a class="btn btn-light h-50 m-l-20" (click)="saveSearchedTests()">Save</a>
+        <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+      </div>
+    </div>
+  </p-footer>
+</p-dialog>
+
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>

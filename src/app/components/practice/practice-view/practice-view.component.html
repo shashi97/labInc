@@ -1,0 +1,238 @@
+<!-- <p-growl [(value)]="errorMessage" [immutable]="false" life="7000"></p-growl>
+<div class="flex-block site-content">
+  <practice-left-navbar></practice-left-navbar>
+  <div class="main-content">
+    <div class="content" scroll-bar>
+      <error></error>
+      <div class="titled-block ">
+        <div class="title">Demographics</div>
+        <div class="content-block flex-block flex-wrap">
+          <div class="labeled-block offset-right">
+            <div class="label required">First Name</div>
+            <div class="value">
+              {{practice.patientFirstName}}
+            </div>
+          </div>
+          <div class="labeled-block offset-right">
+            <div class="label required">Last Name</div>
+            <div class="value">
+              {{practice.patientLastName}}
+            </div>
+          </div>
+          <div class="labeled-block offset-right">
+            <div class="label">Middle Initial</div>
+            <div class="value">
+              {{practice.patientMiddleInitial}}
+            </div>
+          </div>
+          <div class="labeled-block offset-right">
+            <div class="label">Age</div>
+            <div class="value">
+              {{practice.age}}
+            </div>
+          </div>
+          <div class="labeled-block offset-right">
+            <div class="label required">Date Of Birth</div>
+            <div class="value">
+              {{practice.dateOfBirth | date:"MM/dd/yyyy"}}
+            </div>
+          </div>
+          <div class="labeled-block offset-right">
+            <div class="label required">Gender</div>
+            <div class="value">
+              {{practice.gender}}
+            </div>
+          </div>
+          <div class="labeled-block offset-right">
+            <div class="label">Marital Status</div>
+            <div class="value">
+              {{practice.patientsStatus }}
+            </div>
+          </div>
+
+          <div class="labeled-block offset-right">
+            <div class="label">SSN</div>
+            <div class="value">
+              {{practice.socialSecurityNumber}}
+            </div>
+          </div>
+          <div class="labeled-block offset-right">
+            <div class="label">Alternative ID</div>
+            <div class="value">
+              {{practice.id}}
+            </div>
+          </div>
+          <div class="labeled-block offset-right">
+            <div class="label">Account Number</div>
+            <div class="value">
+              {{practice.accountNumber }}
+            </div>
+          </div>
+          <div class="labeled-block offset-right">
+            <div class="label required">Med Rec No</div>
+            <div class="value">
+              {{practice.medRecNo }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-block">
+        <div class="titled-block block grow-50 m-r-20">
+          <div class="title">Contact Information</div>
+          <div class="content-block flex-block flex-wrap">
+            <div class="labeled-block offset-right">
+              <div class="label">Main Phone</div>
+              <div class="value">
+                {{practice.phoneNumber }}
+              </div>
+            </div>
+            <div class="labeled-block offset-right">
+              <div class="label">Alternate Phone</div>
+              <div class="value">
+                {{practice.otherPhone }}
+              </div>
+            </div>
+            <div class="labeled-block offset-right">
+              <div class="label">Email Address</div>
+              <div class="value">
+                {{practice.patientsEmail}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="titled-block block grow-50">
+          <div class="title">Emergency Contact Information</div>
+          <div class="content-block flex-block flex-wrap">
+            <div class="labeled-block offset-right">
+              <div class="label">Contact Name</div>
+              <div class="value">
+                {{practice.patientsEmergencyContactName}}
+              </div>
+            </div>
+            <div class="labeled-block offset-right">
+              <div class="label">Phone Number</div>
+              <div class="value">
+                {{practice.patientsEmergencyContactNumber }}
+              </div>
+            </div>
+            <div class="labeled-block offset-right">
+              <div class="label">Relationship</div>
+              <div class="value">
+                {{practice.patientsEmergencyContactRelation}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="titled-block">
+        <div class="title">Address</div>
+        <div class="content-block flex-block flex-wrap grow-1">
+          <div class="labeled-block offset-right">
+            <div class="label">Address 1</div>
+            <div class="value">
+              {{practice.patientAddress1}}
+            </div>
+          </div>
+          <div class="labeled-block offset-right">
+            <div class="label">Address 2</div>
+            <div class="value">
+              {{practice.patientAddress2}}
+            </div>
+          </div>
+          <div class="labeled-block offset-right">
+            <div class="label">City</div>
+            <div class="value">
+              {{practice.patientCity}}
+            </div>
+          </div>
+          <div class="labeled-block offset-right">
+            <div class="label">State</div>
+            <div class="value">
+              {{practice.patientState}}
+            </div>
+          </div>
+          <div class="labeled-block offset-right">
+            <div class="label">Zip Code</div>
+            <div class="value">
+              {{practice.patientZip}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-block">
+        <div class="titled-block block grow-50 m-r-20">
+          <div class="title">Primary Care Physician</div>
+          <div class="content-block flex-block flex-wrap">
+            <div class="labeled-block offset-right">
+              <div class="label">Address 1</div>
+              <div class="value">
+                {{practice.primaryCarePhysicianAddress1 }}
+              </div>
+            </div>
+            <div class="labeled-block offset-right">
+              <div class="label">Address 2</div>
+              <div class="value">
+                {{practice.primaryCarePhysicianAddress2 }}
+              </div>
+            </div>
+            <div class="labeled-block offset-right">
+              <div class="label">Name</div>
+              <div class="value">
+                {{practice.primaryCarePhysicianName }}
+              </div>
+            </div>
+            <div class="labeled-block offset-right">
+              <div class="label">Location</div>
+              <div class="value">
+                Location
+              </div>
+            </div>
+            <div class="labeled-block offset-right">
+              <div class="label">City</div>
+              <div class="value">
+                {{practice.primaryCarePhysicianCity }}
+              </div>
+            </div>
+            <div class="labeled-block offset-right">
+              <div class="label">State</div>
+              <div class="value">
+                {{practice.primaryCarePhysicianState}}
+              </div>
+            </div>
+            <div class="labeled-block offset-right">
+              <div class="label">Zip Code</div>
+              <div class="value">
+                {{practice.patientZip}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="titled-block block grow-50">
+          <div class="title">Notes</div>
+          <div class="content-block flex-block flex-wrap">
+            <div class="labeled-block offset-right">
+              <div class="value" style="font-weight: bold">
+                {{practice.notes }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<footer class="footer site-container">
+  <div class="flex-block space-between">
+    <div class="flex-block">
+    </div>
+    <div class="flex-block block">
+      <a class="btn btn-light h-50 m-l-20" (click)="editPractice()">Edit Practice</a>
+      <a class="btn btn-light h-50 m-l-20" (click)="deletePractice()">Delete</a>
+    </div>
+  </div>
+</footer> -->

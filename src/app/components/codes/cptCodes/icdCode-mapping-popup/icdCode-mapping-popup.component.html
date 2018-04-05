@@ -1,0 +1,45 @@
+<p-dialog header="List of ICD Codes" [(visible)]="showIcdCodeMapping" (visibleChange)="onVisibleChange($event)" modal="modal"
+  [width]="1200">
+  <div class="main-content">
+    <error *ngIf="showErrorMessage"></error>
+    <div class="content-block flex-block flex-wrap">
+      <div class="labeled-block block grow-30 offset-right">
+        <div class="value">
+          <div class="search-account">
+            <input placeholder="Search ICD Codes" type="text" (keyup.enter)="searchIcdCode()" [(ngModel)]="searchText" class="ng-untouched ng-pristine ng-valid">
+            <button class="btn-search" (click)="searchIcdCode()"></button>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="content" scroll-bar>
+        <p-dataTable [value]="cptIcdCodeMapping" scrollable="true"  [responsive]="true" (onSort)="onSorting($event)"
+          (onFilter)="onFiltering($event)">
+          <p-column [style]="{'width':'15%'}">
+            <ng-template let-icd="rowData" pTemplate="body">
+              <p-checkbox name="groupname" [(ngModel)]="icd.isChecked" binary="true"></p-checkbox>
+            </ng-template>
+          </p-column>
+
+          <p-column field="Code" header="ICD Code"></p-column>
+
+        </p-dataTable>
+        <!-- <p-paginator [hidden]="totalRecords<=pageSize" [rows]="pageSize" [totalRecords]="totalRecords" (onPageChange)="pageChanged($event)"></p-paginator> -->
+      </div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <div style="float:right">
+       
+        <span class=" h-50 m-l-20 page" *ngIf="totalCptCode != 0 && totalRecords > totalCptCode" >Show {{totalCptCode}} Records of {{totalRecords}}  ICD CODES</span>
+     
+     <span class=" h-50 m-l-20 page" *ngIf="totalCptCode != 0 && totalRecords==totalCptCode" >Show {{totalCptCode}} ICD CODES</span>
+      <a class="btn btn-light h-50 m-l-20" (click)="addIcdCodeMapping()" *ngIf="cptIcdCodeMapping.length!=0 && parent=='insurance'">Add</a>
+        <a class="btn btn-light h-50 m-l-20" (click)="saveIcdCodeMapping()" *ngIf="cptIcdCodeMapping.length!=0 && parent=='icd'">Save</a>
+        <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+      </div>
+    </div>
+  </p-footer>
+</p-dialog>

@@ -1,0 +1,293 @@
+<p-growl [(value)]="errorMsg" [immutable]="false" life="7000"></p-growl>
+<div class="flex-block site-content">
+  <order-left-navbar *ngIf="user.UserTypeId === 1"></order-left-navbar>
+  <div class="flex-block site-content">
+    <div class="main-content">
+      <div class="content" scroll-bar>
+        <error *ngIf="isParent"></error>
+        <div class="titled-block  m-r-10">
+          <div class="title">Personal Info</div>
+          <div class="content-block flex-block flex-wrap grow-1">
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Patient</div>
+              <div class="value">
+                {{order.PatientName}}
+                <!--{{order.FirstName}}-->
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Insurance Information</div>
+              <div class="value">
+                {{order.InsuranceCompanyName}}
+                <!--{{order.FirstName}}-->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="titled-block  m-r-10">
+          <div class="title">Order Info</div>
+          <div class="content-block flex-block flex-wrap grow-1">
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Date Collected</div>
+              <div class="value">
+                {{order.DateCollected | date:'shortDate'}}
+                <!--{{patient.FirstName}}-->
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Case Type</div>
+              <div class="value">
+                {{order.CaseTypeName}}
+                <!--{{patient.LastName}}-->
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label">Volume</div>
+              <div class="value">
+                {{order.Volumn}}
+                <!--{{patient.MiddleName}}-->
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label">ICD Code</div>
+              <div class="value">
+                {{icdCodeLabel}}
+                <!--{{patient.SSN}}-->
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Prescribed Medicine</div>
+              <div class="value">
+                {{prescribedMedicine}}
+                <!--{{patient.MedicalRecordNo}}-->
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Primary Physician</div>
+              <div class="value">
+                {{order.PrimaryPhysicianName}}
+                <!--{{patient.Employment}}-->
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Secondary Physician</div>
+              <div class="value">
+                {{order.SecondaryPhysicianName}}
+                <!--{{patient.MaritalStatus}}-->
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Group Test</div>
+              <div class="value">
+                {{order.GroupTestName}}
+                <!--{{patient.Gender}}-->
+              </div>
+            </div>
+            <div class="labeled-block block grow-25 offset-right">
+              <div class="label required">Date Received</div>
+              <div class="value">
+                {{order.DateReceived | date:'shortDate'}}
+                <!--{{patient.DateOfBirth}}-->
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Medical Record #</div>
+              <div class="value">
+                {{order.MedicalRecordNo}}
+                <!--{{patient.DateOfBirth}}-->
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Insurance Type</div>
+              <div class="value">
+                {{order.InsuranceTypeName}}
+                <!--{{patient.DateOfBirth}}-->
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Medical Necessities</div>
+              <div class="value">
+                {{order.Comments}}
+                <!--{{patient.DateOfBirth}}-->
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Test Screen</div>
+              <div class="value">
+                <div *ngFor="let test of tests">
+                  {{test}}
+                </div>
+                <!--{{patient.DateOfBirth}}-->
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Validity Testing</div>
+              <div class="value">
+                <div *ngFor="let validity of validites">
+                  {{validity}}
+                  <div>
+                    <!--{{patient.DateOfBirth}}-->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="titled-block  m-r-10" *ngIf="isShowOrder && order">
+          <div class="title">Test Screen</div>
+          <div class="flex-block" style="padding:1%">
+            <div class="titled-block block grow-50 m-r-20" *ngIf="order.TestToBeProcessedByUs.length>0">
+              <div class="title">To Be Processed By Us</div>
+              <div class="content-block flex-block flex-wrap">
+                <div class="labeled-block block " *ngFor="let test of order.TestToBeProcessedByUs">
+                  <div class="ui-autocomplete-token ui-state-highlight ui-corner-all" style="font-size: medium">{{test.TestName}} - {{test.CPTCode}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="titled-block block grow-50 m-r-20" *ngIf="order.TestCanNotProcess.length>0">
+              <div class="title">Can't Process</div>
+              <div class="content-block flex-block flex-wrap">
+                <div class="labeled-block block" *ngFor="let test of order.TestCanNotProcess">
+                  <div class="ui-autocomplete-token ui-state-highlight ui-corner-all" style="font-size: medium">{{test.TestName}} - {{test.CPTCode}}</div>
+                </div>
+
+                <div class="labeled-block block grow-100 offset-right" style="padding-top: 3%"> <a class="btn btn-light h-50 m-l-20" style="float:right" (click)="onSendForProcess()">Send Order For Processing</a>
+
+                </div>
+              </div>
+            </div>
+            <div class="titled-block block grow-50 m-r-20" *ngIf="order.TestToBeProcessedByOther.length>0">
+              <div class="title">To Be Processed By Other</div>
+              <div class="content-block flex-block flex-wrap">
+                <div class="labeled-block block grow-100 offset-right" *ngFor="let test of order.TestToBeProcessedByOther">
+                  <div class="label required" style="font-size: medium">{{test.ProcessingLabName}}</div>
+                  <div class="labeled-block block " *ngFor="let test1 of test.OrderTests">
+                    <div class="ui-autocomplete-token ui-state-highlight ui-corner-all" style="font-size: medium">{{test1.TestName}} - {{test1.CPTCode}}</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <p-dialog header="Sub Order to Network Lab" [(visible)]="isShowProcess" modal="modal" [width]="1000">
+
+          <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
+            <div style="width:100%;text-align: left">
+              <div style="width:100%;text-align: left"><span style="font-size: 25px;font-weight: bold"> {{ProcessingLabDetail.LabName}}</span></div><br/>
+              <div style="width:100%;text-align: left"><span style="font-size: medium;"> {{ProcessingLabDetail.LabAddress}}</span></div>
+              <div style="width:100%;text-align: left"><span style="font-size: medium;"> {{ProcessingLabDetail.LabCity}}, {{ProcessingLabDetail.LabState}}, {{ProcessingLabDetail.LabZip}}</span></div>
+              <div style="width:100%;text-align: left"><span style="font-size: medium;">Phone: </span><span> {{ProcessingLabDetail.LabPhone}}</span></div>
+
+
+
+            </div>
+          </div>
+          <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
+            <div class="ui-grid-row">
+              <!--<div class="ui-grid-col-3" style="text-align:center">
+                    <i class="fa fa-search" (click)="showCar(car)" style="cursor:pointer;float:left;margin-top:40px"></i>
+                    <img src="assets/showcase/images/demo/car/{{car.brand}}.png">
+                </div>-->
+              <div class="ui-grid-col-12">
+                <div class="content" scroll-bar>
+                  <p-dataTable [value]="ProcessingLabDetail.OrderTests" scrollable="true" [paginator]="false" [rows]="pageSize" [responsive]="true"
+                    (onSort)="onSorting($event)" (onFilter)="onFiltering($event)">
+                    <p-column field="TestName" header="Test Name"></p-column>
+                    <p-column field="CPTCode" header="CPT Code"></p-column>
+                    <p-column field="ProcessingFee" header="Processing Fee"></p-column>
+                    <p-column field="ReferralCommission" header="Referral Commission"></p-column>
+
+                  </p-dataTable>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="ui-grid ui-grid-responsive ui-grid-pad" style="padding-left:15%">
+      <div class="ui-grid-row">
+        <div class="" style="width:30%;text-align: left">Test Name: </div>
+<div class="ui-grid-col-10" style="text-align: left">{{car.TestName}}</div>
+</div>
+<div class="ui-grid-row">
+  <div class="" style="width:30%;text-align: left">CPT Code: </div>
+<div class="ui-grid-col-10" style="text-align: left">{{car.CPTCode}}</div>
+</div>
+<div class="ui-grid-row">
+  <div class="" style="width:30%;text-align: left">Processing Fee: </div>
+<div class="ui-grid-col-10" style="text-align: left">{{car.ProcessingFee}}</div>
+</div>
+<div class="ui-grid-row">
+  <div class="" style="width:30%;text-align: left">Referral Commission: </div>
+<div class="ui-grid-col-10" style="text-align: left">{{car.ReferralCommission}}</div>
+</div>
+</div> -->
+          <!--</ng-template>-->
+
+          <!--</p-dataTable>-->
+
+
+
+          <!--</div>-->
+          <p-footer>
+            <a class="btn btn-light h-50 m-l-20" style="float:right" (click)="onLabProcess()" *ngIf="ProcessingLabDetail.OrderTests.length>0">Process</a>
+          </p-footer>
+        </p-dialog>
+      </div>
+    </div>
+    <p-dialog header="Order Simulation" [(visible)]="isShowOrderSimulation" modal="modal" [width]="1000">
+      <error *ngIf="!isParent"></error>
+      <div class="setSimulate">
+        <div class="setWhiteSpace">
+          <span *ngFor="let item of simulationStep ; let index=index">
+           <div class="status" [ngStyle]="setLabelColor(item)">Step {{index + 1}}: {{item.StepName}}</div>
+        <div class="box" >
+         <div *ngIf="item.Labs.length == 0" >
+              <div class="nodata">
+    No Record Found
+    </div>
+    </div>
+          <div *ngFor="let lab of item.Labs ; let index=index">
+             <div *ngIf="lab==null" >
+              <div class="nodata">
+    No Record Found
+    </div>
+            </div>
+            <div class="ui-helper-clearfix" *ngIf="lab!=null">
+                      <div style="color: #23527C;max-width: 8.3333%;     
+                                      float: left;
+                                      box-sizing: border-box;
+                                      padding: 0.5em 0em 0.5em 0.5em;
+                                      color: #23527C;
+                                      max-width: 12.3333%;">{{index + 1 }}.</div>
+
+                      <div class="ui-g-10" style="font-size:14px;color: #23527C;text-align: left">{{lab.Name}}</div>
+                    </div>
+          <!--<ul *ngIf="lab!=null"  class="fa-ul">
+            <li style="text-align: left">{{index+1}} {{lab.Name}}</li>
+            </ul>-->
+        </div>
+      </div>
+    </span>
+        </div>
+
+
+
+      </div>
+
+      <!--<app-order-simulation-step [isSimulateSave]="true" [simulationStep]="simulationStep" style="width:100%"></app-order-simulation-step>-->
+      <p-footer>
+        <a class="btn btn-light h-50 m-l-20" style="float:right" (click)="updateOrderView()" *ngIf="isShowUpdate">Change Status</a>
+        <a class="btn btn-light h-50 m-l-20" style="float:right" (click)="isShowOrderSimulation=false">Cancel</a>
+      </p-footer>
+    </p-dialog>
+    <footer class="footer site-container">
+      <div class="flex-block space-between">
+        <div class="flex-block">
+        </div>
+        <div class="flex-block block">
+          <a class="btn btn-light h-50 m-l-20" (click)="runSimulation()" *ngIf="order.IsInReview && user.UserTypeId == 1 ">Run Simulation</a>
+          <a class="btn btn-light h-50 m-l-20" (click)="editOrder()" *ngIf="order.IsDraft && user.UserTypeId == 3 ">Edit Order</a>
+          <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+        </div>
+      </div>
+    </footer>

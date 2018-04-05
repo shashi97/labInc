@@ -1,0 +1,121 @@
+<p-growl [(value)]="errorMsg" [immutable]="false" life="7000"></p-growl>
+<form #f="ngForm" novalidate (ngSubmit)="save(f.valid)">
+
+  <div class="flex-block site-content">
+    <patient-eligibility-criteria-left-navbar *ngIf="insuranceCompanyId ==0"></patient-eligibility-criteria-left-navbar>
+    <insurance-company-left-navbar *ngIf="insuranceCompanyId >0"></insurance-company-left-navbar>
+    <!-- <lab-left-navbar *ngIf="labId !== 0" [isdirector]="true"></lab-left-navbar>
+    <div *ngIf="labId === 0">
+      <lab-director-left-navbar></lab-director-left-navbar>
+    </div> -->
+    <div class="main-content">
+      <div class="content" scroll-bar>
+        <error></error>
+        <div class="flex-block edit-mode">
+          <div class="titled-block block grow-50 m-r-10">
+            <div class="title">Patient Eligibility Criteria Info</div>
+
+            <div class="content-block flex-block flex-wrap">
+              <div class="labeled-block block grow-100 offset-right">
+                <div class="label required">Patient Eligibility Criteria Name</div>
+                <div class="value">
+                  <input type="text" name="eligibilityCriteraName" [attr.maxlength]="100" [(ngModel)]="patientEligibilityCriteria.Name" class="field"
+                  />
+                  <div [hidden]="!f.submitted ">
+                    <div *ngIf="!patientEligibilityCriteria.Name" class="text-danger">
+                      Patient Eligibility Criteria Name is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-block flex-block flex-wrap">
+              <div class="labeled-block block grow-100 offset-right">
+                <div class="label required">Patient Condition</div>
+                <div class="value">
+                  <p-dropdown name="PatientCondition" placeholder='Please Select' [options]="PatientConditionDDOs" [(ngModel)]="patientEligibilityCriteria.PatientConditionId"
+                    [filter]="true"></p-dropdown>
+                  <div [hidden]="!f.submitted ">
+                    <div *ngIf="patientEligibilityCriteria.PatientConditionId == 0 " class="text-danger">
+                      Patient Condition is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="content-block flex-block flex-wrap">
+              <div class="labeled-block block grow-100 offset-right">
+                <div class="label required">Patient Risk Group</div>
+                <div class="value">
+                  <p-dropdown name="insuranceCompanyTypes" placeholder='Please Select' [options]="RiskGroupDDOs" [(ngModel)]="patientEligibilityCriteria.RiskGroupId"
+                    [filter]="true"></p-dropdown>
+                  <div [hidden]="!f.submitted ">
+                    <div *ngIf="patientEligibilityCriteria.RiskGroupId == 0 " class="text-danger">
+                      Patient Risk Group is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="labeled-block block grow-100 offset-right">
+              <div class="label" style="margin-left: 3.5%;">Type of Test</div>
+              <div class="content-block flex-block flex-wrap grow-1">
+                <div class="labeled-block block grow-50 offset-right">
+                  <div class="value">
+                    <p-radioButton name="Qualitative" label="Qualitative" value="1" [(ngModel)]="patientEligibilityCriteria.TypeOfTestId"></p-radioButton>
+                  </div>
+                </div>
+                <div class="labeled-block block grow-50 offset-right">
+                  <div class="value">
+                    <p-radioButton name="Quantitative" label="Quantitative" value="2" [(ngModel)]="patientEligibilityCriteria.TypeOfTestId"></p-radioButton>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--<div class="titled-block block grow-50 m-r-10">
+            <div class="title">Frequency Information</div>
+            <div class="content-block flex-block flex-wrap">
+              <div class="labeled-block block grow-100 offset-right">
+                <div class="label required">Frequency Type</div>
+                <div class="value">
+                  <p-dropdown name="FrequencyTypeDDOs" placeholder='Please Select' [options]="FrequencyTypeDDOs" [(ngModel)]="patientEligibilityCriteria.FrequencyTypeId"
+                    [filter]="true"></p-dropdown>
+                    <div [hidden]="!f.submitted ">
+                        <div *ngIf="patientEligibilityCriteria.FrequencyTypeId == 0 " class="text-danger">
+                            Frequency Type is required
+                        </div>
+                      </div>
+                </div>
+              </div>
+              <div class="labeled-block block grow-100 offset-right" style="margin-top:4.8%">
+                <div class="label required">Frequency Number</div>
+                <div class="value">
+                  <input [(ngModel)]="patientEligibilityCriteria.FrequencyNumber" name="City" OnlyAlphaNumeric="true" #frequencyNumberValidate="ngModel"
+                    required [attr.maxlength]="2" OnlyNumber="true" class="field" />
+                </div>
+                <div [hidden]="frequencyNumberValidate.pristine && !f.submitted && frequencyNumberValidate.untouched">
+                  <div *ngIf="frequencyNumberValidate.errors && frequencyNumberValidate.errors.required" class="text-danger">
+                      Frequency Number required
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="footer site-container">
+    <div class="flex-block space-between">
+      <div class="flex-block">
+      </div>
+      <div class="flex-block block">
+        <button type="submit" class="btn btn-light h-50 m-l-20">Save</button>
+        <!-- <a class="btn btn-light h-50 m-l-20" (click)="save()">Save</a> -->
+        <a class="btn btn-light h-50 m-l-20" (click)="cancel()">Cancel</a>
+      </div>
+    </div>
+  </footer>
+</form>

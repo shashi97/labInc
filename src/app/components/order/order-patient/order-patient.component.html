@@ -1,0 +1,299 @@
+<div class="flex-block site-content">
+  <!--<patient-left-navbar></patient-left-navbar>-->
+  <div class="flex-block site-content">
+    <div class="main-content">
+      <div class="content" scroll-bar>
+        <error></error>
+        <div class="titled-block">
+          <div class="title">Demographics</div>
+          <div class="content-block flex-block flex-wrap grow-1">
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">First Name</div>
+              <div class="value">
+                <input [(ngModel)]="patient.FirstName" max-length="50" class="field" />
+              </div>
+            </div>
+
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label">Middle Name</div>
+              <div class="value">
+                <input [(ngModel)]="patient.MiddleName" class="field" />
+              </div>
+            </div>
+
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Last Name</div>
+              <div class="value">
+                <input [(ngModel)]="patient.LastName" max-length="50" class="field" />
+              </div>
+            </div>
+
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label">SSN </div>
+              <div class="value">
+                <input [(ngModel)]="patient.SSN" class="field" />
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Medical Record No.</div>
+              <div class="value">
+                <input [(ngModel)]="patient.MedicalRecordNo" max-length="20" class="field" />
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Employment</div>
+              <div class="value">
+                <input [(ngModel)]="patient.Employment" max-length="20" class="field" />
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Marital Status</div>
+              <div class="value">
+                <p-dropdown [filter]="true" placeholder='Please Select' [options]="martialStatus" [(ngModel)]="patient.MaritalStatus" [filter]="true"></p-dropdown>
+              </div>
+            </div>
+            <div class="labeled-block block grow-33 offset-right">
+              <div class="label required">Gender</div>
+              <div class="value">
+                <p-dropdown [filter]="true" placeholder='Please Select' [options]="gender" [(ngModel)]="patient.Gender" [filter]="true"></p-dropdown>
+              </div>
+            </div>
+            <div class="labeled-block block grow-25 offset-right">
+              <div class="label required">Date Of Birth</div>
+              <div class="value">
+                <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="1947:{{currentYear}}" [(ngModel)]="patient.DateOfBirth" [showIcon]="true" dateFormat="mm/dd/yy"></p-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex-block">
+          <div class="titled-block block grow-50 m-r-20">
+            <div class="title">Contact Information</div>
+            <div class="content-block flex-block flex-wrap">
+              <div class="labeled-block block grow-100 offset-right">
+                <div class="label">Main Phone</div>
+                <div class="value">
+                  <input [(ngModel)]="patient.Phone1" max-length="20" class="field" />
+                </div>
+              </div>
+              <div class="labeled-block  block grow-100  offset-right">
+                <div class="label">Alternate Phone</div>
+                <div class="value">
+                  <input [(ngModel)]="patient.Phone2" max-length="20" class="field" />
+                </div>
+              </div>
+              <div class="labeled-block  block grow-100  offset-right">
+                <div class="label">Email Address </div>
+                <div class="value">
+                  <input [(ngModel)]="patient.Email" max-length="50" class="field" data-ng-class="{'border-red' : errEmail}" data-ng-blur="isValidEmailAddress(patient.Email,'errEmail')"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="titled-block block grow-50">
+            <div class="title">Emergency Contact Information</div>
+            <div class="content-block flex-block flex-wrap">
+              <div class="labeled-block block grow-100  offset-right">
+                <div class="label">Contact Name</div>
+                <div class="value">
+                  <input [(ngModel)]="patient.EmergencyContactName" max-length="50" class="field" />
+                </div>
+              </div>
+              <div class="labeled-block block grow-100  offset-right">
+                <div class="label">Phone Number </div>
+                <div class="value">
+                  <input [(ngModel)]="patient.EmergencyContactPhoneNo" max-length="50" class="field" />
+                </div>
+              </div>
+              <div class="labeled-block  block grow-100  offset-right ">
+                <div class="label ">Relationship</div>
+                <div class="value ">
+                  <input [(ngModel)]="patient.EmergencyContactRelation" max-length="50" class="field" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex-block">
+          <div class="titled-block block grow-50 m-r-20">
+            <div class="title">Address</div>
+            <div class="content-block flex-block flex-wrap">
+
+              <div class="labeled-block block grow-50 offset-right ">
+                <div class="label ">Address 1</div>
+                <div class="value ">
+                  <textarea class="field extra-field-box " [(ngModel)]="patient.Address1"></textarea>
+                </div>
+              </div>
+
+              <div class="labeled-block block grow-50 offset-right ">
+                <div class="label ">Address 2</div>
+                <div class="value ">
+                  <textarea class="field extra-field-box " [(ngModel)]="patient.Address2"></textarea>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="titled-block block grow-50">
+            <div class="title">Other Address</div>
+            <div class="content-block flex-block flex-wrap">
+              <div class="labeled-block block grow-100  offset-right ">
+                <div class="label">City</div>
+                <div class="value">
+                  <input [(ngModel)]="patient.City " [attr.maxlength]="20" class="field" />
+                </div>
+              </div>
+
+              <div class="labeled-block block grow-100  offset-right">
+                <div class="label">State</div>
+                <div class="value">
+                  <p-dropdown [filter]="true" placeholder='Please Select' [options]="states" [(ngModel)]="patient.StateId" [filter]="true"></p-dropdown>
+                </div>
+              </div>
+
+              <div class="labeled-block block grow-100  offset-right">
+                <div class="label">Zip Code</div>
+                <div class="value">
+                  <input [(ngModel)]="patient.Zip" max-length="50" class="field" />
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class="flex-block">
+          <div class="titled-block block grow-50 m-r-10">
+            <div class="title">Guarantor Personal Information</div>
+            <div class="content-block flex-block flex-wrap">
+
+              <div class="labeled-block block grow-100 offset-right ">
+                <div class="label ">First Name</div>
+                <div class="value ">
+                  <input [(ngModel)]="patient.PatientGuarantorInfoData.FirstName" max-length="50" class="field" />
+                </div>
+              </div>
+
+              <div class="labeled-block block grow-100  offset-right ">
+                <div class="label ">Middle Name</div>
+                <div class="value ">
+                  <input [(ngModel)]="patient.PatientGuarantorInfoData.MiddleName" max-length="50" class="field" />
+                </div>
+              </div>
+
+              <div class="labeled-block block grow-100  offset-right ">
+                <div class="label ">Last Name</div>
+                <div class="value ">
+                  <input [(ngModel)]="patient.PatientGuarantorInfoData.LastName" max-length="50" class="field" />
+                </div>
+              </div>
+
+              <div class="labeled-block block grow-100 offset-right">
+                <div class="label required">Gender</div>
+                <div class="value">
+                  <p-dropdown [filter]="true" placeholder='Please Select' [options]="gender" [(ngModel)]="patient.PatientGuarantorInfoData.Gender"
+                    [filter]="true"></p-dropdown>
+                </div>
+              </div>
+
+              <div class="labeled-block block grow-100 offset-right">
+                <div class="label required">Date Of Birth</div>
+                <div class="value">
+                  <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="1947:{{currentYear}}" [(ngModel)]="patient.PatientGuarantorInfoData.DateOfBirth" [showIcon]="true" dateFormat="mm/dd/yy"></p-calendar>
+                </div>
+              </div>
+
+              <div class="labeled-block block grow-100 offset-right">
+                <div class="label">SSN</div>
+                <div class="value">
+                  <input [(ngModel)]="patient.PatientGuarantorInfoData.SSN" class="field" />
+                </div>
+              </div>
+
+              <div class="labeled-block block grow-100 offset-right">
+                <div class="label">Marital Status</div>
+                <div class="value">
+                  <p-dropdown [filter]="true" placeholder='Please Select' [options]="martialStatus" [(ngModel)]="patient.PatientGuarantorInfoData.MaritalStatusId"
+                    [filter]="true"></p-dropdown>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+          <div class="titled-block block grow-50  m-l-17">
+            <div class="title">Guarantor Other Information</div>
+            <div class="content-block flex-block flex-wrap grow-1">
+              <div class="labeled-block block grow-100 offset-right ">
+                <div class="label ">State</div>
+                <div class="value">
+                  <p-dropdown [filter]="true" placeholder='Please Select' [options]="states" [(ngModel)]="patient.PatientGuarantorInfoData.StateId"
+                    [filter]="true"></p-dropdown>
+                </div>
+              </div>
+              <div class="labeled-block block grow-100 offset-right ">
+                <div class="label ">City</div>
+                <div class="value ">
+                  <input [(ngModel)]="patient.PatientGuarantorInfoData.City" [attr.maxlength]="20" class="field " />
+                </div>
+              </div>
+              <div class="labeled-block block grow-100 offset-right ">
+                <div class="label ">Zip Code</div>
+                <div class="value ">
+                  <input [(ngModel)]="patient.PatientGuarantorInfoData.Zip" max-length="50" class="field" />
+                </div>
+              </div>
+              <div class="labeled-block block grow-100 offset-right ">
+                <div class="label ">Contact No</div>
+                <div class="value ">
+                  <input [(ngModel)]="patient.PatientGuarantorInfoData.ContactNo" max-length="50" class="field " />
+                </div>
+              </div>
+              <div class="labeled-block  block grow-100 offset-right">
+                <div class="label"> Email Address </div>
+                <div class="value">
+                  <input [(ngModel)]="patient.PatientGuarantorInfoData.Email" max-length="50" class="field " />
+                </div>
+              </div>
+              <div class="labeled-block block grow-100 offset-right">
+                <div class="label">Relation</div>
+                <div class="value">
+                  <input [(ngModel)]="patient.PatientGuarantorInfoData.Relation" class="field" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="titled-block block grow-100">
+          <div class="title">Guarantor Address Information</div>
+          <div class="content-block flex-block flex-wrap">
+
+            <div class="labeled-block block grow-50 offset-right ">
+              <div class="label ">Address 1</div>
+              <div class="value ">
+                <textarea class="field extra-field-box " [(ngModel)]="patient.PatientGuarantorInfoData.Address1"></textarea>
+              </div>
+            </div>
+            <div class="labeled-block block grow-50 offset-right ">
+              <div class="label ">Address 2</div>
+              <div class="value ">
+                <textarea class="field extra-field-box " [(ngModel)]="patient.PatientGuarantorInfoData.Address2"></textarea>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>

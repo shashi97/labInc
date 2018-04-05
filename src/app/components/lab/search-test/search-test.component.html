@@ -1,0 +1,64 @@
+<!-- <div class="ui-g">
+  <div class="ui-g-12">
+    <div>
+      <div class="ui-g-1 ">
+        <p-checkbox name="groupname" binary="true" (click)="onSelectAll()"> </p-checkbox>
+      </div>
+      <div class="ui-g-3">
+        <div class="font-description">
+          <b style="padding-left: 7px;">Select All</b>
+        </div>
+      </div>
+    </div>
+    <div class="ui-g-8">
+      <input type="text" class="field" [(ngModel)]="searchstr" placeholder="Search" (ngModelChange)="search()" />
+    </div>
+
+  </div>
+</div> -->
+
+<!-- 
+<div class="ui-g" *ngFor="let test of tests ; let i = index;">
+  <div class="ui-g-12 "> -->
+    <!-- <div class="ui-g-1 ">
+      <p-checkbox name="groupname" binary="true" value="item.Code " [(ngModel)]="test.IsSelected" (click)="onResponsibilitySelect()">
+      </p-checkbox>
+    </div>
+    <div class="ui-g-11 backcolor" style="float: right;">
+      <div class="font-description">
+        {{test.Code}}
+      </div>
+    </div> -->
+
+    <!-- <p-dataTable [value]="tests">
+
+      <p-column >
+        <ng-template let-test="rowData" pTemplate="body">
+          <p-checkbox name="groupname" binary="true" value="item.Code " [(ngModel)]="test.IsSelected" (click)="onResponsibilitySelect()">
+          </p-checkbox>
+
+        </ng-template>
+      </p-column>
+
+      <p-column field="Code" header="Code" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+      <p-column field="GeneName" header="Gene Name" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+
+    </p-dataTable>
+  </div>
+</div> -->
+
+
+    <p-dataTable [value]="tests" scrollable="true">
+
+      <p-column [style]="{'width':'15%'}">
+        <ng-template let-test="rowData" pTemplate="body">
+          <p-checkbox name="groupname" binary="true" value="test.Code " [(ngModel)]="test.IsSelected" (click)="onTestSelect()">
+          </p-checkbox>
+
+        </ng-template>
+      </p-column>
+
+      <p-column field="Code" header="Code" [sortable]="true"  filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+      <p-column field="GeneName" header="Gene Name" [sortable]="true"  filterMatchMode="contains" filterPlaceholder="Search"></p-column>
+
+    </p-dataTable>

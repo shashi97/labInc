@@ -1,0 +1,71 @@
+<p-growl [(value)]="errorMsg" [immutable]="false" life="7000"></p-growl>
+<content>
+  <div class="flex-block site-content">
+    <testing-menu-left-navbar></testing-menu-left-navbar>
+    <!--<practice-type-left-navbar></practice-type-left-navbar>-->
+    <div class="main-content">
+
+      <error></error>
+      <div class="content" scroll-bar>
+
+        <p-dataTable [value]="testClasses" scrollable="true" [paginator]="false" [rows]="pageSize" [responsive]="true" (onSort)="onSorting($event)"
+          (onFilter)="onFiltering($event)">
+          <p-column field="Name" header="Test Class Type" [sortable]="true" [filter]="true" filterMatchMode="contains" filterPlaceholder="Search">
+            <ng-template let-testClass="rowData" pTemplate="body">
+              <input class="form-control help-block text-danger" OnlyAlphaNumeric="true" [attr.maxlength]="200" [style.borderColor]="ErrorDiv" style="width:50%"
+                *ngIf="testClass.isedit == true || testClass.Id == 0" type="text" [(ngModel)]="testClass.Name" />
+              <span *ngIf="testClass.isedit == false && testClass.Id != 0">{{testClass.Name}}</span>
+            </ng-template>
+          </p-column>
+
+
+
+          <p-column styleClass="col-button" [style]="{'width':'130px'}" header="Actions">
+            <ng-template let-testClass="rowData" pTemplate="body">
+              <div>
+
+                <span *ngIf="testClass.Id == 0 || testClass.isedit == true" pTooltip="Save" class="cursor-pointer" (click)="saveTestClass(testClass)"><i class="fa fa-floppy-o fa-md m3 m6 edit" aria-hidden="true"></i></span>
+
+
+                <span *ngIf="testClass.Id != 0 && testClass.isedit != true" class="cursor-pointer" (click)="editTestClass(testClass)">
+
+                <i class="fa fa-pencil fa-md m3 m6 edit" aria-hidden="true"></i> </span>
+                <span>|</span>
+
+                <span *ngIf="testClass.Id == 0 || testClass.isedit == true" pTooltip="Cancel" class="cursor-pointer" (click)="getTestClass()"><i class="fa fa-times fa-md m3 m6 edit" aria-hidden="true"></i></span>
+
+                <span *ngIf="testClass.Id != 0 && testClass.isedit != true" class="cursor-pointer" (click)="deleteTestClass(testClass)"> 
+                 <i class="fa fa-trash fa-md m3 m6 edit" aria-hidden="true"></i></span>
+              </div>
+            </ng-template>
+          </p-column>
+        </p-dataTable>
+        <p-paginator [hidden]="totalRecords<=pageSize" [totalRecords]="totalRecords" [rows]="pageSize" (onPageChange)="pageChanged($event)"></p-paginator>
+      </div>
+    </div>
+
+  </div>
+
+</content>
+
+<footer class="footer site-container">
+  <div class="flex-block space-between">
+    <div class="flex-block">
+      <!--pagination here-->
+    </div>
+    <div class="flex-block block">
+        <div class="block" style="margin-top:1%">
+            <h1 style="color:white">Total Test Classes: {{totalRecords}}</h1>
+          </div>
+    
+    <div class="delim m-l-30"></div>
+    <import-file [titleName]="importTitleName" [importTableHeader]="importTableHeader" [importTableRow]="importTableRow" [importFileType]="importFileType"
+    (getGridData)="getTestClass()"></import-file>
+     <!-- <a class="btn btn-light h-50 m-l-20" (click)="importCodes(true)">Import Test Class Type</a> -->
+      <a class="btn btn-light h-50 m-l-20" (click)="addTestClass()">Add Test Class Type</a>
+    </div>
+  </div>
+</footer>
+
+
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>

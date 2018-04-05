@@ -1,0 +1,27 @@
+<div class="site-container">
+  <div class="flex-block align-center p-t-10">
+    <div class="block l-w-180">
+      <div class="dropdown-menu-wrapper">
+        <div class="menu-list menuWidth">
+          <a *ngFor="let item of dropdownMenuItems; let index = index" [ngClass]="{active: index===0}" class="btn h-60 t-w-170 dropdownWidth"
+            (click)="selectItem(item)">
+            {{item.title}}
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="block grow-1 top-navbar" id="mainMenu" style="padding-left: 43px;">
+      <!-- insert in topNavbarComponent.initMenu -->
+      <a *ngFor="let item of topMenus; let index = index" [ngClass]="{'btn-active': item.isActive===true}" class="btn btn-dark minwidth"
+        (click)="changeTopMenu(item)">
+            {{item.title}}
+      </a>
+    </div>
+    <div class="block f-w-320">
+      <div class="search-account">
+        <input type="text" [(ngModel)]="searchStr" placeholder="Search" (keyup.enter)="filterData()" />
+        <button class="btn-search" (click)="filterData()"></button>
+      </div>
+    </div>
+  </div>
+</div>

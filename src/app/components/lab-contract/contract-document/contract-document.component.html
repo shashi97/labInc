@@ -1,0 +1,83 @@
+<p-growl [(value)]="errorMessages" [immutable]="false" life="7000"></p-growl>
+<div class="flex-block site-content" style="margin-top:10px;">
+  <lab-contract-left-navbar></lab-contract-left-navbar>
+  <div class="main-content">
+    <div class="content-block flex-block flex-wrap">
+      <div class="content" scroll-bar style="width: 100%;">
+        <div class="flex-block">
+          <div class="titled-block block grow-100 m-r-10">
+            <div class="title">
+              <div>Contract Document</div>
+            </div>
+            <div class="content-block flex-block flex-wrap grow-1" scroll-bar>
+
+
+              <div class="flex-block" style="width: 100%;">
+                <div class="titled-block block grow-50 m-r-10">
+                  <div class="title">Saved Document</div>
+                  <div class="content-block flex-block flex-wrap grow-1">
+                    <div *ngFor="let attachment of savedAttachments" class=" ui-grid-col-12">
+
+                      <div class=" ui-grid-col-10">
+                        <span class="label  text-size">{{attachment.FileName}}</span>
+                      </div>
+
+                      <div class=" ui-grid-col-1">
+                        <span (click)="onFileDelete(attachment)" pTooltip="Delete" class="cursor-pointer"> <i class="fa fa-trash fa-lg " aria-hidden="true"></i> </span>
+
+                      </div>
+
+                      <div class=" ui-grid-col-1">
+                        <span (click)="downloadFile(attachment)" pTooltip="Download" class="mrgn-10 cursor-pointer"> <i class="fa fa-download fa-lg " aria-hidden="true"></i> </span>
+                      </div>
+
+                    </div>
+
+
+                  </div>
+                </div>
+                <input id="file-upload" #file type="file" (change)="onUpload($event)" accept="image/*,.pdf" multiple />
+                <div class="titled-block block grow-50 m-r-10">
+                  <div class="title">Upload Document</div>
+
+                  <div class="content-block flex-block flex-wrap">
+
+
+                    <span id='button' (click)="file.click()">Select Files </span>
+
+
+                    <div *ngFor="let attachment of selectedAttachments" class="ui-grid-col-12">
+
+                      <div class=" ui-grid-col-8">
+                        <span class="label  text-size">{{attachment.FileName}}</span>
+                      </div>
+
+                      <div class="ui-grid-col-4">
+                        <span (click)="onFileDelete(attachment)" pTooltip="Delete" class="cursor-pointer"> <i class="fa fa-trash fa-lg" aria-hidden="true"></i> </span>
+                      </div>
+
+
+                    </div>
+
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer site-container">
+      <div class="flex-block space-between">
+        <div class="flex-block">
+        </div>
+        <div class="flex-block block">
+          <a class="btn btn-light h-50 m-l-20" (click)="saveFile()">Save File</a>
+        </div>
+      </div>
+    </footer>
+
+    <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>

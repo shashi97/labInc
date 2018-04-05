@@ -1,0 +1,11 @@
+.link {
+    stroke-width: 0.85;
+    stroke: rgb(52, 77, 99);
+}
+.node-name {
+    font-family: 'Lato';
+    text-anchor: middle;
+    alignment-baseline: central;
+    font-weight: 300;
+    fill: #BB8888;
+  }
